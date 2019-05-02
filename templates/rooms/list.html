@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Bellow you can see undergoing collections</h1>
+    {% for room in rooms %}
+        <div>
+            <p>Receiver: {{room.receiver}}</p>
+            <p>Gift: {{room.gift}}</p>
+            <p>Description: {{room.description}}</p>
+            <p>Price {{room.price}}</p>
+            <p>Money to collect {{room.to_collect}}</p>
+        </div>
+        <hr>
+    {% endfor %}
+{% endblock content%}
