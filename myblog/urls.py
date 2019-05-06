@@ -19,7 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rooms/', include('rooms.urls', namespace='rooms'))
+    path('rooms/', include('rooms.urls', namespace='rooms')),
+    path('accounts/', include('accounts.url', namespace='accounts'))
 ]
 
 if settings.DEBUG:

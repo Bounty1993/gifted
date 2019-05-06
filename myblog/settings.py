@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
 
+    'accounts.apps.AccountsConfig',
     'rooms.apps.RoomsConfig',
+
 ]
 
 MIDDLEWARE = [
