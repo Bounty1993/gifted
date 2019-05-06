@@ -1,8 +1,13 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView
 from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
 from .forms import ProfileForm, UserForm
 from .models import Profile
@@ -21,7 +26,7 @@ def signup(request):
                 date_birth=profile_form.cleaned_data['date_birth']
             )
             messages.success(request, 'The profile was created successfully')
-            return redirect('great/')
+            return redirect(reverse_lazy('accounts:main'))
         else:
             messages.error(request, 'The profile was not created')
     else:
@@ -35,6 +40,15 @@ def signup(request):
     return render(request, 'accounts/signup.html', context=context)
 
 
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = 'accounts/main.html'
+    context_object_name = 'profile'
+
+    def get_object(self):
+        return self.request.user.profile
+
+
 @login_required
 @transaction.atomic
 def update_profile(request):
@@ -46,7 +60,7 @@ def update_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, 'The profile was updated successfully')
-            return redirect('success/')
+            return redirect(reverse_lazy('accounts:main'))
         else:
             messages.error(request, 'The profile was not created')
     else:
@@ -58,3 +72,14 @@ def update_profile(request):
     }
 
     return render(request, 'accounts/update.html', context=context)
+
+
+class MyPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'accounts/change_password.html'
+    form_class = PasswordChangeForm
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, 'Your password was updated successfully!')
+        update_session_auth_hash(self.request, form.user)
+        return redirect(reverse_lazy('accounts:main'))
