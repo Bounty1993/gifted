@@ -13,13 +13,12 @@ class RoomRegisterView(CreateView):
     model = Room
     template_name = 'rooms/register.html'
     form_class = RoomRegisterForm
-    success_url = 'rooms/list/'
 
     def form_valid(self, form):
         room = form.save(commit=False)
         room.to_collect = room.price
         room.save()
-        return redirect(self.get_success_url())
+        return redirect(reverse('rooms:list'))
 
 
 class RoomListView(ListView):
@@ -28,7 +27,10 @@ class RoomListView(ListView):
     context_object_name = 'rooms'
 
     def get_queryset(self):
-        return Room.objects.filter(visible=True)
+        field = self.request.GET.get('search', None)
+        if field:
+            return Room.get_visible.search(field)
+        return Room.get_visible.all()
 
 
 class RoomDetailView(DetailView):

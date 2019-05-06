@@ -1,6 +1,20 @@
 from django.conf import settings
+from django.urls import reverse
 from django.db import models
+from django.db.models import Q
 import datetime
+
+
+class VisibleManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(visible=True)
+
+    def search(self, field):
+        return self.get_queryset().filter(
+            Q(receiver__icontains=field) |
+            Q(gift__icontains=field) |
+            Q(description__icontains=field)
+        )
 
 
 class Room(models.Model):
@@ -13,5 +27,11 @@ class Room(models.Model):
     visible = models.BooleanField()
     date_expires = models.DateField()
 
+    get_visible = VisibleManager()
+
     def __str__(self):
         return f'{self.receiver} - {self.gift}'
+    """
+    def get_absolute_url(self):
+        return reverse('rooms:detail', kwargs={'pk': self.id})
+    """

@@ -1,10 +1,19 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h1>Below you see the form to create new Room</h1>
     <form action="" method="post">
         {% csrf_token %}
-        {{form.as_p}}
+        {{ form | crispy }}
         <button>Create new one</button>
     </form>
 {% endblock content %}
+{% block javascript %}
+    $(function () {
+        $("#id_date_expires").datepicker({
+            format:'dd/mm/yyyy',
+        });
+    });
+    console.log($("#id_date_expires"))
+{% endblock javascript %}
