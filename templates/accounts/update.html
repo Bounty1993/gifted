@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ user_form | crispy }}
+        {{ profile_form | crispy }}
+        <button>Update</button>
+    </form>
+{% endblock content %}
