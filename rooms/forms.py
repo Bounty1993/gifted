@@ -45,3 +45,19 @@ class RoomRegisterForm(forms.ModelForm):
             raise forms.ValidationError('to_collect field should be empty by now')
 
 
+class DonateForm(forms.ModelForm):
+    donation = forms.DecimalField(max_digits=7, decimal_places=2)
+
+    class Meta:
+        model = Room
+        fields = [
+            'donation',
+        ]
+
+    def clean_donation(self):
+        donation = self.cleaned_data['donation']
+        minimal_amount = 1
+        if donation < minimal_amount:
+            err = f'You inserted amount {donation:.2f}. It is not enough. Minimal value is 1 PLN'
+            raise forms.ValidationError(err)
+        return donation

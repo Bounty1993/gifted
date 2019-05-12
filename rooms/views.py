@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import (
     CreateView,
@@ -6,7 +6,7 @@ from django.views.generic import (
     DetailView
 )
 from .models import Room
-from .forms import RoomRegisterForm
+from .forms import RoomRegisterForm, DonateForm
 
 
 class RoomRegisterView(CreateView):
@@ -38,3 +38,13 @@ class RoomDetailView(DetailView):
     template_name = 'rooms/detail.html'
 
 
+def donate(request, pk):
+
+    room = get_object_or_404(Room, pk=pk)
+
+    form = DonateForm()
+    context = {
+        'form': form,
+        'room': room
+    }
+    return render(request, 'rooms/donate.html', context=context)
