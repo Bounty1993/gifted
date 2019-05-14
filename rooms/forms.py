@@ -39,7 +39,6 @@ class RoomRegisterForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        print(cleaned_data['date_expires'], 'clean')
         to_collect = cleaned_data['to_collect']
         if to_collect:
             raise forms.ValidationError('to_collect field should be empty by now')

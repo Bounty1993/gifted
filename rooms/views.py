@@ -5,6 +5,7 @@ from django.views.generic import (
     ListView,
     DetailView
 )
+from accounts.models import Profile
 from .models import Room
 from .forms import RoomRegisterForm, DonateForm
 
@@ -31,6 +32,13 @@ class RoomListView(ListView):
         if field:
             return Room.get_visible.search(field)
         return Room.get_visible.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['most_popular'] = Room.get_visible.most_popular()
+        context['most_patrons'] = Room.get_visible.most_patrons()
+        context['most_to_collect'] = Room.get_visible.most_to_collect()
+        return context
 
 
 class RoomDetailView(DetailView):

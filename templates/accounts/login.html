@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <button>Login</button>
-    </form>
+<div class="login-panel">
+    <row>
+        <div class="col-6 offset-3" style="text-align:center">
+            <h3>Zaloguj się do Gifted</h3>
+        </div>
+    </row>
+    <div class="col-6 offset-3">
+    <div class="my-panel">
+        <form method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <input class="btn btn-success" type="submit" value="Zaloguj się"/>
+            <a href="{% url 'accounts:signup' %}"><input class="btn btn-primary" value="Zarejestruj się"></a>
+        </form>
+        <p>Zapomniałeś hasła? Naciśnij <a href="">tutaj</a></p>
+    </div>
+    </div>
+</div>
 {% endblock content %}

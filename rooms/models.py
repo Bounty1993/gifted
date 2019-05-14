@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count, F
 import datetime
 
 from accounts.models import Profile
@@ -17,6 +17,24 @@ class VisibleManager(models.Manager):
             Q(gift__icontains=field) |
             Q(description__icontains=field)
         )
+
+    def most_popular(self):
+        popular = (self.get_queryset()
+                   .annotate(collected=F('price')-F('to_collect'))
+                   .order_by('-collected')
+                   )
+        return popular
+
+    def most_patrons(self):
+        num_patrons = (self.get_queryset()
+                       .annotate(num_patrons=Count('patrons'))
+                       .exclude(num_patrons=0)
+                       .order_by('-num_patrons')
+                       )
+        return num_patrons
+
+    def most_to_collect(self):
+        return self.get_queryset().order_by('-to_collect')
 
 
 class Room(models.Model):
@@ -49,21 +67,20 @@ class Room(models.Model):
         date = data.get('date', None)
         comment = data.get('comment', '')
         actual_amount = amount if amount < self.to_collect else self.to_collect
-        full_collection = self.to_collect < amount
+        full_collection = self.to_collect <= amount
         if full_collection:
             self.to_collect = 0
             self.is_active = False
         else:
-            self.collect -= amount
-        profile = Profile.objects.get(user=user)
+            self.to_collect -= amount
         donation = Donation(
-            profile=profile,
+            user=user,
+            room=self,
             date=date,
             amount=actual_amount,
             comment=comment
         )
         donation.save()
-        self.patrons.add(donation)
         self.save()
 
     def get_patrons(self):
@@ -71,7 +88,7 @@ class Room(models.Model):
 
 
 class Donation(models.Model):
-    profile = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     date = models.DateField(auto_now=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
