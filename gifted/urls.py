@@ -20,7 +20,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rooms/', include('src.rooms.urls', namespace='rooms')),
-    path('accounts/', include('src.accounts.urls', namespace='accounts'))
+    path('accounts/', include('src.accounts.urls', namespace='accounts')),
+    path('forum/', include('src.forum.urls', namespace='forum')),
 ]
 
 if settings.DEBUG:
