@@ -3,7 +3,9 @@ from django.urls import reverse
 from django.urls import resolve
 from datetime import datetime
 from django.contrib.auth import get_user_model
-from src.rooms.models import Room
+from src.rooms.models import Room, Donation
+from src.rooms.forms import DonateForm
+from src.rooms.views import donate
 
 User = get_user_model()
 
@@ -84,5 +86,32 @@ class RoomDetailViewTest(TestCase):
 
 
 class DonateViewTest(TestCase):
-    pass
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser', password='12345')
+        self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
+                                         to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
 
+    def test_status_code(self):
+        url = reverse('rooms:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    """
+    def test_url_resolves_donate(self):
+        view = resolve('/1/donate/')
+        self.assertEqual(view.func, donate)
+
+    def test_form_contains(self):
+        url = reverse('rooms:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        form = response.context.get('form')
+        self.assertIsInstance(form, DonateForm)
+
+    def test_donation_status_code(self):
+        data = {
+            'amount': 5000
+        }
+        url = reverse('rooms:detail', kwargs={'pk': 1})
+        self.client.post(url, data)
+        self.assertTrue(Donation.objects.exists())
+    """

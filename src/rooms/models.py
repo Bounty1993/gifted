@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
-from django.db.models import Q, Count, F
+from django.db.models import Q, Count, F, Sum
 
 
 class VisibleManager(models.Manager):
@@ -81,8 +81,12 @@ class Room(models.Model):
         self.save()
 
     def get_patrons(self):
-        # generate all patrons with full name
-        pass
+        patrons = (
+            self.donations.values_list('user__username', flat=True)
+            .annotate(total_amount=Sum('amount'))
+            .order_by('-total_amount')
+        )
+        return patrons
 
     def collected(self):
         return self.price - self.to_collect
@@ -90,7 +94,7 @@ class Room(models.Model):
 
 class Donation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='donations')
     date = models.DateField(auto_now=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     comment = models.CharField(max_length=250, blank=True)

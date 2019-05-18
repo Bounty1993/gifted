@@ -2,40 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2699d08-d776-4fc9-a3ce-b4cbd5623c4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/rooms/templatetags/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rooms/templatetags/custom_tags.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rooms/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rooms/tests/test_views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/rooms/list.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/gifted/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myblog/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myblog/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/gifted/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myblog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/gifted/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myblog/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/gifted/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accounts/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/migrations/0002_auto_20190514_2052.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/migrations/0002_auto_20190514_2052.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/tests/test_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/tests/test_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/rooms/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/rooms/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rooms/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rooms/tests/test_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/tests/test_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rooms/tests/test_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/tests/test_views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rooms/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/rooms/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/rooms/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/rooms/donate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/rooms/donate.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,66 +17,11 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="myblog" />
+  </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rooms/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rooms/forms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="19" column="22" lean-forward="true" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/rooms/tests/test_views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="68" column="64" lean-forward="true" selection-start-line="68" selection-start-column="64" selection-end-line="68" selection-end-column="64" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rooms/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rooms/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="38" column="65" lean-forward="true" selection-start-line="38" selection-start-column="65" selection-end-line="38" selection-end-column="65" />
-              <folding>
-                <element signature="e#0#64#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -119,7 +38,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/templates/rooms/base.html" />
-        <option value="$PROJECT_DIR$/templates/rooms/detail.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/templates/rooms/register.html" />
         <option value="$PROJECT_DIR$/accounts/apps.py" />
@@ -133,7 +51,6 @@
         <option value="$PROJECT_DIR$/accounts/urls.py" />
         <option value="$PROJECT_DIR$/rooms/urls.py" />
         <option value="$PROJECT_DIR$/templates/rooms/donate.htmls.html" />
-        <option value="$PROJECT_DIR$/templates/rooms/donate.html" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/accounts/forms.py" />
         <option value="$PROJECT_DIR$/templates/base.html" />
@@ -151,11 +68,13 @@
         <option value="$PROJECT_DIR$/rooms/views.py" />
         <option value="$PROJECT_DIR$/gifted/urls.py" />
         <option value="$PROJECT_DIR$/gifted/settings.py" />
-        <option value="$PROJECT_DIR$/src/rooms/models.py" />
         <option value="$PROJECT_DIR$/src/rooms/forms.py" />
         <option value="$PROJECT_DIR$/src/rooms/tests/test_models.py" />
-        <option value="$PROJECT_DIR$/src/rooms/views.py" />
         <option value="$PROJECT_DIR$/src/rooms/tests/test_views.py" />
+        <option value="$PROJECT_DIR$/templates/rooms/detail.html" />
+        <option value="$PROJECT_DIR$/templates/rooms/donate.html" />
+        <option value="$PROJECT_DIR$/src/rooms/models.py" />
+        <option value="$PROJECT_DIR$/src/rooms/views.py" />
       </list>
     </option>
   </component>
@@ -201,6 +120,17 @@
               <item name="rooms" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myblog" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myblog" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="rooms" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -212,6 +142,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.HTML" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -252,11 +183,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49837133" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info id="Favorites" order="2" sideWeight="0.50162864" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -310,13 +240,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/rooms/detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/accounts/admin.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -363,13 +286,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret selection-end-line="3" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/rooms/donate.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
         </state>
       </provider>
     </entry>
@@ -511,10 +427,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/rooms/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/rooms/tests/test_models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="52" lean-forward="true" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
+        <state relative-caret-position="487">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
@@ -528,30 +454,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/rooms/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="19" column="22" lean-forward="true" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/rooms/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
+        <state relative-caret-position="440">
+          <caret line="86" column="12" selection-start-line="86" selection-start-column="12" selection-end-line="86" selection-end-column="12" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/rooms/donate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+          <folding>
+            <element signature="e#290#297#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/rooms/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="38" column="65" lean-forward="true" selection-start-line="38" selection-start-column="65" selection-end-line="38" selection-end-column="65" />
+        <state relative-caret-position="765">
+          <caret line="51" column="52" selection-start-line="51" selection-start-column="52" selection-end-line="51" selection-end-column="52" />
           <folding>
             <element signature="e#0#64#0" expanded="true" />
           </folding>
@@ -560,10 +486,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/rooms/tests/test_views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="68" column="64" lean-forward="true" selection-start-line="68" selection-start-column="64" selection-end-line="68" selection-end-column="64" />
+        <state relative-caret-position="502">
+          <caret line="116" column="7" selection-start-line="116" selection-start-column="7" selection-end-line="116" selection-end-column="7" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/rooms/detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+          <folding>
+            <element signature="e#261#268#1" expanded="true" />
           </folding>
         </state>
       </provider>

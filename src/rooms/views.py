@@ -46,15 +46,18 @@ class RoomListView(ListView):
 class RoomDetailView(DetailView):
     model = Room
     template_name = 'rooms/detail.html'
+    context_object_name = 'room'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 @login_required
 @transaction.atomic
 def donate(request, pk):
-
     room = get_object_or_404(Room, pk=pk)
-
-    if request.method=='POST':
+    if request.method == 'POST':
         form = DonateForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data.get('amount')
@@ -65,12 +68,12 @@ def donate(request, pk):
                 'comment': comment
             }
             room.donate(data)
-            success_msg = f'Dziękujemy ci {request.user.full_name} za wsparcie'
+            success_msg = f'Dziękujemy ci {request.user.username} za wsparcie'
             messages.success(request, success_msg)
-            return redirect('rooms:detail', kwargs={'pk': pk})
+            return redirect(reverse('rooms:detail', kwargs={'pk': pk}))
         else:
             error_msg = f'Coś poszło nie tak. Zapoznaj się z błedami niżej'
-            messages.error(request, error_msg)
+            messages.warning(request, error_msg)
 
     form = DonateForm()
     context = {
@@ -78,3 +81,8 @@ def donate(request, pk):
         'room': room
     }
     return render(request, 'rooms/donate.html', context=context)
+
+
+
+
+

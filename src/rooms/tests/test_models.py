@@ -64,3 +64,9 @@ class RoomTransactionModelTest(TestCase):
         room.donate({'user': user, 'amount': rest})
         self.assertFalse(room.is_active)
         self.assertEqual(room.to_collect, 0)
+
+    def test_get_patrons(self):
+        room3 = Room.objects.get(receiver='receiver2')
+        patrons = room3.get_patrons()
+        ordered_patrons = ['testuser', 'testuser2']
+        self.assertEqual(list(patrons), ordered_patrons)

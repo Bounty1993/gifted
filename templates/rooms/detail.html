@@ -1,5 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>Hello Boy</p>
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+<div class="row">
+  <div class="col-4">
+    {% for patron in room.get_patrons %}
+      <ul class="list-group">
+        <li class="list-group-item">{{ patron }}</li>
+      </ul>
+    {% endfor %}
+  </div>
+  <div class="col-8"
+    <div class="card text-center">
+      <div class="card-header">
+        {{ room.receiver }} - {{ room.to_collect }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ room.gift }}</h5>
+        <p class="card-text">{{ room.description }}</p>
+        <a href="#" class="btn btn-primary">Dyskusja</a>
+      </div>
+      <div class="card-footer text-muted">
+        {{ room.date_expires }}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
