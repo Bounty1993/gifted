@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d2699d08-d776-4fc9-a3ce-b4cbd5623c4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rooms/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rooms/tests/test_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/tests/test_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rooms/tests/test_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/tests/test_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rooms/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rooms/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/rooms/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/rooms/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/rooms/donate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/rooms/donate.html" afterDir="false" />
-    </list>
+    <list default="true" id="d2699d08-d776-4fc9-a3ce-b4cbd5623c4a" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,36 +91,7 @@
             <path>
               <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
               <item name="myblog" type="462c0819:PsiDirectoryNode" />
-              <item name="gifted" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myblog" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myblog" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="rooms" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myblog" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="rooms" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myblog" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myblog" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="rooms" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
