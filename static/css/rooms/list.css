@@ -1,0 +1,24 @@
+.room-list-item {
+    padding: 30xp;
+    margin-bottom: 30px;
+    border-bottom: 1px #cccccc solid;
+}
+.room-list-item .header {
+    padding: 20px;
+    border-bottom: 1px #cccccc solid;
+    border-top: 1px #cccccc solid;
+}
+.room-list-item .header span {
+    margin-left: 15px;
+    font-size: 20px;
+}
+.room-list-item .description {
+    padding: 20px;
+}
+
+.room-list-item .footer {
+    padding: 20px;
+}
+.title-text {
+    font-weight: bold;
+}

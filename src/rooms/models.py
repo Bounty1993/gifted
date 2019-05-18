@@ -2,9 +2,6 @@ from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from django.db.models import Q, Count, F
-import datetime
-
-from accounts.models import Profile
 
 
 class VisibleManager(models.Manager):
@@ -84,7 +81,11 @@ class Room(models.Model):
         self.save()
 
     def get_patrons(self):
+        # generate all patrons with full name
         pass
+
+    def collected(self):
+        return self.price - self.to_collect
 
 
 class Donation(models.Model):
@@ -92,4 +93,4 @@ class Donation(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     date = models.DateField(auto_now=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
-    comment = models.CharField(max_length=50, blank=True)
+    comment = models.CharField(max_length=250, blank=True)

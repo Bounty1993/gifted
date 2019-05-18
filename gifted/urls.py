@@ -1,4 +1,4 @@
-"""myblog URL Configuration
+"""gifted URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -19,8 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rooms/', include('rooms.urls', namespace='rooms')),
-    path('accounts/', include('accounts.urls', namespace='accounts'))
+    path('rooms/', include('src.rooms.urls', namespace='rooms')),
+    path('accounts/', include('src.accounts.urls', namespace='accounts'))
 ]
 
 if settings.DEBUG:

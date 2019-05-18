@@ -1,8 +1,8 @@
 from django.test import TestCase
 from datetime import datetime
 from django.contrib.auth import get_user_model
-from rooms.models import Room, Donation
-from accounts.models import Profile
+from src.rooms.models import Room
+
 User = get_user_model()
 
 

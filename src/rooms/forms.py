@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 
-from .models import Room
+from .models import Room, Donation
 
 
 class RoomRegisterForm(forms.ModelForm):
@@ -45,18 +45,25 @@ class RoomRegisterForm(forms.ModelForm):
 
 
 class DonateForm(forms.ModelForm):
-    donation = forms.DecimalField(max_digits=7, decimal_places=2)
+    comment = forms.CharField(
+        widget=forms.Textarea({'rows':5}),
+        help_text='Jeśli chcesz możesz przekazać informacje obdarowanemu',
+    )
 
     class Meta:
-        model = Room
+        model = Donation
         fields = [
-            'donation',
+            'amount',
+            'comment',
         ]
+        help_texts = {
+            'amount': 'Minimalna wielkośc składki to 1 PLN',
+        }
 
     def clean_donation(self):
-        donation = self.cleaned_data['donation']
+        amount = self.cleaned_data['amount']
         minimal_amount = 1
-        if donation < minimal_amount:
-            err = f'You inserted amount {donation:.2f}. It is not enough. Minimal value is 1 PLN'
+        if amount < minimal_amount:
+            err = f'You inserted amount {amount:.2f}. It is not enough. Minimal value is 1 PLN'
             raise forms.ValidationError(err)
-        return donation
+        return amount

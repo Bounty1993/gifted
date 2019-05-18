@@ -1,19 +1,40 @@
 {% extends "base.html" %}
-
+{% load custom_tags %}
+{% block cssscript %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/rooms/list.css' %}">
+{% endblock cssscript %}
 {% block content %}
     <h1>Bellow you can see undergoing collections</h1>
+    <div class="room-list col-9">
     {% for room in rooms %}
-        <div>
-            <p>Receiver: {{room.receiver}}</p>
-            <p>Gift: {{room.gift}}</p>
-            <p>Description: {{room.description}}</p>
-            <p>Price {{room.price}}</p>
-            <p>Money to collect {{room.to_collect}}</p>
-            <p>Date expires {{room.date_expires}}</p>
-            <a href="{% url 'rooms:donate' room.pk %}">
-                <button class="btn btn-success">Donate</button>
-            </a>
+        <div class="room-list-item">
+            <div class="header row">
+                <div class="col-6">Odbiorca: <span>{{room.receiver}}</span></div>
+                <div class="col-6">Prezent: <span>{{room.gift}}</span></div>
+            </div>
+            <div class="description">
+                <div>
+                    <span class="title-text">Description:</span>
+                    {{room.description}}
+                </div>
+            </div>
+            <div class="row d-flex justify-content-around">
+                    <div>Price {{room.price}}</div>
+                    <div>Money to collect {{room.to_collect}}</div>
+            </div>
+            <div class="row footer">
+                <div class="col-6">Date expires {{room.date_expires | time_left}} (do {{room.date_expires}})</div>
+                <div class="col-6">
+                    <a href="{% url 'rooms:donate' room.pk %}">
+                                <button class="btn btn-success">Wesprzyj</button>
+                    </a>
+                    <a href="{% url 'rooms:detail' room.pk %}">
+                                <button class="btn btn-primary">Szczegóły</button>
+                    </a>
+                </div>
+            </div>
         </div>
-        <hr>
     {% endfor %}
+    </div>
 {% endblock content%}
