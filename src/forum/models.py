@@ -17,14 +17,14 @@ class Post(models.Model):
     )
     subject = models.CharField(max_length=100)
     content = models.CharField(max_length=500)
-    likes = models.PositiveIntegerField(default=0)
+    likes = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.subject
 
     def has_parent(self):
-        if self.parent.exists():
+        if self.parent:
             return True
         return False
 

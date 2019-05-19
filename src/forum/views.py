@@ -1,4 +1,7 @@
-from django.shortcuts import redirect
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
@@ -6,11 +9,12 @@ from django.db import transaction
 from django.views.generic import (
     CreateView,
     ListView,
-    DetailView
+    DetailView,
+    UpdateView
 )
 from src.rooms.models import Room
 from .models import Post
-from .forms import PostCreateForm
+from .forms import PostCreateForm, PostUpdateForm
 
 
 class PostCreateView(CreateView):
@@ -28,6 +32,12 @@ class PostCreateView(CreateView):
         msg_success = f'Dziękujemy za twój komentarz'
         messages.success(self.request, msg_success)
         return redirect(reverse('forum:list', kwargs={'pk': room_id}))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        room_id = self.kwargs['pk']
+        context['room'] = Room.objects.get(id=room_id)
+        return context
 
 
 class PostListView(ListView):
@@ -65,3 +75,14 @@ def change_likes(request, post_id, type):
         'likes': post.likes
     }
     return JsonResponse(data)
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = 'forum/update.html'
+    form_class = PostUpdateForm
+
+    def get_object(self):
+        post_pk = self.kwargs['post_pk']
+        obj = get_object_or_404(Post, pk=post_pk)
+        return obj
