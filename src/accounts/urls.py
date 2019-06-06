@@ -12,7 +12,7 @@ from .views import (
 
 app_name = 'accounts'
 urlpatterns = [
-    path('', ProfileDetailView.as_view(), name='main'),
+    path('', ProfileDetailView.as_view(), name='home'),
     path('signup/', signup, name='signup'),
     path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('update/', update_profile, name='update'),

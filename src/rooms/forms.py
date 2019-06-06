@@ -44,6 +44,24 @@ class RoomRegisterForm(forms.ModelForm):
             raise forms.ValidationError('to_collect field should be empty by now')
 
 
+class RoomUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = [
+            'description',
+            'visible',
+            'date_expires',
+        ]
+
+
+class VisibleForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = [
+            'guests'
+        ]
+
+
 class DonateForm(forms.ModelForm):
     comment = forms.CharField(
         widget=forms.Textarea({'rows':5}),

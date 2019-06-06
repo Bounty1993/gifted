@@ -11,6 +11,12 @@ User = get_user_model()
 
 
 class RoomRegistrationViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='Tom',
+            password='Test'
+        )
+        self.client.login(username='Tom', password='Test')
 
     def test_status_code(self):
         url = reverse('rooms:register')
@@ -24,7 +30,7 @@ class RoomRegistrationViewTest(TestCase):
             'price': 1000,
             'description': 'Hello test',
             'visible': True,
-            'date_expires': '29/05/2019',
+            'date_expires': '29/07/2019',
         }
         url = reverse('rooms:register')
         response = self.client.post(url, data)
@@ -37,7 +43,7 @@ class RoomRegistrationViewTest(TestCase):
             'price': 1000,
             'description': 'Hello test',
             'visible': True,
-            'date_expires': '29/05/2019',
+            'date_expires': '29/07/2019',
         }
         url = reverse('rooms:register')
         self.client.post(url, data)
@@ -90,6 +96,11 @@ class DonateViewTest(TestCase):
         self.user1 = User.objects.create_user(username='testuser', password='12345')
         self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
                                          to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.user = User.objects.create_user(
+            username='Tom',
+            password='Test'
+        )
+        self.client.login(username='Tom', password='Test')
 
     def test_status_code(self):
         url = reverse('rooms:detail', kwargs={'pk': 1})
@@ -106,7 +117,7 @@ class DonateViewTest(TestCase):
         response = self.client.get(url)
         form = response.context.get('form')
         self.assertIsInstance(form, DonateForm)
-
+        
     def test_donation_status_code(self):
         data = {
             'amount': 5000

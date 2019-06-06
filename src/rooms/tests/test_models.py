@@ -12,12 +12,15 @@ class RoomTransactionModelTest(TestCase):
         user2 = User.objects.create_user(username='testuser2', password='12345')
         user3 = User.objects.create_user(username='testuser3', password='12345')
 
-        room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
-                 to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        room2 = Room.objects.create(receiver='receiver2', gift='gift2', price=900, description='test',
-                 to_collect=900, visible=True, date_expires=datetime(2019, 6, 6))
-        room3 = Room.objects.create(receiver='receiver3', gift='gift3', price=800, description='test',
-                 to_collect=800, visible=True, date_expires=datetime(2019, 6, 6))
+        room1 = Room.objects.create(
+            receiver='receiver1', creator=user1, gift='gift1', price=1000, description='test',
+            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        room2 = Room.objects.create(
+            receiver='receiver2', creator=user1, gift='gift2', price=900, description='test',
+            to_collect=900, visible=True, date_expires=datetime(2019, 6, 6))
+        room3 = Room.objects.create(
+            receiver='receiver3', creator=user1, gift='gift3', price=800, description='test',
+            to_collect=800, visible=True, date_expires=datetime(2019, 6, 6))
 
         room1.donate({'user': user1, 'amount': 500})
         room2.donate({'user': user1, 'amount': 300})

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
 
+    'src.home',
     'src.accounts',
     'src.rooms',
     'src.forum',
@@ -116,7 +117,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl'
 
 TIME_ZONE = 'UTC'
 
@@ -137,8 +138,6 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

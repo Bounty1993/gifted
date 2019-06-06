@@ -26,7 +26,7 @@ def signup(request):
                 date_birth=profile_form.cleaned_data['date_birth']
             )
             messages.success(request, 'The profile was created successfully')
-            return redirect(reverse_lazy('accounts:main'))
+            return redirect(reverse_lazy('accounts:home'))
         else:
             messages.error(request, 'The profile was not created')
     else:
@@ -42,7 +42,7 @@ def signup(request):
 
 class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = Profile
-    template_name = 'accounts/main.html'
+    template_name = 'accounts/home.html'
     context_object_name = 'profile'
 
     def get_object(self):
@@ -60,7 +60,7 @@ def update_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, 'The profile was updated successfully')
-            return redirect(reverse_lazy('accounts:main'))
+            return redirect(reverse_lazy('accounts:home'))
         else:
             messages.error(request, 'The profile was not created')
     else:
@@ -82,4 +82,4 @@ class MyPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         form.save()
         messages.success(self.request, 'Your password was updated successfully!')
         update_session_auth_hash(self.request, form.user)
-        return redirect(reverse_lazy('accounts:main'))
+        return redirect(reverse_lazy('accounts:home'))

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row mt-4">
+  <div class="col-8">
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button class="btn btn-success">Donate</button>
+    </form>
+  </div>
+  <div class="col-4">
+    <ul id="guest_list" class="list-group">
+      {% for guest in room.guests.all %}
+      <li class="list-group-item">{{ guest }}</li>
+      {% endfor %}
+    </ul>
+    <form id="guest_form" method="post">
+        {% csrf_token %}
+        <input name="guest" id="guest_input" class="w-100"/>
+        <div>
+        <button class="btn btn-success" id="add">Dodaj</button>
+        <button class="btn btn-danger" id="remove">Usuń</button>
+        </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+addBtn = document.getElementById('add')
+addBtn.onclick = updateGuests
+
+removeBtn = document.getElementById('remove')
+removeBtn.onclick = updateGuests
+
+
+
+function updateGuests() {
+  event.preventDefault()
+  type = event.target.id
+  let guest = document.getElementById("guest_input")
+  let data = {guest: guest.value, type: type}
+  let url = '/rooms/1/guests/'
+  fetch(url, {
+    method: "post",
+    credentials: "include",
+    headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }).then(res => res.json())
+    .then(res => console.log(res))
+};
+{% endblock %}

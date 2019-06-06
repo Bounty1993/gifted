@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
+from django.core import serializers
 from django.db.models import Q, Count, F, Sum
 
 
@@ -36,6 +37,13 @@ class VisibleManager(models.Manager):
 
 class Room(models.Model):
     receiver = models.CharField(max_length=50)
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING,
+        related_name='rooms',
+        null=True,
+        blank=True,
+    )
     gift = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=11, decimal_places=2)
     description = models.CharField(max_length=250)
@@ -43,7 +51,16 @@ class Room(models.Model):
     visible = models.BooleanField()
     date_expires = models.DateField()
     is_active = models.BooleanField(default=True)
-    patrons = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, through='Donation')
+    guests = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='guest_rooms',
+    )
+    patrons = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        through='Donation'
+    )
 
     objects = models.Manager()
     get_visible = VisibleManager()
@@ -54,6 +71,9 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse('rooms:detail', kwargs={'pk': self.id})
     """
+
+    def is_visible(self):
+        return self.visible
 
     def donate(self, data):
         try:
@@ -88,6 +108,18 @@ class Room(models.Model):
         )
         return patrons
 
+    def guest_remove(self, guest_name):
+        guest = self.guests.filter(username=guest_name)
+        if guest.count() != 1:
+            return {'error': 'Nie ma takiego użytkownika'}
+        self.guests.remove(guest.first())
+        return self.get_guests_dict()
+
+    def get_guests_dict(self):
+        guests = self.guests.values_list('username', flat=True)
+        guests_list = [guest for guest in guests]
+        return guests_list
+
     def collected(self):
         return self.price - self.to_collect
 
@@ -98,3 +130,6 @@ class Donation(models.Model):
     date = models.DateField(auto_now=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     comment = models.CharField(max_length=250, blank=True)
+
+    def __str__(self):
+        return f'{self.room} - {self.amount}'
