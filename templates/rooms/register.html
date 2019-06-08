@@ -1,19 +1,30 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
+{% load staticfiles %}
+{% block cssscript %}
+<link rel="stylesheet" href="{% static 'css/rooms/register.css'%}">
+{% endblock cssscript %}
 {% block content %}
-    <h1>Below you see the form to create new Room</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <button>Create new one</button>
-    </form>
+<div class="title new jumbotron mt-2">
+  <div class="main">Stwórz nowy cel zbiórki! Razem zrealizujcie marzenia</div>
+  <small>
+    Podaj cel oraz wielkość kwoty. Pozwól innym wspomóc zbieranie środków
+  </small>
+</div>
+<form class="offset-2 col-8" action="" method="post">
+  {% csrf_token %}
+  {{ form | crispy }}
+  <button type="submit" class="btn btn-success btn-lg">
+    Sign in
+  </button>
+  <button class="btn btn-danger btn-lg">
+    Zrezygnuj
+  </button>
+  <button type="reset" class="btn btn-warning btn-lg btn-block mt-1">
+    Wyczyść
+  </button>
+</form>
 {% endblock content %}
 {% block javascript %}
-    $(function () {
-        $("#id_date_expires").datepicker({
-            format:'dd/mm/yyyy',
-        });
-    });
-    console.log($("#id_date_expires"))
+<script src="{% static 'js/rooms/register.js'%}"></script>
 {% endblock javascript %}

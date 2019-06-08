@@ -1,40 +1,296 @@
 {% extends "base.html" %}
 {% load custom_tags %}
 {% block cssscript %}
-    {% load staticfiles %}
-    <link rel="stylesheet" href="{% static 'css/rooms/list.css' %}">
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/rooms/list.css' %}">
 {% endblock cssscript %}
 {% block content %}
-    <h1>Bellow you can see undergoing collections</h1>
-    <div class="room-list col-9">
-    {% for room in rooms %}
-        <div class="room-list-item">
-            <div class="header row">
-                <div class="col-6">Odbiorca: <span>{{room.receiver}}</span></div>
-                <div class="col-6">Prezent: <span>{{room.gift}}</span></div>
-            </div>
-            <div class="description">
-                <div>
-                    <span class="title-text">Description:</span>
-                    {{room.description}}
-                </div>
-            </div>
-            <div class="row d-flex justify-content-around">
-                    <div>Price {{room.price}}</div>
-                    <div>Money to collect {{room.to_collect}}</div>
-            </div>
-            <div class="row footer">
-                <div class="col-6">Date expires {{room.date_expires | time_left}} (do {{room.date_expires}})</div>
-                <div class="col-6">
-                    <a href="{% url 'rooms:donate' room.pk %}">
-                                <button class="btn btn-success">Wesprzyj</button>
-                    </a>
-                    <a href="{% url 'rooms:detail' room.pk %}">
-                                <button class="btn btn-primary">Szczegóły</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
+<div class="title my-3 new jumbotron">
+  <div class="main">
+    Witaj w serwisie wsperającym inicjatywy społeczne.
+  </div>
+  <small>
+    Poniżej znajdziesz wszystkie zbiórki. Wspieraj innych w zdobywaniu szczytów!
+  </small>
+</div>
+<div id="trendy-panel" class="toggle-panel">
+  Najważniejsze zbiórki
+</div>
+<div id="most-trendy" class="hidden">
+  <div class="room-panel">
+    <div class="room-list-title">
+      Najwięcej darczyńców
     </div>
+    <ul class="room-list">
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">135 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">135 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">135 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">135 USD </span>
+      </li>
+    </ul>
+  </div>
+  <div class="room-panel">
+    <div class="room-list-title">
+      Najwięcej zebrano
+    </div>
+    <ul class="room-list">
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">1000 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">855 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">698 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">789 USD </span>
+      </li>
+    </ul>
+  </div>
+  <div class="room-panel">
+    <div class="room-list-title">
+      Najwięcej zebrano
+    </div>
+    <ul class="room-list">
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">1000 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">855 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">698 USD </span>
+      </li>
+      <li class="list-item">
+        <span class="founder">Prezent</span>
+        <span class="amount">789 USD </span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="room">
+  <div class="row">
+    <div class="col-6">
+      <div class="description">
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">Tomek</div>
+            <div class="small-text">autor</div>
+          </div>
+          <div class="price">
+            <div class="main-text">1200 zł</div>
+            <div class="small-text">cena</div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="text-center">
+          <div class="mt-4">Cel zbiórki:</div>
+          <div class="important-text mb-4">Nowy samochód</div>
+        </div>
+        <div class="line"></div>
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">80%</div>
+            <div class="small-text">do zebrania</div>
+          </div>
+          <div class="price">
+            <div class="main-text">34</div>
+            <div class="small-text">liczba patronów</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="description">
+        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
+        <div class="myBtn" role="group">
+          <button type="button" class="half btn btn-outline-light">
+            Napisz wiadomośc
+          </button>
+          <button type="button" class="half btn btn-outline-light">
+            Szczegóły
+          </button>
+        </div>
+        <button id="patronBtn" class="btn btn-outline-success">
+          Wesprzyj inicjatywę
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="room">
+  <div class="row">
+    <div class="col-6">
+      <div class="description">
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">Tomek</div>
+            <div class="small-text">autor</div>
+          </div>
+          <div class="price">
+            <div class="main-text">1200 zł</div>
+            <div class="small-text">cena</div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="text-center">
+          <div class="mt-4">Cel zbiórki:</div>
+          <div class="important-text mb-4">Nowy samochód</div>
+        </div>
+        <div class="line"></div>
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">80%</div>
+            <div class="small-text">do zebrania</div>
+          </div>
+          <div class="price">
+            <div class="main-text">34</div>
+            <div class="small-text">liczba patronów</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="description">
+        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
+        <div class="myBtn" role="group">
+          <button type="button" class="half btn btn-outline-light">
+            Napisz wiadomośc
+          </button>
+          <button type="button" class="half btn btn-outline-light">
+            Szczegóły
+          </button>
+        </div>
+        <button id="patronBtn" class="btn btn-outline-success">
+          Wesprzyj inicjatywę
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="room">
+  <div class="row">
+    <div class="col-6">
+      <div class="description">
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">Tomek</div>
+            <div class="small-text">autor</div>
+          </div>
+          <div class="price">
+            <div class="main-text">1200 zł</div>
+            <div class="small-text">cena</div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="text-center">
+          <div class="mt-4">Cel zbiórki:</div>
+          <div class="important-text mb-4">Nowy samochód</div>
+        </div>
+        <div class="line"></div>
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">80%</div>
+            <div class="small-text">do zebrania</div>
+          </div>
+          <div class="price">
+            <div class="main-text">34</div>
+            <div class="small-text">liczba patronów</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="description">
+        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
+        <div class="myBtn" role="group">
+          <button type="button" class="half btn btn-outline-light">
+            Napisz wiadomośc
+          </button>
+          <button type="button" class="half btn btn-outline-light">
+            Szczegóły
+          </button>
+        </div>
+        <button id="patronBtn" class="btn btn-outline-success">
+          Wesprzyj inicjatywę
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="room">
+  <div class="row">
+    <div class="col-6">
+      <div class="description">
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">Tomek</div>
+            <div class="small-text">autor</div>
+          </div>
+          <div class="price">
+            <div class="main-text">1200 zł</div>
+            <div class="small-text">cena</div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="text-center">
+          <div class="mt-4">Cel zbiórki:</div>
+          <div class="important-text mb-4">Nowy samochód</div>
+        </div>
+        <div class="line"></div>
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">80%</div>
+            <div class="small-text">do zebrania</div>
+          </div>
+          <div class="price">
+            <div class="main-text">34</div>
+            <div class="small-text">liczba patronów</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="description">
+        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
+        <div class="myBtn" role="group">
+          <button type="button" class="half btn btn-outline-light">
+            Napisz wiadomośc
+          </button>
+          <button type="button" class="half btn btn-outline-light">
+            Szczegóły
+          </button>
+        </div>
+        <button id="patronBtn" class="btn btn-outline-success">
+          Wesprzyj inicjatywę
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content%}
+{% block javascript %}
+  <script src="{% static 'js/rooms/list.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,110 @@
+.new {
+  background-image: linear-gradient(to bottom,
+        #e6b800 0%, #ffcc00 70%,
+        #ffcc00 70%, #ffcc00 75%,
+        #ffd11a 75%, #ffd11a 80%,
+        #ffd633 80%, #ffd633 85%,
+        #ffdb4d 85%, #ffdb4d 90%,
+        #ffe066 90%, #ffe066 100%) !important;
+}
+.hidden {
+  display: none;
+}
+.messageBox {
+  border: 2px solid grey;
+  border-radius: 20px;
+}
+.messageList {
+  list-style-type: none;
+  text-align: justify;
+}
+.messageList > li {
+  margin-left: -30px;
+  margin-right: 10px;
+}
+.messageList .header {
+  padding: 10px;
+  border-bottom: 1px solid grey;
+}
+.activeHeader {
+  background-color: green;
+}
+.room {
+  margin-bottom: 10px;
+  border: 1px solid grey;
+  border-radius: 20px;
+  background-color: #292b2c;
+  color: white;
+}
+.description {
+  margin: 10px;
+}
+.roomBtn {
+  margin-top: 10px;
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  transition: 0.3s;
+}
+.roomBtn:hover {
+  transform: scale(1.01);
+}
+.detailBtn {
+  margin-left: 10%;
+  background-color: #00cc00;
+  color: white;
+}
+.detailBtn:hover{
+  background-color: #00b300;
+  box-shadow: 0 0 5px #00cc00;
+}
+.forumBtn {
+  background-color: #3399ff;
+  color: white;
+}
+.forumBtn:hover{
+  background-color: #1a8cff;
+  box-shadow: 0 0 5px #3399ff;
+}
+
+/* ------------------------------*/
+.title {
+  text-align: center;
+}
+.title .main {
+  font-weight: bold;
+  font-size: 24px;
+}
+.important-text {
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px purple;
+}
+.main-text {
+  font-weight: bold;
+  font-size: 24px;
+}
+.small-text {
+  font-size: 12px;
+  color: grey;
+}
+.line {
+  border-bottom: 2px solid grey;
+  width: 80%;
+  margin-top: 10px;
+  margin-left: 10%;
+}
+.myBtn {
+  margin-top: 20px;
+  width: 20%;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  transition: 0.3s;
+}
+.myBtn:hover {
+  transform: scale(1.01);
+}

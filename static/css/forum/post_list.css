@@ -1,0 +1,72 @@
+.comment {
+  background-color: #eee;
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+.comment .head {
+  border-bottom: 1px solid grey;
+  padding-bottom: 20px;
+}
+.comment .head span {
+  margin-right: 10px;
+}
+.comment .text {
+  font-size: 16px;
+  text-align: justify;
+  padding: 5px;
+}
+.myBtn {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  transition: 0.3s;
+}
+.myBtn:hover {
+  transform: scale(1.01);
+}
+/*-------like buttons -----------------*/
+.dislikeBtn {
+  width: 10%;
+  background-color: #ff3333;
+  color: white;
+}
+.dislikeBtn:hover{
+  background-color: #ff1a1a;
+  box-shadow: 0 0 5px #ff3333;
+}
+.likeBtn {
+  width: 10%;
+  margin-right: 2px;
+  background-color: #3399ff;
+  color: white;
+}
+.likeBtn:hover{
+  background-color: #1a8cff;
+  box-shadow: 0 0 5px #3399ff;
+}
+/*----------------------------------- */
+.respondBtn {
+  width: 20%;
+  background-color: #3399ff;
+  color: white;
+}
+.respondBtn:hover{
+  background-color: #1a8cff;
+  box-shadow: 0 0 5px #3399ff;
+}
+.left {
+  float:left;
+}
+.right {
+  float: right;
+}
+.show-more {
+  border: 2px solid #3399ff;
+  padding: 4px 0;
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
+}

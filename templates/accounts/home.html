@@ -1,19 +1,138 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block cssscript %}
+  <link rel="stylesheet" href="{% static 'css/accounts/home.css' %}">
+{% endblock %}
 
 {% block content %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ message }}
+</div>
+{% endfor %}
+<div class='new jumbotron'>
+  <div class='title'>
+    <div class='main'>Witaj Bartoszu!</div>
+    <div>
+      Poniżej znajdziesz wszystkie pokoje,
+      które wspomogłeś lub obserwujesz
+    </div>
+    <button class='forumBtn myBtn'>Aktualizuj dane</button>
+    <button class='forumBtn myBtn'>Zmiana hasła</button>
+    <button class='forumBtn myBtn'>Forum</button>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-8'>
+    <div class="room">
+      <div class="description">
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">Tomek</div>
+            <div class="small-text">autor</div>
+          </div>
+          <div class="price">
+            <div class="main-text">1200 zł</div>
+            <div class="small-text">cena</div>
+          </div>
         </div>
-    {% endfor %}
-
-    <h3>Hello {{ request.user.username }}</h3>
-    <p>Interesting content about You</p>
-    <p>{{profile.bio}}</p>
-    <p>Date you were born</p>
-    <p>{{ profile.date_birth }}</p>
+        <div class="line"></div>
+        <div class="text-center">
+          <div class="mt-4">Cel zbiórki:</div>
+          <div class="important-text mb-4">Nowy samochód</div>
+        </div>
+        <div class="line"></div>
+        <div>
+          <button class='detailBtn roomBtn'>Szczegóły</button>
+          <button class='forumBtn roomBtn'>Forum</button>
+        </div>
+      </div>
+    </div>
+    <div class="room">
+      <div class="description">
+        <div class="d-flex justify-content-around">
+          <div class="receiver">
+            <div class="main-text">Tomek</div>
+            <div class="small-text">autor</div>
+          </div>
+          <div class="price">
+            <div class="main-text">1200 zł</div>
+            <div class="small-text">cena</div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="text-center">
+          <div class="mt-4">Cel zbiórki:</div>
+          <div class="important-text mb-4">Nowy samochód</div>
+        </div>
+        <div class="line"></div>
+        <div>
+          <button class='detailBtn roomBtn'>Szczegóły</button>
+          <button class='forumBtn roomBtn'>Forum</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='col-4'>
+    <div class='messageBox'>
+      <ul class='messageList'>
+        <li class='messageElement'>
+          <div class='header d-flex justify-content-between'>
+            <div>Bartek1</div>
+            <div>Subject</div>
+          </div>
+          <div class='message'>
+            Cześć Bartosz1. Proszę pomóż w tej akcji bo          zbieramy na samochód dla tomka i cię potrzebujemy
+            <div class='d-flex justify-content-around mt-2'>
+              <button class='btn btn-outline-success w-50'>
+                Szczegóły
+              </button>
+              <button class='btn btn-outline-danger w-50'>
+                Usuń
+              </button>
+            </div>
+          </div>
+        </li>
+        <li class='messageElement'>
+          <div class='header d-flex justify-content-between'>
+            <div>Bartek2</div>
+            <div>Subject</div>
+          </div>
+          <div class='message'>
+            Cześć Bartosz2. Proszę pomóż w tej akcji bo          zbieramy na samochód dla tomka i cię potrzebujemy
+            <div class='d-flex justify-content-around mt-2'>
+              <button class='btn btn-outline-success w-50'>
+                Szczegóły
+              </button>
+              <button class='btn btn-outline-danger w-50'>
+                Usuń
+              </button>
+            </div>
+          </div>
+        </li>
+        <li class='messageElement'>
+          <div class='header d-flex justify-content-between'>
+            <div>Bartek3</div>
+            <div>Subject</div>
+          </div>
+          <div class='message'>
+            Cześć Bartosz3. Proszę pomóż w tej akcji bo          zbieramy na samochód dla tomka i cię potrzebujemy
+            <div class='d-flex justify-content-around mt-2'>
+              <button class='btn btn-outline-success w-50'>
+                Szczegóły
+              </button>
+              <button class='btn btn-outline-danger w-50'>
+                Usuń
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
 {% endblock content %}

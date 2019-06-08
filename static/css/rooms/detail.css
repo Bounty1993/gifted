@@ -1,0 +1,117 @@
+.hidden {
+  display: none;
+}
+.secondary {
+  font-size: 16px;
+  text-align: center;
+  margin: 10px auto;
+}
+.room-header {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#progressBar {
+  width: 100%;
+  background-color: #ddd;
+}
+#progressRoom {
+  width: 60%;
+  height: 40px;
+  background-color: purple;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+}
+.gift-container {
+  text-align: center;
+  margin: 30px auto;
+  background-color: #ddd;
+  width: 30%;
+  border-radius: 40px 50px 30px 80px
+}
+.gift {
+  font-size: 40px;
+  text-shadow: 3px 3px 3px green;
+  line-height: 200%;
+  transition: 1s;
+}
+.gift:hover {
+  transform: scale(1.1);
+}
+.crispyBtn {
+  margin: 20px auto;
+  text-align: center;
+}
+.btn-hover {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    background-size: 300% 100%;
+
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.btn-hover:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+.btn-hover#supportBtn {
+        background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a , #FBB03B);
+    box-shadow: 0 4px 15px 0 rgba(236, 116, 149, 0.75);
+}
+.description {
+  margin: 20px 0;
+}
+.description .text {
+  font-size: 16px;
+  text-align: justify;
+  padding: 5px;
+}
+.header-tab {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+/* ------------------------------- */
+.title {
+  text-align: center;
+}
+.title .main {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.important-text {
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px purple;
+}
+.main-text {
+  font-weight: bold;
+  font-size: 24px;
+}
+.small-text {
+  font-size: 12px;
+  color: grey;
+}
+.line {
+  border-bottom: 2px solid grey;
+  width: 80%;
+  margin-top: 10px;
+  margin-left: 10%;
+}

@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
+{% block cssscript %}
+  <link rel="stylesheet" href="{% static 'css/rooms/detail.css' %}">
+{% endblock cssscript %}
 {% block content %}
 {% for message in messages %}
   <div class="alert {{ message.tags }} alert-dismissible" role="alert">
@@ -9,28 +12,119 @@
     {{ message }}
   </div>
 {% endfor %}
-<div class="row">
-  <div class="col-4">
-    {% for patron in room.get_patrons %}
+  <div class='row'>
+    <div class='col-9'>
+      <div class='room-header d-flex justify-content-around'>
+        <div>
+            <div class="main-text">Bartosz</div>
+            <div class="small-text">Nazwa</div>
+        </div>
+        <div>
+            <div class="main-text">19 569zł</div>
+            <div class="small-text">Cena</div>
+        </div>
+      </div>
+      <div class='gift-container'>
+        <div class='gift'>
+          Samochód
+        </div>
+      </div>
+      <div>
+        <div class='d-flex justify-content-between'>
+          <div class='important-text'> 0% </div>
+          <div class='important-text'> 100% </div>
+        </div>
+        <div id="progressBar">
+          <div id="progressRoom">60%</div>
+        </div>
+        <div class='d-flex justify-content-between'>
+          <div>
+            <div class="main-text">60%</div>
+            <div class="small-text">Osiągnięto</div>
+          </div>
+          <div>
+            <div class="main-text">16000 zł</div>
+            <div class="small-text">Uzbierano</div>
+          </div>
+          <div>
+            <div class="main-text">4569 zł</div>
+            <div class="small-text">Pozostało</div>
+          </div>
+        </div>
+      </div>
+      <div class="crispyBtn">
+        <button class="btn-hover" id="supportBtn">Dołacz do zbiórki</button>
+     </div>
+     <div class="form-group hidden col-8 offset-2" id='supportForm'>
+       <input type="number" class="form-control"
+              id="amount" placeholder='Wielkość doracji'>
+       <input type="text" class="form-control mt-2"
+              id="comment" placeholder='Komentarz'>
+       <button class='btn btn-outline-success w-100 mt-2' id='submitSupport'>
+         Wspomóż
+       </button>
+     </div>
+     <div class=description>
+        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
+      </div>
+    </div>
+    <div class='col-3'>
+      <div class='secondary'>Członkowie grupy</div>
       <ul class="list-group">
-        <li class="list-group-item">{{ patron }}</li>
+        <li class="list-group-item list-group-item-action">
+          Bartosz
+        </li>
+        <li class="list-group-item list-group-item-action">
+          Tomasz
+        </li>
+        <li class="list-group-item list-group-item-action">
+          Marek
+        </li>
       </ul>
-    {% endfor %}
+      <input type="text" class="form-control mt-2" id="inputCity">
+      <button class='btn btn-success'>Dodaj</button>
+      <button class='btn btn-danger'>Usuń</button>
+    </div>
   </div>
-  <div class="col-8"
-    <div class="card text-center">
-      <div class="card-header">
-        {{ room.receiver }} - {{ room.to_collect }}
+  <div class='row'>
+    <div class='col-9'>
+      <div class='header-tab'>
+        Wpłaty od użytkowników
       </div>
-      <div class="card-body">
-        <h5 class="card-title">{{ room.gift }}</h5>
-        <p class="card-text">{{ room.description }}</p>
-        <a href="#" class="btn btn-primary">Dyskusja</a>
-      </div>
-      <div class="card-footer text-muted">
-        {{ room.date_expires }}
-      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
 {% endblock content %}
+{% block javascript %}
+  <script src="{% static 'js/rooms/detail.js' %}"></script>
+{% endblock javascript %}
