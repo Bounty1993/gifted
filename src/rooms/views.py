@@ -72,6 +72,17 @@ class RoomDetailView(DetailView):
         return context
 
 
+def observers(request, pk):
+    room = get_object_or_404(Room, pk=pk)
+    if request.method == 'POST' and request.is_ajax:
+        user_id = request.user.id
+        if user_id:
+            message = room.add_observer(user_id=user_id)
+            return JsonResponse(message)
+        message = {'message': 'Użytkownik nie zalogowany. Proszę zaloguj się'}
+        return JsonResponse(message)
+
+
 class RoomUpdateView(UserPassesTestMixin, UpdateView):
     model = Room
     template_name = 'rooms/edit.html'
@@ -116,9 +127,9 @@ def guests(request, pk):
 
 @login_required
 @transaction.atomic
-def donate(request, pk):
+def make_donation(request, pk):
     room = get_object_or_404(Room, pk=pk)
-    if request.method == 'POST':
+    if request.method == 'POST' and request.is_ajax:
         form = DonateForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data.get('amount')
@@ -131,17 +142,11 @@ def donate(request, pk):
             room.donate(data)
             success_msg = f'Dziękujemy ci {request.user.username} za wsparcie'
             messages.success(request, success_msg)
-            return redirect(reverse('rooms:detail', kwargs={'pk': pk}))
+            return JsonResponse({'message': 'Success'})
         else:
             error_msg = f'Coś poszło nie tak. Zapoznaj się z błedami niżej'
             messages.warning(request, error_msg)
-
-    form = DonateForm()
-    context = {
-        'form': form,
-        'room': room
-    }
-    return render(request, 'rooms/donate.html', context=context)
+            return JsonResponse({'message': 'Error'})
 
 
 class DonationListView(View):

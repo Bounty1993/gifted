@@ -49,6 +49,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         return self.request.user.profile
 
 
+
 @login_required
 @transaction.atomic
 def update_profile(request):

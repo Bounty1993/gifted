@@ -15,14 +15,20 @@
 {% endfor %}
 <div class='new jumbotron'>
   <div class='title'>
-    <div class='main'>Witaj Bartoszu!</div>
+    <div class='main'>Witaj! {{profile.full_name}}</div>
     <div>
       Poniżej znajdziesz wszystkie pokoje,
       które wspomogłeś lub obserwujesz
     </div>
-    <button class='forumBtn myBtn'>Aktualizuj dane</button>
-    <button class='forumBtn myBtn'>Zmiana hasła</button>
-    <button class='forumBtn myBtn'>Forum</button>
+    <a href="{% url 'accounts:update' %}">
+      <button class='forumBtn myBtn'>Aktualizuj dane</button>
+    </a>
+    <a href="{% url 'accounts:change_password' %}">
+      <button class='forumBtn myBtn'>Zmiana hasła</button>
+    </a>
+    <a href="{% url 'rooms:list' %}">
+      <button class='forumBtn myBtn'>Zbiórki</button>
+    </a>
   </div>
 </div>
 <div class='row'>

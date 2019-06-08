@@ -1,3 +1,9 @@
+function makeProgressBar(progress) {
+    progressBar = document.getElementById('progressBar')
+    progressBar.style.width = `${progress}%`
+}
+
+
 supportBtn = document.getElementById('supportBtn')
 supportBtn.onclick = () => {
   supportForm = document.getElementById('supportForm')

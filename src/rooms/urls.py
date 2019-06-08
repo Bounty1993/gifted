@@ -4,8 +4,9 @@ from .views import (
     RoomListView,
     RoomDetailView,
     RoomUpdateView,
+    observers,
     guests,
-    donate,
+    make_donation,
 )
 
 app_name = 'rooms'
@@ -15,5 +16,7 @@ urlpatterns = [
     path('<pk>/', RoomDetailView.as_view(), name='detail'),
     path('<pk>/edit/', RoomUpdateView.as_view(), name='edit'),
     path('<pk>/guests/', guests, name='edit'),
-    path('<pk>/donate/', donate, name='donate'),
+
+    path('<pk>/ajax/donate/', make_donation, name='donate'),
+    path('<pk>/ajax/observers/', observers, name='observers'),
 ]

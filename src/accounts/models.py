@@ -13,6 +13,13 @@ class Profile(models.Model):
     bio = models.CharField(max_length=250, blank=True)
     date_birth = models.DateField(null=True, blank=True)
 
+    @property
+    def full_name(self):
+        full_name = self.user.get_full_name()
+        if not full_name:
+            return self.user.username
+        return full_name
+
 # receiver by zapisać i utworzyć Profile po zmianach w User
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

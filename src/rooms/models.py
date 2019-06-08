@@ -61,9 +61,26 @@ class Room(models.Model):
         blank=True,
         through='Donation'
     )
+    observers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='observed_rooms'
+    )
 
     objects = models.Manager()
     get_visible = VisibleManager()
+
+    @property
+    def percent_left(self):
+        return (self.to_collect / self.price) * 100
+
+    @property
+    def percent_got(self):
+        return 100 - self.percent_left
+
+    @property
+    def num_patrons(self):
+        return self.patrons.count()
 
     def __str__(self):
         return f'{self.receiver} - {self.gift}'
@@ -74,6 +91,13 @@ class Room(models.Model):
 
     def is_visible(self):
         return self.visible
+
+    def add_observer(self, user_id):
+        try:
+            self.observers.add(user_id)
+        except ValueError:
+            return {'message': 'Błędne dane!'}
+        return {'message': 'Success'}
 
     def donate(self, data):
         try:

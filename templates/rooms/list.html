@@ -88,32 +88,33 @@
   </div>
 </div>
 <div class="room">
+  {% for room in rooms %}
   <div class="row">
     <div class="col-6">
       <div class="description">
         <div class="d-flex justify-content-around">
           <div class="receiver">
-            <div class="main-text">Tomek</div>
+            <div class="main-text">{{room.receiver}}</div>
             <div class="small-text">autor</div>
           </div>
           <div class="price">
-            <div class="main-text">1200 zł</div>
+            <div class="main-text">{{room.price}}</div>
             <div class="small-text">cena</div>
           </div>
         </div>
         <div class="line"></div>
         <div class="text-center">
           <div class="mt-4">Cel zbiórki:</div>
-          <div class="important-text mb-4">Nowy samochód</div>
+          <div class="important-text mb-4">{{room.gift}}</div>
         </div>
         <div class="line"></div>
         <div class="d-flex justify-content-around">
           <div class="receiver">
-            <div class="main-text">80%</div>
+            <div class="main-text">{{room.percent_left}}</div>
             <div class="small-text">do zebrania</div>
           </div>
           <div class="price">
-            <div class="main-text">34</div>
+            <div class="main-text">{{room.num_patrons}}</div>
             <div class="small-text">liczba patronów</div>
           </div>
         </div>
@@ -121,174 +122,30 @@
     </div>
     <div class="col-6">
       <div class="description">
-        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
+        <div class="text">{{room.description}}</div>
         <div class="myBtn" role="group">
-          <button type="button" class="half btn btn-outline-light">
-            Napisz wiadomośc
+          <a href="{% url 'forum:list' pk=room.pk %}">
+            <button type="button" class="half btn btn-outline-light">
+              Napisz wiadomośc
+            </button>
+          </a>
+          {% if request.user in room.observers.all %}
+          <button type="button" name="{{room.pk}}" class="half btn btn-outline-light">
+            Obserwujesz
           </button>
-          <button type="button" class="half btn btn-outline-light">
-            Szczegóły
+          {% else %}
+          <button type="button" name="{{room.pk}}" class="observerBtn half btn btn-outline-light">
+            Dodaj do obserwowanych
           </button>
+          {% endif %}
         </div>
-        <button id="patronBtn" class="btn btn-outline-success">
+        <a href="{% url 'rooms:detail' pk=room.pk %}" id="patronBtn" class="btn btn-outline-success">
           Wesprzyj inicjatywę
-        </button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div class="room">
-  <div class="row">
-    <div class="col-6">
-      <div class="description">
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">Tomek</div>
-            <div class="small-text">autor</div>
-          </div>
-          <div class="price">
-            <div class="main-text">1200 zł</div>
-            <div class="small-text">cena</div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="text-center">
-          <div class="mt-4">Cel zbiórki:</div>
-          <div class="important-text mb-4">Nowy samochód</div>
-        </div>
-        <div class="line"></div>
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">80%</div>
-            <div class="small-text">do zebrania</div>
-          </div>
-          <div class="price">
-            <div class="main-text">34</div>
-            <div class="small-text">liczba patronów</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="description">
-        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
-        <div class="myBtn" role="group">
-          <button type="button" class="half btn btn-outline-light">
-            Napisz wiadomośc
-          </button>
-          <button type="button" class="half btn btn-outline-light">
-            Szczegóły
-          </button>
-        </div>
-        <button id="patronBtn" class="btn btn-outline-success">
-          Wesprzyj inicjatywę
-        </button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div class="room">
-  <div class="row">
-    <div class="col-6">
-      <div class="description">
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">Tomek</div>
-            <div class="small-text">autor</div>
-          </div>
-          <div class="price">
-            <div class="main-text">1200 zł</div>
-            <div class="small-text">cena</div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="text-center">
-          <div class="mt-4">Cel zbiórki:</div>
-          <div class="important-text mb-4">Nowy samochód</div>
-        </div>
-        <div class="line"></div>
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">80%</div>
-            <div class="small-text">do zebrania</div>
-          </div>
-          <div class="price">
-            <div class="main-text">34</div>
-            <div class="small-text">liczba patronów</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="description">
-        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
-        <div class="myBtn" role="group">
-          <button type="button" class="half btn btn-outline-light">
-            Napisz wiadomośc
-          </button>
-          <button type="button" class="half btn btn-outline-light">
-            Szczegóły
-          </button>
-        </div>
-        <button id="patronBtn" class="btn btn-outline-success">
-          Wesprzyj inicjatywę
-        </button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div class="room">
-  <div class="row">
-    <div class="col-6">
-      <div class="description">
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">Tomek</div>
-            <div class="small-text">autor</div>
-          </div>
-          <div class="price">
-            <div class="main-text">1200 zł</div>
-            <div class="small-text">cena</div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="text-center">
-          <div class="mt-4">Cel zbiórki:</div>
-          <div class="important-text mb-4">Nowy samochód</div>
-        </div>
-        <div class="line"></div>
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">80%</div>
-            <div class="small-text">do zebrania</div>
-          </div>
-          <div class="price">
-            <div class="main-text">34</div>
-            <div class="small-text">liczba patronów</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="description">
-        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.</div>
-        <div class="myBtn" role="group">
-          <button type="button" class="half btn btn-outline-light">
-            Napisz wiadomośc
-          </button>
-          <button type="button" class="half btn btn-outline-light">
-            Szczegóły
-          </button>
-        </div>
-        <button id="patronBtn" class="btn btn-outline-success">
-          Wesprzyj inicjatywę
-        </button>
+        </a>
       </div>
     </div>
   </div>
+  {% endfor %}
 </div>
 {% endblock content%}
 {% block javascript %}
