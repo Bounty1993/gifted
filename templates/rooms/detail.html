@@ -69,24 +69,20 @@
     <div class='col-3'>
       <div>
         <div class='secondary'>Członkowie grupy</div>
-        <ul class="list-group">
+        <ul class="list-group" id="guestList">
+          {% for guest in room.guests.all %}
           <li class="list-group-item list-group-item-action">
-            Bartosz
+            {{ guest }}
           </li>
-          <li class="list-group-item list-group-item-action">
-            Tomasz
-          </li>
-          <li class="list-group-item list-group-item-action">
-            Marek
-          </li>
+          {% endfor %}
         </ul>
-        <select class="form-control w-100" name="user">
+        <select class="form-control w-100" name="user" id="guestInput">
           {% for user in users_list %}
-            <option value="volvo">{{user.username}}</option>
+            <option value="{{user.username}}">{{user.username}}</option>
           {% endfor %}
         </select>
-        <button class='btn btn-success'>Dodaj</button>
-        <button class='btn btn-danger'>Usuń</button>
+        <button class='btn btn-success' id="addGuest">Dodaj</button>
+        <button class='btn btn-danger' id="removeGuest">Usuń</button>
       </div>
       <form id="messageForm">
         <div class="secondary">Poproś użytkownika o wsparcie</div>

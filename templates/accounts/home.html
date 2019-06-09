@@ -33,22 +33,23 @@
 </div>
 <div class='row'>
   <div class='col-8'>
+    {% for room in observed_rooms %}
     <div class="room">
       <div class="description">
         <div class="d-flex justify-content-around">
           <div class="receiver">
-            <div class="main-text">Tomek</div>
+            <div class="main-text">{{room.creator}}</div>
             <div class="small-text">autor</div>
           </div>
           <div class="price">
-            <div class="main-text">1200 zł</div>
+            <div class="main-text">{{room.price}}</div>
             <div class="small-text">cena</div>
           </div>
         </div>
         <div class="line"></div>
         <div class="text-center">
           <div class="mt-4">Cel zbiórki:</div>
-          <div class="important-text mb-4">Nowy samochód</div>
+          <div class="important-text mb-4">{{room.gift}}</div>
         </div>
         <div class="line"></div>
         <div>
@@ -57,88 +58,38 @@
         </div>
       </div>
     </div>
-    <div class="room">
-      <div class="description">
-        <div class="d-flex justify-content-around">
-          <div class="receiver">
-            <div class="main-text">Tomek</div>
-            <div class="small-text">autor</div>
-          </div>
-          <div class="price">
-            <div class="main-text">1200 zł</div>
-            <div class="small-text">cena</div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="text-center">
-          <div class="mt-4">Cel zbiórki:</div>
-          <div class="important-text mb-4">Nowy samochód</div>
-        </div>
-        <div class="line"></div>
-        <div>
-          <button class='detailBtn roomBtn'>Szczegóły</button>
-          <button class='forumBtn roomBtn'>Forum</button>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
   <div class='col-4'>
     <div class='messageBox'>
       <ul class='messageList'>
+        {% for message in message_list %}
         <li class='messageElement'>
           <div class='header d-flex justify-content-between'>
-            <div>Bartek1</div>
-            <div>Subject</div>
+            <div>{{message.sender}}</div>
+            <div>{{message.subject}}</div>
           </div>
           <div class='message'>
-            Cześć Bartosz1. Proszę pomóż w tej akcji bo          zbieramy na samochód dla tomka i cię potrzebujemy
+            {{message.content}}
             <div class='d-flex justify-content-around mt-2'>
               <button class='btn btn-outline-success w-50'>
                 Szczegóły
               </button>
-              <button class='btn btn-outline-danger w-50'>
+              <button class='deleteBtn btn btn-outline-danger w-50' name="{{message.id}}">
                 Usuń
               </button>
             </div>
           </div>
         </li>
-        <li class='messageElement'>
-          <div class='header d-flex justify-content-between'>
-            <div>Bartek2</div>
-            <div>Subject</div>
-          </div>
-          <div class='message'>
-            Cześć Bartosz2. Proszę pomóż w tej akcji bo          zbieramy na samochód dla tomka i cię potrzebujemy
-            <div class='d-flex justify-content-around mt-2'>
-              <button class='btn btn-outline-success w-50'>
-                Szczegóły
-              </button>
-              <button class='btn btn-outline-danger w-50'>
-                Usuń
-              </button>
-            </div>
-          </div>
-        </li>
-        <li class='messageElement'>
-          <div class='header d-flex justify-content-between'>
-            <div>Bartek3</div>
-            <div>Subject</div>
-          </div>
-          <div class='message'>
-            Cześć Bartosz3. Proszę pomóż w tej akcji bo          zbieramy na samochód dla tomka i cię potrzebujemy
-            <div class='d-flex justify-content-around mt-2'>
-              <button class='btn btn-outline-success w-50'>
-                Szczegóły
-              </button>
-              <button class='btn btn-outline-danger w-50'>
-                Usuń
-              </button>
-            </div>
-          </div>
-        </li>
+        {% empty %}
+        <li class="messageElement">Brak wiadomości</li>
+        {% endfor %}
       </ul>
     </div>
   </div>
 </div>
 </div>
 {% endblock content %}
+{% block javascript %}
+<script src="{% static 'js/accounts/home.js' %}"></script>
+{% endblock javascript %}

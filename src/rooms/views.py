@@ -14,13 +14,17 @@ from django.views.generic import (
     DetailView,
     UpdateView,
 )
-from .models import Room, Donation
+from .models import (
+    Room,
+    Donation,
+    Message,
+)
 from .forms import (
     RoomRegisterForm,
     DonateForm,
     RoomUpdateForm,
     VisibleForm,
-    MessageForm
+    MessageForm,
 )
 
 User = get_user_model()
@@ -46,9 +50,10 @@ class RoomListView(ListView):
 
     def get_queryset(self):
         field = self.request.GET.get('search', None)
+        queryset = Room.get_visible.order_by('-to_collect')
         if field:
-            return Room.get_visible.search(field)
-        return Room.get_visible.all()
+            return queryset.search(field)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,6 +86,7 @@ class RoomDetailView(DetailView):
         return context
 
 
+@login_required
 def observers(request, pk):
     room = get_object_or_404(Room, pk=pk)
     if request.method == 'POST' and request.is_ajax:
@@ -90,6 +96,23 @@ def observers(request, pk):
             return JsonResponse(message)
         message = {'message': 'Użytkownik nie zalogowany. Proszę zaloguj się'}
         return JsonResponse(message)
+
+
+@login_required
+def delete_observers(request):
+    if request.method == 'POST' and request.is_ajax:
+        data = json.loads(request.body)
+        user = request.user
+        room = user.observed_rooms.filter(id=data['id'])
+        if room.count != 1:
+            msg = {
+                'is_valid': 'false',
+                'error': 'Nie obserwujesz podanej zbiórki'
+            }
+            return JsonResponse(msg)
+        room.first().delete()
+        msg = {'is_valid': 'true'}
+        return JsonResponse(msg)
 
 
 class RoomUpdateView(UserPassesTestMixin, UpdateView):
@@ -118,7 +141,10 @@ def guests(request, pk):
         data = {'guests': [user.id]}
         if json_data.get('type') == 'remove':
             guest_name = json_data.get('guest')
-            message = room.guest_remove(guest_name)
+            message = {
+                'guests': room.guest_remove(guest_name)
+            }
+            print(message)
             return JsonResponse(message)
         if json_data.get('type') == 'add':
             form = VisibleForm(data, instance=room)
@@ -126,8 +152,9 @@ def guests(request, pk):
                 room.guests.add(user.id)
                 room.save()
                 message = {
-                    'guests': room.get_guests()
+                    'guests': room.get_guests_dict()
                 }
+                print(message)
                 return JsonResponse(message)
             message = {
                 'error': 'Błędna nazwa użytkownika'
@@ -148,6 +175,22 @@ def make_message(request):
             return JsonResponse(message)
         message = {'is_valid': 'false', 'errors': form.errors}
         return JsonResponse(message)
+
+
+@login_required
+def delete_message(request):
+    if request.method == 'POST' and request.is_ajax:
+        data = json.loads(request.body)
+        message = get_object_or_404(Message, id=data['id'])
+        if message.receiver != request.user:
+            msg = {
+                'is_valid': 'false',
+                'error': 'Nie jesteś upraniony do usuwania wiadomości'
+            }
+            return JsonResponse(msg)
+        message.delete()
+        msg = {'is_valid': 'true'}
+        return JsonResponse(msg)
 
 
 @login_required

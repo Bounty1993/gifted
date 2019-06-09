@@ -8,9 +8,9 @@ a:hover {
 .my-panel {
     border: 1px #cccccc solid;
     padding: 30px;
+    border-radius: 20px;
 }
 .mainBtn {
-  margin-top: 20px;
   width: 20%;
   padding: 10px;
   border-radius: 10px;

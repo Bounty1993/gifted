@@ -20,6 +20,11 @@ class Profile(models.Model):
             return self.user.username
         return full_name
 
+    def get_observed_rooms(self):
+        observed_rooms = self.user.observed_rooms
+        ordered_rooms = observed_rooms.order_by_score()
+        return ordered_rooms
+
 # receiver by zapisać i utworzyć Profile po zmianach w User
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

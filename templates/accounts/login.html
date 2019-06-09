@@ -4,20 +4,24 @@
 
 {% block content %}
 <div class="login-panel">
-    <row>
+    <div class="row mt-5">
         <div class="col-6 offset-3" style="text-align:center">
             <h3>Zaloguj się do Gifted</h3>
         </div>
-    </row>
+    </div>
     <div class="col-6 offset-3">
     <div class="my-panel">
         <form method="post">
             {% csrf_token %}
             {{ form | crispy }}
-            <input class="btn btn-success" type="submit" value="Zaloguj się"/>
-            <a href="{% url 'accounts:signup' %}"><input class="btn btn-primary" value="Zarejestruj się"></a>
+            <button class="detailBtn mainBtn" type="submit" style="width: 49%;">
+                Zaloguj się
+            </button>
+            <a href="{% url 'accounts:signup' %}">
+                <button class="forumBtn mainBtn" style="width: 49%;">Zarejestruj się</button>
+            </a>
         </form>
-        <p>Zapomniałeś hasła? Naciśnij <a href="">tutaj</a></p>
+        <div class="mt-4" style="text-align: center">Zapomniałeś hasła? Naciśnij <a href="">tutaj</a></div>
     </div>
     </div>
 </div>

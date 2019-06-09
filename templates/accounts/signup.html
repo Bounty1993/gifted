@@ -2,10 +2,16 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form method="post" novalidate>
+<div class="row mt-4">
+  <div class="col-9 offset-2">
+    <div class="my-panel">
+      <form method="post" novalidate>
         {% csrf_token %}
         {{ user_form | crispy }}
         {{ profile_form | crispy }}
-        <button>Submit</button>
-    </form>
+        <button class="detailBtn mainBtn">Utwórz konto</button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}

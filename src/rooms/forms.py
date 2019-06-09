@@ -6,8 +6,8 @@ from .models import Room, Donation, Message
 
 class RoomRegisterForm(forms.ModelForm):
 
-    date_expires = forms.DateField(input_formats=('%d/%m/%Y',))
-    description = forms.CharField(widget=forms.Textarea)
+    date_expires = forms.DateField(input_formats=('%d/%m/%Y',), label='Data wygaśnięcia')
+    description = forms.CharField(widget=forms.Textarea, label='Opis')
 
     class Meta:
         model = Room
@@ -77,7 +77,6 @@ class MessageForm(forms.ModelForm):
         sender = self.cleaned_data['sender']
         if receiver == sender:
             raise forms.ValidationError('Odbiorca i nadawca nie mogą być tacy sami')
-        return receiver
 
 
 class DonateForm(forms.ModelForm):

@@ -48,6 +48,11 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
     def get_object(self):
         return self.request.user.profile
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['observed_rooms'] = self.object.user.observed_rooms.all()
+        context['message_list'] = self.object.user.messages.all()
+        return context
 
 
 @login_required

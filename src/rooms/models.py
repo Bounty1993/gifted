@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
 from django.db.models import Q, Count, F, Sum
 
@@ -35,7 +37,7 @@ class VisibleManager(models.Manager):
 
 
 class Room(models.Model):
-    receiver = models.CharField(max_length=50)
+    receiver = models.CharField('odbiorca', max_length=50)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING,
@@ -43,13 +45,14 @@ class Room(models.Model):
         null=True,
         blank=True,
     )
-    gift = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=11, decimal_places=2)
-    description = models.CharField(max_length=250)
-    to_collect = models.DecimalField(max_digits=11, decimal_places=2)
-    visible = models.BooleanField()
-    date_expires = models.DateField()
+    gift = models.CharField('Cel', max_length=50)
+    price = models.DecimalField('Cena', max_digits=11, decimal_places=2)
+    description = models.CharField('Opis', max_length=250)
+    to_collect = models.DecimalField('Do zebrania', max_digits=11, decimal_places=2)
+    visible = models.BooleanField('Widoczny dla wszystkich?')
+    date_expires = models.DateField('Data wygaśnięcia')
     is_active = models.BooleanField(default=True)
+    score = models.FloatField(default=0)
     guests = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         blank=True,
@@ -83,10 +86,18 @@ class Room(models.Model):
 
     def __str__(self):
         return f'{self.receiver} - {self.gift}'
+
     """
     def get_absolute_url(self):
         return reverse('rooms:detail', kwargs={'pk': self.id})
     """
+    def update_score(self):
+        patrons_rank = self.patrons.count() * 2
+        observers_rank = self.observers.count()
+        collected_rank = self.collected() / 1000
+        total_rank = patrons_rank + observers_rank + collected_rank
+        print('Hello')
+        self.score = total_rank
 
     def is_visible(self):
         return self.visible
@@ -106,7 +117,6 @@ class Room(models.Model):
             return {'message': 'Brak wszystkich danych'}
         date = data.get('date', None)
         comment = data.get('comment', '')
-        """
         actual_amount = amount if amount < self.to_collect else self.to_collect
         full_collection = self.to_collect <= amount
         if full_collection:
@@ -123,7 +133,6 @@ class Room(models.Model):
         )
         donation.save()
         self.save()
-        """
         return {'message': 'Success'}
 
     def get_patrons(self):
@@ -165,11 +174,19 @@ class Message(models.Model):
     sender = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING,
+    )
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
         related_name='messages'
     )
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     subject = models.CharField('Tytuł', max_length=150)
     content = models.CharField('Treść', max_length=255)
 
     def __str__(self):
         return f'{self.receiver} - {self.subject}'
+
+
+@receiver(post_save, sender=Room)
+def save_user_profile(sender, instance, **kwargs):
+    instance.update_score()

@@ -33,7 +33,7 @@ submitSupport.onclick = (event) => {
   })
 }
 
-messageForm = document.getElementById('messageForm')
+let messageForm = document.getElementById('messageForm')
 messageForm.onsubmit = (event) => {
     event.preventDefault()
     let receiver = event.target.receiver.value
@@ -53,6 +53,39 @@ messageForm.onsubmit = (event) => {
     })
 }
 
+function makeGuestList(data) {
+    questList = document.getElementById('guestList')
+    guestList.innerHTML = ''
+    for (let guest of data) {
+        listItem = document.createElement('li')
+        listItem.classList.add('list-group-item', 'list-group-item-action')
+        listItem.textContent = guest
+        guestList.append(listItem)
+    }
+}
 
+let addGuest = document.getElementById('addGuest')
+addGuest.onclick = () => {
+    let type = 'add'
+    let guest = document.getElementById('guestInput').value
+    let data = {type: type, guest: guest}
+    let url = '/rooms/1/ajax/guests/'
+    let ajax = post_fetch(url, data).then(response => response.json())
+    ajax.then(response => {
+        guests = response['guests']
+        makeGuestList(guests)
+    })
+}
 
-
+let removeGuest = document.getElementById('removeGuest')
+removeGuest.onclick = () => {
+    let type = 'remove'
+    let guest = document.getElementById('guestInput').value
+    let data = {type: type, guest: guest}
+    let url = '/rooms/1/ajax/guests/'
+    let ajax = post_fetch(url, data).then(response => response.json())
+    ajax.then(response => {
+        guests = response['guests']
+        makeGuestList(guests)
+    })
+}
