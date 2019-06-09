@@ -29,3 +29,11 @@ function post_fetch(url, data) {
     body: JSON.stringify(data)
   })
 };
+
+function makeMessage(type, message) {
+    msg = document.createElement('div')
+    msg.classList.add('alert', `alert-${type}`, 'alert-dismissible')
+    msg.role = 'alert'
+    msg.textContent = message
+    return msg
+};

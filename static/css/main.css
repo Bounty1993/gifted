@@ -9,3 +9,31 @@ a:hover {
     border: 1px #cccccc solid;
     padding: 30px;
 }
+.mainBtn {
+  margin-top: 20px;
+  width: 20%;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  transition: 0.3s;
+}
+.mainBtn:hover {
+  transform: scale(1.01);
+}
+.forumBtn {
+  background-color: #3399ff;
+  color: white;
+}
+.forumBtn:hover{
+  background-color: #1a8cff;
+  box-shadow: 0 0 5px #3399ff;
+}
+.detailBtn {
+  background-color: #00cc00;
+  color: white;
+}
+.detailBtn:hover{
+  background-color: #00b300;
+  box-shadow: 0 0 5px #00cc00;
+}

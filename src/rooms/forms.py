@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django import forms
 
-from .models import Room, Donation
+from .models import Room, Donation, Message
 
 
 class RoomRegisterForm(forms.ModelForm):
@@ -62,10 +62,29 @@ class VisibleForm(forms.ModelForm):
         ]
 
 
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = [
+            'receiver',
+            'sender',
+            'subject',
+            'content',
+        ]
+
+    def clean(self):
+        receiver = self.cleaned_data['receiver']
+        sender = self.cleaned_data['sender']
+        if receiver == sender:
+            raise forms.ValidationError('Odbiorca i nadawca nie mogą być tacy sami')
+        return receiver
+
+
 class DonateForm(forms.ModelForm):
     comment = forms.CharField(
         widget=forms.Textarea({'rows':5}),
         help_text='Jeśli chcesz możesz przekazać informacje obdarowanemu',
+        required=False,
     )
 
     class Meta:

@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -14,8 +15,13 @@ from django.views.generic import (
     UpdateView,
 )
 from .models import Room, Donation
-from .forms import RoomRegisterForm, DonateForm, RoomUpdateForm, VisibleForm
-import json
+from .forms import (
+    RoomRegisterForm,
+    DonateForm,
+    RoomUpdateForm,
+    VisibleForm,
+    MessageForm
+)
 
 User = get_user_model()
 
@@ -69,6 +75,9 @@ class RoomDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        donations = self.object.donations.select_related('user__profile')
+        context['donations'] = donations
+        context['users_list'] = User.objects.all()
         return context
 
 
@@ -94,6 +103,7 @@ class RoomUpdateView(UserPassesTestMixin, UpdateView):
         return room.creator == self.request.user
 
 
+@login_required
 def guests(request, pk):
     room = get_object_or_404(Room, pk=pk)
     if request.method == 'POST' and request.is_ajax:
@@ -126,11 +136,27 @@ def guests(request, pk):
 
 
 @login_required
+def make_message(request):
+    if request.method == 'POST' and request.is_ajax:
+        data = json.loads(request.body)
+        sender = request.user.id
+        data.update({'sender': sender})
+        form = MessageForm(data)
+        if form.is_valid():
+            form.save()
+            message = {'is_valid': 'true'}
+            return JsonResponse(message)
+        message = {'is_valid': 'false', 'errors': form.errors}
+        return JsonResponse(message)
+
+
+@login_required
 @transaction.atomic
 def make_donation(request, pk):
     room = get_object_or_404(Room, pk=pk)
     if request.method == 'POST' and request.is_ajax:
-        form = DonateForm(request.POST)
+        data = json.loads(request.body)
+        form = DonateForm(data)
         if form.is_valid():
             amount = form.cleaned_data.get('amount')
             comment = form.cleaned_data.get('comment')
@@ -139,14 +165,12 @@ def make_donation(request, pk):
                 'amount': amount,
                 'comment': comment
             }
-            room.donate(data)
-            success_msg = f'Dziękujemy ci {request.user.username} za wsparcie'
-            messages.success(request, success_msg)
-            return JsonResponse({'message': 'Success'})
+            message = room.donate(data)
+            messages.success(request, "Dziękujemy za twoje wsparcie")
+            return JsonResponse(message)
         else:
-            error_msg = f'Coś poszło nie tak. Zapoznaj się z błedami niżej'
-            messages.warning(request, error_msg)
-            return JsonResponse({'message': 'Error'})
+            message = {'message': form.errors}
+            return JsonResponse(message)
 
 
 class DonationListView(View):

@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
-from django.core import serializers
 from django.db.models import Q, Count, F, Sum
 
 
@@ -104,9 +103,10 @@ class Room(models.Model):
             user = data['user']
             amount = data['amount']
         except KeyError as err:
-            raise AttributeError(f'no data for user or amount. Whole error: {err}')
+            return {'message': 'Brak wszystkich danych'}
         date = data.get('date', None)
         comment = data.get('comment', '')
+        """
         actual_amount = amount if amount < self.to_collect else self.to_collect
         full_collection = self.to_collect <= amount
         if full_collection:
@@ -123,6 +123,8 @@ class Room(models.Model):
         )
         donation.save()
         self.save()
+        """
+        return {'message': 'Success'}
 
     def get_patrons(self):
         patrons = (
@@ -157,3 +159,17 @@ class Donation(models.Model):
 
     def __str__(self):
         return f'{self.room} - {self.amount}'
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING,
+        related_name='messages'
+    )
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    subject = models.CharField('Tytuł', max_length=150)
+    content = models.CharField('Treść', max_length=255)
+
+    def __str__(self):
+        return f'{self.receiver} - {self.subject}'

@@ -1,0 +1,16 @@
+.home-text {
+    padding-left: 10%;
+    padding-top: 7%;
+    font-size: 48px;
+    color: white;
+}
+.home-text .main {
+    font-weight: bold;
+}
+.home-text > .small {
+    font-size: 24px;
+}
+.homeBtn {
+    font-size: 24px;
+    display: block-inline;
+}

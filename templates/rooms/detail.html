@@ -4,14 +4,6 @@
   <link rel="stylesheet" href="{% static 'css/rooms/detail.css' %}">
 {% endblock cssscript %}
 {% block content %}
-{% for message in messages %}
-  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    {{ message }}
-  </div>
-{% endfor %}
   <div class='row'>
     <div class='col-9'>
       <div class='room-header d-flex justify-content-around'>
@@ -62,26 +54,51 @@
          Wspomóż
        </button>
      </div>
+     {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+      {% endfor %}
      <div class=description>
         <div class="text">{{room.description}}</div>
      </div>
     </div>
     <div class='col-3'>
-      <div class='secondary'>Członkowie grupy</div>
-      <ul class="list-group">
-        <li class="list-group-item list-group-item-action">
-          Bartosz
-        </li>
-        <li class="list-group-item list-group-item-action">
-          Tomasz
-        </li>
-        <li class="list-group-item list-group-item-action">
-          Marek
-        </li>
-      </ul>
-      <input type="text" class="form-control mt-2" id="inputCity">
-      <button class='btn btn-success'>Dodaj</button>
-      <button class='btn btn-danger'>Usuń</button>
+      <div>
+        <div class='secondary'>Członkowie grupy</div>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-action">
+            Bartosz
+          </li>
+          <li class="list-group-item list-group-item-action">
+            Tomasz
+          </li>
+          <li class="list-group-item list-group-item-action">
+            Marek
+          </li>
+        </ul>
+        <select class="form-control w-100" name="user">
+          {% for user in users_list %}
+            <option value="volvo">{{user.username}}</option>
+          {% endfor %}
+        </select>
+        <button class='btn btn-success'>Dodaj</button>
+        <button class='btn btn-danger'>Usuń</button>
+      </div>
+      <form id="messageForm">
+        <div class="secondary">Poproś użytkownika o wsparcie</div>
+        <select class="form-control w-100" name="receiver">
+          {% for user in users_list %}
+            <option value="{{user.id}}">{{user.username}}</option>
+          {% endfor %}
+        </select>
+        <input type="text" class="form-control mt-2" name="subject">
+        <input type="text" class="form-control mt-2" name="content">
+        <button class="btn btn-success w-100 mt-1" id="messageBtn">Wyślij</button>
+      </form>
     </div>
   </div>
   <div class='row'>
@@ -93,30 +110,20 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Użytkownik</th>
+            <th scope="col">Kwota</th>
+            <th scope="col">Data</th>
           </tr>
         </thead>
         <tbody>
+        {% for donation in donations %}
           <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{donation.user.profile.full_name}}</td>
+            <td>{{donation.amount}}</td>
+            <td>{{donation.date}}</td>
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+        {% endfor %}
         </tbody>
       </table>
     </div>
