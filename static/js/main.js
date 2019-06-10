@@ -24,7 +24,8 @@ function post_fetch(url, data) {
     headers: {
         "X-CSRFToken": getCookie("csrftoken"),
         "Accept": "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
     },
     body: JSON.stringify(data)
   })

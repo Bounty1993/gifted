@@ -5,7 +5,7 @@ from src.rooms.models import Room
 
 class Post(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    user = models.ForeignKey(
+    author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET('Konto usunięte')
     )
@@ -15,8 +15,8 @@ class Post(models.Model):
         blank=True,
         null=True
     )
-    subject = models.CharField(max_length=100)
-    content = models.CharField(max_length=500)
+    subject = models.CharField('Tytuł', max_length=100)
+    content = models.CharField('Treść', max_length=500)
     likes = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -35,3 +35,14 @@ class Post(models.Model):
     def add_dislike(self):
         self.likes -= 1
         self.save()
+
+
+class Thread(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    subject = models.CharField('Tytuł', max_length=100)
+    content = models.CharField('Treść', max_length=500)
+    likes = models.IntegerField(default=0)
+    date = models.DateTimeField(auto_now_add=True)

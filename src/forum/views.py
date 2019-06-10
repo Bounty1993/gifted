@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import (
     redirect,
     get_object_or_404
@@ -6,6 +7,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db import transaction
+from django.views import View
 from django.views.generic import (
     CreateView,
     ListView,
@@ -14,7 +16,11 @@ from django.views.generic import (
 )
 from src.rooms.models import Room
 from .models import Post
-from .forms import PostCreateForm, PostUpdateForm
+from .forms import (
+    PostCreateForm,
+    PostUpdateForm,
+    ThreadCreateForm,
+)
 
 
 class PostCreateView(CreateView):
@@ -36,7 +42,7 @@ class PostCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         room_id = self.kwargs['pk']
-        context['room'] = Room.objects.get(id=room_id)
+        context['room'] = get_object_or_404(Room, id=room_id)
         return context
 
 
@@ -86,3 +92,25 @@ class PostUpdateView(UpdateView):
         post_pk = self.kwargs['post_pk']
         obj = get_object_or_404(Post, pk=post_pk)
         return obj
+
+
+class ThreadCreateView(View):
+    def post(self, request, pk):
+        if request.is_ajax():
+            post = get_object_or_404(Post, pk=1).id  # koniecznie poprawić
+            data = json.loads(request.body)
+            author = request.user.id
+            print(author)
+            data.update({
+                'post': post,
+                'author': author
+            })
+            form = ThreadCreateForm(data)
+            if form.is_valid():
+                msg = {'is_valid': 'true'}
+                return JsonResponse(msg)
+            msg = {
+                'is_valid': 'false',
+                'error': form.errors,
+            }
+            return JsonResponse(msg)

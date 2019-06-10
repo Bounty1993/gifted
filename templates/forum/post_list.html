@@ -6,40 +6,30 @@
 {% endblock cssscript %}
 {% block content %}
 <div class='row'>
-    <div class='col-12'>
-    <div class='comment'>
-      <div class='head'>
-        <span>Bartosz_Malinka</span>
-        <span>10 punktów</span>
-        <span>26 maja 2019</span>
+    <div class='col-10'>
+    {% for post in posts %}
+      <div class='comment'>
+        <div class='head'>
+          <span>{{post.author}}</span>
+          <span>10 punktów</span>
+          <span>{{post.date}}</span>
+        </div>
+        <div class='text'>
+          {{post.content}}
+        </div>
+        <div class='commentBtns'>
+          <button class='respondBtn myBtn'>Odpowiedź</button>
+          <button class='right dislikeBtn myBtn'>Nie lubię</button>
+          <button class='right likeBtn myBtn'>Lubię</button>
+        </div>
+        <button class='show-more'>
+          8 odpowiedzi. Naciśnij by zobaczyć więcej.
+        </button>
       </div>
-      <div class='text'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.
-      </div>
-      <div class='commentBtns'>
-        <button class='respondBtn myBtn'>Odpowiedź</button>
-        <button class='right dislikeBtn myBtn'>Nie lubię</button>
-        <button class='right likeBtn myBtn'>Lubię</button>
-      </div>
-      <button class='show-more'>
-        8 odpowiedzi. Naciśnij by zobaczyć więcej.
-      </button>
-    </div>
-    <div class='comment'>
-    <div class='head'>
-      <span>Bartosz_Malinka</span>
-      <span>10 punktów</span>
-      <span>26 maja 2019</span>
-    </div>
-    <div class='text'>
-      Lorem ipsum dolor sit amet, consectetur adipiscing        elit. Duis euismod, lacus et mattis commodo, metus ipsum vehicula urna, quis accumsan lorem ligula eget elit. Duis bibendum aliquam purus at laoreet. Ut maximus nisi nec ligula semper tincidunt. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer laoreet ipsum et dui cursus vestibulum. Etiam elementum sapien quis ipsum porttitor ullamcorper nec eu sem. Etiam congue sodales ultrices viverra fusce.
-    </div>
-    <div class='commentBtns'>
-      <button class='respondBtn myBtn'>Odpowiedź</button>
-      <button class='right dislikeBtn myBtn'>Nie lubię</button>
-      <button class='right likeBtn myBtn'>Lubię</button>
-    </div>
-    </div>
+    {% endfor %}
     </div>
 </div>
 {% endblock content %}
+{% block javascript %}
+  <script src="{% static 'js/forum/post_list.js' %}"></script>
+{% endblock javascript %}

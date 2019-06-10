@@ -16,6 +16,10 @@
   text-align: justify;
   padding: 5px;
 }
+.thread {
+    margin-left: 20%;
+}
+
 .myBtn {
   margin-top: 20px;
   padding: 10px;
@@ -66,7 +70,9 @@
 .show-more {
   border: 2px solid #3399ff;
   padding: 4px 0;
-  width: 100%;
+  margin-left: 25%;
+  margin-top: -30px;
+  width: 50%;
   cursor: pointer;
   font-weight: bold;
 }
