@@ -9,7 +9,7 @@ class PostQuerySet(models.QuerySet):
 
     def summarise(self):
         all_comments = []
-        for post in self.prefetch_related('threads'):
+        for post in self.prefetch_related('threads').prefetch_related('author'):
             post_detail = {
                 'id': post.id,
                 'author': post.author,
@@ -94,3 +94,11 @@ class Thread(models.Model):
         for thread in self.children.all():
             all_threads.append({thread: thread.show_children()})
         return all_threads
+
+    def add_like(self):
+        self.likes += 1
+        self.save()
+
+    def add_dislike(self):
+        self.likes -= 1
+        self.save()

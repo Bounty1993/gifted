@@ -68,6 +68,7 @@
 }
 .show-more {
   border: 2px solid #3399ff;
+  border-radius: 5px;
   padding: 4px 0;
   margin-left: 25%;
   margin-top: -30px;

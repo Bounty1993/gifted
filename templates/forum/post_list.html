@@ -11,7 +11,7 @@
       <div class='comment' data-post="{{post.id}}">
         <div class='head'>
           <span>{{post.author}}</span>
-          <span>{{post.likes}}</span>
+          <span data-type="likes">{{post.likes}}</span>
           <span>{{post.date}}</span>
         </div>
         <div class='text'>
@@ -23,9 +23,9 @@
           <button class='right dislikeBtn myBtn'>Nie lubię</button>
           <button class='right likeBtn myBtn'>Lubię</button>
         </div>
-        {% if threads %}
+        {% if post.threads %}
           <button class='show-more'>
-            {{threads}} odpowiedzi. Naciśnij by zobaczyć więcej.
+            {{post.threads}} odpowiedzi. Naciśnij by zobaczyć więcej.
           </button>
         {% endif %}
       </div>

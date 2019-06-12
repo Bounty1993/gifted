@@ -33,7 +33,7 @@ class PostCreateView(CreateView):
         room_id = self.kwargs['pk']
         room = Room.objects.get(id=room_id)
         post.room = room
-        post.user = self.request.user
+        post.author = self.request.user
         post.save()
         msg_success = f'Dziękujemy za twój komentarz'
         messages.success(self.request, msg_success)
@@ -57,30 +57,50 @@ class PostListView(ListView):
         return queryset.summarise()
 
 
-def change_likes(request, post_id, type):
-    user = request.POST.get('user', None)
-    if not user:
-        data = {
-            'error', 'user is required'
-        }
-        return JsonResponse(data)
-    post = Post.objects.filter(post_id)
-    if post.count() != 1:
-        data = {
-            'error': 'Post id is not correct'
-        }
-        return JsonResponse(data)
-    if type == 'like':
+class AddLikeView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        pk = int(data['id'])
+        is_thread = data.get('is_thread', None)
+        msg = {'success': 'true'}
+        if is_thread is not None:
+            thread = get_object_or_404(Thread, pk=pk)
+            thread.add_like()
+            num_likes = {
+                'num_likes': thread.likes
+            }
+            msg.update(num_likes)
+            return JsonResponse(msg)
+        post = get_object_or_404(Post, pk=pk)
         post.add_like()
-        data = {
-            'likes': post.likes
+        num_likes = {
+            'num_likes': post.likes
         }
-        return JsonResponse(data)
-    post.add_dislike()
-    data = {
-        'likes': post.likes
-    }
-    return JsonResponse(data)
+        msg.update(num_likes)
+        return JsonResponse(msg)
+
+
+class AddDisLikeView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        pk = int(data['id'])
+        is_thread = data.get('is_thread', None)
+        msg = {'success': 'true'}
+        if is_thread is not None:
+            thread = get_object_or_404(Thread, pk=pk)
+            thread.add_dislike()
+            num_likes = {
+                'num_likes': thread.likes
+            }
+            msg.update(num_likes)
+            return JsonResponse(msg)
+        post = get_object_or_404(Post, pk=pk)
+        post.add_dislike()
+        num_likes = {
+            'num_likes': post.likes
+        }
+        msg.update(num_likes)
+        return JsonResponse(msg)
 
 
 class PostUpdateView(UpdateView):

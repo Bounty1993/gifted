@@ -25,6 +25,37 @@ function handleRespond(event) {
 
 }
 
+let handleLike = (event) => {
+    let comment = event.target.closest('.comment')
+    let id = comment.dataset.post || comment.dataset.thread
+    let is_thread = comment.dataset.thread ? 'true': null
+    let data = {
+        id: id,
+        is_thread: is_thread,
+    }
+    let url = '/forum/ajax/like/'
+    ajax = post_fetch(url, data).then(res => res.json())
+    ajax.then(res => {
+        console.log(res)
+        num_likes = res['num_likes']
+    })
+}
+let handleDislike = (event) => {
+    let comment = event.target.closest('.comment')
+    let id = comment.dataset.post || comment.dataset.thread
+    let is_thread = comment.dataset.thread ? 'true': null
+    let data = {
+        id: id,
+        is_thread: is_thread,
+    }
+    let url = '/forum/ajax/dislike/'
+    ajax = post_fetch(url, data).then(res => res.json())
+    ajax.then(res => {
+        console.log(res)
+        num_likes = res['num_likes']
+    })
+}
+
 function handleSubmit(event) {
     let comment = event.target.closest('.comment')
     let parentId = comment.dataset.post
@@ -101,7 +132,6 @@ let makeThread = (data) => {
 let respondBtns = document.querySelectorAll('.respondBtn')
 let likeBtns = document.querySelectorAll('.likeBtn')
 let dislikeBtns = document.querySelectorAll('.dislikeBtn')
-console.log(dislikeBtns)
 for (let i=0; i < respondBtns.length; i++) {
     respondBtns[i].addEventListener('click', handleRespond)
     likeBtns[i].addEventListener('click', handleLike)
