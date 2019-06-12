@@ -17,7 +17,7 @@
   padding: 5px;
 }
 .thread {
-    margin-left: 20%;
+    margin-left: 10%;
 }
 
 .myBtn {
@@ -32,8 +32,7 @@
   transform: scale(1.01);
 }
 /*-------like buttons -----------------*/
-.dislikeBtn {
-  width: 10%;
+.dislikeBtn {;
   background-color: #ff3333;
   color: white;
 }
@@ -42,8 +41,8 @@
   box-shadow: 0 0 5px #ff3333;
 }
 .likeBtn {
-  width: 10%;
   margin-right: 2px;
+  padding: 10px 20px;
   background-color: #3399ff;
   color: white;
 }
@@ -53,7 +52,7 @@
 }
 /*----------------------------------- */
 .respondBtn {
-  width: 20%;
+  padding: 10px 30px;
   background-color: #3399ff;
   color: white;
 }

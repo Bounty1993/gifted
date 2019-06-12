@@ -12,3 +12,4 @@ pyflakes==2.1.1
 pytz==2019.1
 six==1.12.0
 sqlparse==0.3.0
+channels==2.2.0

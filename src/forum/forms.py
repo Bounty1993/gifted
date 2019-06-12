@@ -30,6 +30,7 @@ class ThreadCreateForm(forms.ModelForm):
             'post',
             'subject',
             'content',
+            'parent',
         ]
 
 

@@ -15,7 +15,7 @@ from django.views.generic import (
     UpdateView
 )
 from src.rooms.models import Room
-from .models import Post
+from .models import Post, Thread
 from .forms import (
     PostCreateForm,
     PostUpdateForm,
@@ -53,8 +53,8 @@ class PostListView(ListView):
 
     def get_queryset(self):
         room_id = self.kwargs.get('pk')
-        queryset = Post.objects.filter(room__id=room_id)
-        return queryset
+        queryset = Post.visible.filter(room__id=room_id)
+        return queryset.summarise()
 
 
 def change_likes(request, post_id, type):
@@ -95,10 +95,11 @@ class PostUpdateView(UpdateView):
 
 
 class ThreadCreateView(View):
-    def post(self, request, pk):
+    def post(self, request):
         if request.is_ajax():
-            post = get_object_or_404(Post, pk=1).id  # koniecznie poprawić
             data = json.loads(request.body)
+            print(data)
+            post = get_object_or_404(Post, pk=int(data['post_id']))
             author = request.user.id
             print(author)
             data.update({
@@ -113,4 +114,20 @@ class ThreadCreateView(View):
                 'is_valid': 'false',
                 'error': form.errors,
             }
+            return JsonResponse(msg)
+
+
+class DeleteThread(View):
+    def delete(self, request, pk):
+        if request.is_ajax():
+            thread = get_object_or_404(Thread, pk=pk)
+            author = request.user
+            if not author == thread:
+                msg = {
+                    'is_valid': 'false',
+                    'error': 'Użytkownik nie jest autorem'
+                }
+                return JsonResponse(msg)
+            thread.delete()
+            msg = {'is_valid': 'true'}
             return JsonResponse(msg)

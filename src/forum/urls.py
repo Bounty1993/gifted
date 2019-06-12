@@ -14,6 +14,6 @@ urlpatterns = [
     path('<pk>/', PostListView.as_view(), name='list'),
     path('<pk>/create/', PostCreateView.as_view(), name='create'),
     path('<pk>/edit/<post_pk>/', PostUpdateView.as_view(), name='edit'),
+    path('ajax/thread/create/', ThreadCreateView.as_view(), name='thread_create'),
     path('ajax/<post_id>/<type>/', change_likes, name='js_change_likes'),
-    path('<pk>/ajax/thread/create/', ThreadCreateView.as_view(), name='thread_create')
 ]

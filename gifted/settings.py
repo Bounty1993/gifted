@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'django_extensions',
+    'channels',
 
     'src.home',
     'src.accounts',
@@ -142,3 +143,6 @@ STATICFILES_DIRS = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 INTERNAL_IPS = ('127.0.0.1',)
+
+# required for channels
+ASGI_APPLICATION = 'gifted.routing.application'
