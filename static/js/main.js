@@ -15,9 +15,6 @@ function getCookie(name) {
 }
 
 function post_fetch(url, data) {
-  // let guest = document.getElementById("guest_input")
-  // let data = {guest: guest.value, type: type}
-  // let url = '/rooms/1/guests/'
   return fetch(url, {
     method: "post",
     credentials: "include",
@@ -30,6 +27,18 @@ function post_fetch(url, data) {
     body: JSON.stringify(data)
   })
 };
+function get_fetch(url) {
+    return fetch(url, {
+    method: "get",
+    credentials: "include",
+    headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
+    },
+  })
+}
 
 function makeMessage(type, message) {
     msg = document.createElement('div')

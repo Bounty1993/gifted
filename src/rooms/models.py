@@ -26,9 +26,9 @@ class VisibleManager(models.Manager):
 
     def most_patrons(self):
         num_patrons = (self.get_queryset()
-                       .annotate(num_patrons=Count('patrons'))
-                       .exclude(num_patrons=0)
-                       .order_by('-num_patrons')
+                       .annotate(patrons_number=Count('patrons'))
+                       .exclude(patrons_number=0)
+                       .order_by('-patrons_number')
                        )
         return num_patrons
 
@@ -91,12 +91,17 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse('rooms:detail', kwargs={'pk': self.id})
     """
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
     def update_score(self):
+        # It needs more development - unfortunately...
+        # Problem is a recursion when signals
         patrons_rank = self.patrons.count() * 2
         observers_rank = self.observers.count()
         collected_rank = self.collected() / 1000
         total_rank = patrons_rank + observers_rank + collected_rank
-        print('Hello')
         self.score = total_rank
 
     def is_visible(self):
@@ -185,8 +190,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f'{self.receiver} - {self.subject}'
-
-
-@receiver(post_save, sender=Room)
-def save_user_profile(sender, instance, **kwargs):
-    instance.update_score()

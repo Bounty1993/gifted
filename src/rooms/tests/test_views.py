@@ -3,9 +3,10 @@ from django.urls import reverse
 from django.urls import resolve
 from datetime import datetime
 from django.contrib.auth import get_user_model
-from src.rooms.models import Room, Donation
+from src.rooms.models import Room, Donation, Message
 from src.rooms.forms import DonateForm
-from src.rooms.views import donate
+from src.rooms.views import make_donation
+import json
 
 User = get_user_model()
 
@@ -126,3 +127,101 @@ class DonateViewTest(TestCase):
         self.client.post(url, data)
         self.assertTrue(Donation.objects.exists())
     """
+
+
+def make_ajax(client, url, data=None):
+    response = client.post(
+        url,
+        json.dumps(data),
+        'json',
+        HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+    )
+    return response
+
+
+class ObserverViewTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.room = Room.objects.create(
+            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
+            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.client.login(username='testuser', password='12345')
+
+    def test_status_code(self):
+        url = reverse('rooms:observers', kwargs={'pk': 1})
+        response = make_ajax(self.client, url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_observer_added(self):
+        url = reverse('rooms:observers', kwargs={'pk': 1})
+        response = make_ajax(self.client, url)
+        self.assertTrue(self.room.observers.exists())
+        self.assertEqual(self.room.observers.first().id, self.user1.id)
+        response_data = json.loads(response.content)
+        expected = {'is_valid': 'true'}
+        self.assertEqual(response_data, expected)
+
+
+class MakeMessageViewTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.room = Room.objects.create(
+            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
+            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.client.login(username='testuser', password='12345')
+
+        self.data = {
+            'receiver': 2,
+            'subject': 'Tytuł',
+            'content': 'Treść',
+        }
+
+    def test_status_code(self):
+        response = make_ajax(self.client, reverse('rooms:message'), self.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_message_creation(self):
+        make_ajax(self.client, reverse('rooms:message'), self.data)
+        self.assertTrue(Message.objects.exists())
+
+    def test_message_data(self):
+        make_ajax(self.client, reverse('rooms:message'), self.data)
+        message = Message.objects.first()
+        self.assertEqual(message.receiver, self.user2)
+        self.assertEqual(message.subject, 'Tytuł')
+        self.assertEqual(message.content, 'Treść')
+
+    def test_message_return(self):
+        response = make_ajax(self.client, reverse('rooms:message'), self.data)
+        response_data = json.loads(response.content)
+        expected = {'is_valid': 'true'}
+        self.assertEqual(response_data, expected)
+
+
+class DeleteMessageViewTest(TestCase):
+
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.room = Room.objects.create(
+            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
+            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.message = Message.objects.create(
+            receiver=self.user1, sender=self.user2, subject='Tytuł', content='Treść')
+        self.client.login(username='testuser', password='12345')
+        self.data = {'id': 1}
+
+    def test_status_code(self):
+        response = make_ajax(self.client, reverse('rooms:message_delete'), self.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_message_delete(self):
+        response = make_ajax(self.client, reverse('rooms:message_delete'), self.data)
+        self.assertFalse(Message.objects.exists())
+        response_data = json.loads(response.content)
+        expected = {'is_valid': 'true'}
+        self.assertEqual(response_data, expected)
+
+

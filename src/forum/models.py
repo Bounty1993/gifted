@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.forms.models import model_to_dict
 from src.rooms.models import Room
 
 
@@ -40,11 +41,6 @@ class Post(models.Model):
     def __str__(self):
         return self.subject
 
-    def has_parent(self):
-        if self.parent:
-            return True
-        return False
-
     def add_like(self):
         self.likes += 1
         self.save()
@@ -61,6 +57,22 @@ class ThreadQuerySet(models.QuerySet):
             data = thread.show_children()
             node.append(data)
         return node
+
+    def get_main(self, post_id):
+        main_threads = self.filter(post_id=post_id, parent__isnull=True)
+        threads_dict = {}
+        for num, thread in enumerate(main_threads):
+            one_thread_dict = {num: thread.summarise()}
+            threads_dict.update(one_thread_dict)
+        return threads_dict
+
+    def get_secondary(self, thread_id):
+        threads = self.filter(parent_id=thread_id)
+        threads_dict = {}
+        for num, thread in enumerate(threads):
+            one_thread_dict = {num: thread.summarise()}
+            threads_dict.update(one_thread_dict)
+        return threads_dict
 
 
 class Thread(models.Model):
@@ -86,6 +98,15 @@ class Thread(models.Model):
         if self.parent:
             return True
         return False
+
+    def summarise(self):
+        summary = model_to_dict(self)
+        thread_parent = self.parent.id if self.parent else None
+        summary.update({
+            'children_count': self.children.count(),
+            'thread_parent': thread_parent
+        })
+        return summary
 
     def show_children(self):
         all_threads = []

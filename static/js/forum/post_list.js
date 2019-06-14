@@ -3,7 +3,11 @@ function handleRespond(event) {
 
     let form = document.createElement('div')
     form.dataset.post = comment.dataset.post
-    form.classList.add('comment', 'thread')
+    form.classList.add('comment')
+
+    let commentMargin = window.getComputedStyle(comment).getPropertyValue('margin-left')
+    let newMargin = parseInt(commentMargin, 10) + 20
+    form.style.marginLeft = newMargin + 'px'
 
     let subjectInput = document.createElement('input')
     subjectInput.classList.add('form-control')
@@ -24,6 +28,36 @@ function handleRespond(event) {
     comment.after(form)
 
 }
+let getThreads = (event) => {
+    let comment = event.target.closest('.comment')
+    let post_id = comment.dataset.post
+    if (post_id) {
+        data = {post_id: post_id}
+    } else {
+        data = {'thread_id': comment.dataset.thread}
+    }
+    url = `ajax/thread/list/`
+    ajax = post_fetch(url, data).then(res => res.json())
+    ajax.then(response => {
+        if (response['is_valid'] === 'true') {
+            threads = response['threads']
+
+            for (let thread of Object.values(threads)) {
+                makeThread(thread)
+            }
+        }
+    })
+    event.target.disabled = true
+}
+
+let manageLikeBtn = (comment) => {
+    let likeBtn = comment.querySelector('.likeBtn')
+    likeBtn.disabled = true
+    likeBtn.style.background = 'green'
+    likeBtn.textContent = 'Dziękujemy za głos'
+    let dislikeBtn = comment.querySelector('.dislikeBtn')
+    dislikeBtn.remove()
+}
 
 let handleLike = (event) => {
     let comment = event.target.closest('.comment')
@@ -36,8 +70,9 @@ let handleLike = (event) => {
     let url = '/forum/ajax/like/'
     ajax = post_fetch(url, data).then(res => res.json())
     ajax.then(res => {
-        console.log(res)
         num_likes = res['num_likes']
+        comment.querySelector('[data-likes]').textContent = num_likes
+        manageLikeBtn(comment)
     })
 }
 let handleDislike = (event) => {
@@ -51,16 +86,18 @@ let handleDislike = (event) => {
     let url = '/forum/ajax/dislike/'
     ajax = post_fetch(url, data).then(res => res.json())
     ajax.then(res => {
-        console.log(res)
         num_likes = res['num_likes']
+        comment.querySelector('[data-likes]').textContent = num_likes
+        manageLikeBtn(comment)
     })
 }
 
 function handleSubmit(event) {
     let comment = event.target.closest('.comment')
+    console.log(comment)
     let parentId = comment.dataset.post
     if (!parentId) {
-        parentId = comment.datset.thread
+        parentId = comment.dataset.thread
     }
     let subject = comment.children[0].value
     let content = comment.children[1].value
@@ -80,14 +117,20 @@ function handleSubmit(event) {
 }
 
 let makeThread = (data) => {
-    parentId = data.parentId
-    console.log(data)
-
-    let comments = document.querySelector(`[data-post="${data.post}"]`)
-    console.log(comments)
+    if (data['thread_parent']) {
+        let thread_id = data['thread_parent']
+        var comments = document.querySelector(`[data-thread="${thread_id}"]`)
+    } else {
+        let post_id = data['post']
+        var comments = document.querySelector(`[data-post="${post_id}"]`)
+    }
+    // let comments = document.querySelector(`[data-post="${data.post}"]`)
     let thread = document.createElement('div')
     thread.dataset.thread = data['id']
-    thread.classList.add('comment', 'thread')
+    thread.classList.add('comment')
+    let commentsMargin = window.getComputedStyle(comments).getPropertyValue('margin-left')
+    let newMargin = parseInt(commentsMargin, 10) + 20
+    thread.style.marginLeft = newMargin + 'px'
 
     let head = document.createElement('div')
     head.classList.add('head')
@@ -95,6 +138,7 @@ let makeThread = (data) => {
     for (let attr of ['author', 'likes', 'date']) {
         let elem = document.createElement('span')
         elem.textContent = data[attr]
+        if (attr === 'likes') {elem.dataset.likes = 'likes'}
         head.append(elem)
     }
 
@@ -111,19 +155,31 @@ let makeThread = (data) => {
     let commentBtns = document.createElement('div')
     commentBtns.classList.add('commentBtns', 'clearfix')
 
+    let respondBtn = document.createElement('button')
+    respondBtn.classList.add('respondBtn', 'myBtn')
+    respondBtn.textContent = 'Odpowiedź'
+    respondBtn.addEventListener('click', handleRespond)
+
     let dislikeBtn = document.createElement('button')
     dislikeBtn.classList.add('right', 'dislikeBtn', 'myBtn')
     dislikeBtn.textContent = 'Nie lubię'
+    dislikeBtn.addEventListener('click', handleDislike)
 
     let likeBtn = document.createElement('button')
     likeBtn.classList.add('right', 'likeBtn', 'myBtn')
     likeBtn.textContent = 'Lubię'
+    likeBtn.addEventListener('click', handleLike)
 
+    commentBtns.append(respondBtn)
     commentBtns.append(dislikeBtn)
     commentBtns.append(likeBtn)
     thread.append(commentBtns)
 
-    console.log(thread)
+    let showMoreBtn = document.createElement('button')
+    showMoreBtn.classList.add('show-more')
+    showMoreBtn.textContent = data['children_count'] + ' odpowiedzi. Naciśnij by zobaczyć więcej.'
+    showMoreBtn.addEventListener('click', getThreads)
+    thread.append(showMoreBtn)
 
     comments.after(thread)
 
@@ -132,10 +188,14 @@ let makeThread = (data) => {
 let respondBtns = document.querySelectorAll('.respondBtn')
 let likeBtns = document.querySelectorAll('.likeBtn')
 let dislikeBtns = document.querySelectorAll('.dislikeBtn')
+let moreThreads = document.querySelectorAll('.show-more')
 for (let i=0; i < respondBtns.length; i++) {
     respondBtns[i].addEventListener('click', handleRespond)
     likeBtns[i].addEventListener('click', handleLike)
     dislikeBtns[i].addEventListener('click', handleDislike)
+}
+for (let i=0; i < moreThreads.length; i++) {
+    moreThreads[i].addEventListener('click', getThreads)
 }
 
 // ---------------------WebSockets---------------------------

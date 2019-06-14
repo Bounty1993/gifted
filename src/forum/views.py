@@ -6,7 +6,6 @@ from django.shortcuts import (
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
-from django.db import transaction
 from django.views import View
 from django.views.generic import (
     CreateView,
@@ -114,14 +113,32 @@ class PostUpdateView(UpdateView):
         return obj
 
 
+class GetThreadsView(View):
+    def post(self, request, pk):
+        data = json.loads(request.body)
+        post_id = data.get('post_id', None)
+        if post_id:
+            threads = Thread.objects.get_main(post_id=post_id)
+            message = {
+                'is_valid': 'true',
+                'threads': threads
+            }
+            return JsonResponse(message)
+        thread_id = data['thread_id']
+        threads = Thread.objects.get_secondary(thread_id=thread_id)
+        message = {
+            'is_valid': 'true',
+            'threads': threads,
+        }
+        return JsonResponse(message)
+
+
 class ThreadCreateView(View):
     def post(self, request):
         if request.is_ajax():
             data = json.loads(request.body)
-            print(data)
             post = get_object_or_404(Post, pk=int(data['post_id']))
             author = request.user.id
-            print(author)
             data.update({
                 'post': post,
                 'author': author
