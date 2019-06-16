@@ -36,3 +36,65 @@ a:hover {
   background-color: #00b300;
   box-shadow: 0 0 5px #00cc00;
 }
+
+/*-------------------------------------------*/
+.room {
+  margin-bottom: 10px;
+  border: 1px solid grey;
+  border-radius: 20px;
+  background-color: #292b2c;
+  color: white;
+}
+.description {
+  margin: 10px;
+}
+.roomBtn {
+  margin-top: 10px;
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  transition: 0.3s;
+}
+.roomBtn:hover {
+  transform: scale(1.01);
+}
+.greenBtn {
+  margin-left: 10%;
+  background-color: #00cc00;
+  color: white;
+}
+.greenBtn:hover{
+  background-color: #00b300;
+  box-shadow: 0 0 5px #00cc00;
+}
+.blueBtn {
+  background-color: #3399ff;
+  color: white;
+}
+.blueBtn:hover{
+  background-color: #1a8cff;
+  box-shadow: 0 0 5px #3399ff;
+}
+
+/* ------------------------------*/
+.important-text {
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px purple;
+}
+.main-text {
+  font-weight: bold;
+  font-size: 24px;
+}
+.small-text {
+  font-size: 12px;
+  color: grey;
+}
+.line {
+  border-bottom: 2px solid grey;
+  width: 80%;
+  margin-top: 10px;
+  margin-left: 10%;
+}

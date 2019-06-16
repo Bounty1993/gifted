@@ -7,12 +7,45 @@
 {% block content %}
 <div class='row'>
     <div class='col-10'>
+      <div class="room mt-2">
+        <div class="description">
+          <div class="d-flex justify-content-around">
+            <div class="receiver">
+              <div class="main-text">{{room.creator}}</div>
+              <div class="small-text">autor</div>
+            </div>
+            <div class="price">
+              <div class="main-text">{{room.price}}</div>
+              <div class="small-text">cena</div>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="text-center">
+            <div class="mt-4">Cel zbiórki:</div>
+            <div class="important-text mb-4">{{room.gift}}</div>
+          </div>
+          <div class="line"></div>
+          <div>
+            <a href="{% url 'forum:create' pk=room.id %}">
+              <button class='greenBtn roomBtn'>Nowy Post</button>
+            </a>
+            <a href="{% url 'rooms:detail' pk=room.id %}">
+              <button class='blueBtn roomBtn'>Szczegóły</button>
+            </a>
+          </div>
+        </div>
+      </div>
     {% for post in posts %}
       <div class='comment' data-post="{{post.id}}">
-        <div class='head'>
-          <span>{{post.author}}</span>
-          <span data-likes="likes">{{post.likes}}</span>
-          <span>{{post.date}}</span>
+        <div class='head clearfix'>
+          <div style="float:left">
+            <span>{{post.author}}</span>
+            <span data-likes="likes">{{post.likes}}</span>
+            <span>{{post.date|date:"d.m.y H:i"}}</span>
+          </div>
+          {% if request.user == post.author %}
+            <button class="right deleteBtn dislikeBtn mainBtn">Delete</button>
+          {% endif %}
         </div>
         <div class='text'>
           <div>{{post.subject}}</div>
@@ -20,8 +53,14 @@
         </div>
         <div class='commentBtns'>
           <button class='respondBtn myBtn'>Odpowiedź</button>
-          <button class='right dislikeBtn myBtn'>Nie lubię</button>
-          <button class='right likeBtn myBtn'>Lubię</button>
+          {% if request.user == post.author %}
+            <a href="{% url 'forum:edit' pk=1 post_pk=post.id %}">
+              <button class="right likeBtn myBtn">Edytuj</button>
+            </a>
+          {% else %}
+            <button class='right dislikeBtn myBtn'>Nie lubię</button>
+            <button class='right likeBtn myBtn'>Lubię</button>
+          {% endif %}
         </div>
         {% if post.threads %}
           <button class='show-more'>

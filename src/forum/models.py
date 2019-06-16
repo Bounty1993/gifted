@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum, F, Q
 from django.forms.models import model_to_dict
 from src.rooms.models import Room
 
@@ -7,6 +8,17 @@ from src.rooms.models import Room
 class PostQuerySet(models.QuerySet):
     def get_visible(self):
         return self.filter(room__visible=True)
+
+    def search(self, field):
+        queryset = self.filter(
+            Q(room__gift__icontains=field) |
+            Q(author__username__icontains=field) |
+            Q(subject__icontains=field) |
+            Q(content__icontains=field) |
+            Q(threads__subject__icontains=field) |
+            Q(threads__content__icontains=field)
+        ).distinct()
+        return queryset
 
     def summarise(self):
         all_comments = []
@@ -23,9 +35,19 @@ class PostQuerySet(models.QuerySet):
             all_comments.append(post_detail)
         return all_comments
 
+    def data_with_likes(self):
+        posts_with_likes = (
+            self.annotate(all_likes=Sum('threads__likes') + F('likes'))
+        )
+        ordered_posts = posts_with_likes.order_by('-all_likes')
+        return ordered_posts
+
 
 class Post(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(
+        Room, on_delete=models.CASCADE,
+        related_name='posts'
+    )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET('Konto usunięte')
@@ -40,6 +62,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.subject
+
+    @property
+    def score(self):
+        all_likes = self.all_likes
+        if not all_likes:
+            all_likes = 0
+        num_threads = self.threads.count()
+        print(all_likes, num_threads, self.id)
+        return all_likes + num_threads
 
     def add_like(self):
         self.likes += 1
@@ -101,6 +132,8 @@ class Thread(models.Model):
 
     def summarise(self):
         summary = model_to_dict(self)
+        summary['author'] = self.author.username
+        summary['date'] = self.date.strftime('%d.%m.%y %H:%M')
         thread_parent = self.parent.id if self.parent else None
         summary.update({
             'children_count': self.children.count(),

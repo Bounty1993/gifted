@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import (
+    render,
     redirect,
     get_object_or_404
 )
@@ -20,6 +21,31 @@ from .forms import (
     PostUpdateForm,
     ThreadCreateForm,
 )
+
+
+class AllPostListView(ListView):
+    model = Post
+    template_name = 'forum/all_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        field = self.request.GET.get('search', None)
+        if field:
+            queryset = (
+                Post.visible
+                    .search(field=field)
+                    .data_with_likes()
+                    .select_related('author')
+                    .prefetch_related('threads')
+            )
+            return queryset
+        queryset = (
+            Post.visible
+                .data_with_likes()
+                .select_related('author')
+                .prefetch_related('threads')
+        )
+        return queryset
 
 
 class PostCreateView(CreateView):
@@ -54,6 +80,15 @@ class PostListView(ListView):
         room_id = self.kwargs.get('pk')
         queryset = Post.visible.filter(room__id=room_id)
         return queryset.summarise()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        room_id = self.kwargs.get('pk')
+        room = get_object_or_404(Room, pk=room_id)
+        context['room'] = room
+        context['all_likes'] = room.all_likes()
+        context['all_comments'] = room.all_comments()
+        return context
 
 
 class AddLikeView(View):
@@ -112,6 +147,28 @@ class PostUpdateView(UpdateView):
         obj = get_object_or_404(Post, pk=post_pk)
         return obj
 
+    def get_success_url(self):
+        room = self.object.room
+        return redirect(room)
+
+
+class PostDeleteView(View):
+    def delete(self, request, pk, post_pk):
+        if request.is_ajax():
+            post = get_object_or_404(Post, pk=post_pk)
+            user = request.user
+            author = post.author
+            print(author, )
+            if not user == author:
+                msg = {
+                    'is_valid': 'false',
+                    'error': 'Użytkownik nie jest autorem'
+                }
+                return JsonResponse(msg)
+            # post.delete()
+            msg = {'is_valid': 'true'}
+            return JsonResponse(msg)
+
 
 class GetThreadsView(View):
     def post(self, request, pk):
@@ -151,20 +208,4 @@ class ThreadCreateView(View):
                 'is_valid': 'false',
                 'error': form.errors,
             }
-            return JsonResponse(msg)
-
-
-class DeleteThread(View):
-    def delete(self, request, pk):
-        if request.is_ajax():
-            thread = get_object_or_404(Thread, pk=pk)
-            author = request.user
-            if not author == thread:
-                msg = {
-                    'is_valid': 'false',
-                    'error': 'Użytkownik nie jest autorem'
-                }
-                return JsonResponse(msg)
-            thread.delete()
-            msg = {'is_valid': 'true'}
             return JsonResponse(msg)

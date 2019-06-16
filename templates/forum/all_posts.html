@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+{% block cssscript %}
+	<link rel="stylesheet" href="{% static 'css/forum/post_list.css' %}">
+{% endblock cssscript %}
+{% block content %}
+<div class="row">
+  <div class="col-10">
+    {% for post in posts %}
+      <div class='comment' data-post="{{post.id}}">
+        <div class='head clearfix'>
+          <div style="float:left">
+            <span>{{post.author}}</span>
+            <span data-likes="likes">{{post.likes}}</span>
+            <span>{{post.date|date:"d.m.y H:i"}}</span>
+          </div>
+          <span style="float: right;">Ocena: {{post.score}}</span>
+        </div>
+        <div class='text'>
+          <div>{{post.subject}}</div>
+          <div>{{post.content}}</div>
+        </div>
+        <div class='commentBtns clearfix'>
+          <div style="float: left; padding-top: 10px">
+          <span>Liczba komentarzy: {{post.threads.count}}</span>
+          <span>Polubienia: {{post.all_likes}}</span>
+          </div>
+          <button class='right blueBtn mainBtn'>Odpowiedź</button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

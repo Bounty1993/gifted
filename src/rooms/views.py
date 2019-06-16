@@ -53,7 +53,7 @@ class RoomListView(ListView):
         queryset = Room.get_visible.order_by('-to_collect')
         if field:
             return queryset.search(field)
-        return queryset
+        return queryset.prefetch_related('observers').prefetch_related('patrons')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -144,7 +144,6 @@ def guests(request, pk):
             message = {
                 'guests': room.guest_remove(guest_name)
             }
-            print(message)
             return JsonResponse(message)
         if json_data.get('type') == 'add':
             form = VisibleForm(data, instance=room)
@@ -154,7 +153,6 @@ def guests(request, pk):
                 message = {
                     'guests': room.get_guests_dict()
                 }
-                print(message)
                 return JsonResponse(message)
             message = {
                 'error': 'Błędna nazwa użytkownika'
