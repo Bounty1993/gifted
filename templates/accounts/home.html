@@ -53,8 +53,12 @@
         </div>
         <div class="line"></div>
         <div>
-          <button class='detailBtn roomBtn'>Szczegóły</button>
-          <button class='forumBtn roomBtn'>Forum</button>
+          <a href="{% url 'rooms:detail' pk=room.pk %}">
+            <button class='detailBtn roomBtn'>Szczegóły</button>
+          </a>
+          <a href="{% url 'forum:list' pk=room.pk %}">
+            <button class='forumBtn roomBtn'>Forum</button>
+          </a>
         </div>
       </div>
     </div>

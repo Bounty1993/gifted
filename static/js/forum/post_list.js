@@ -1,8 +1,10 @@
+
 function handleRespond(event) {
     let comment = event.target.closest('.comment')
 
     let form = document.createElement('div')
-    form.dataset.post = comment.dataset.post
+    if (comment.dataset.post) {form.dataset.post = comment.dataset.post}
+    else {form.dataset.thread = comment.dataset.thread}
     form.classList.add('comment')
 
     let commentMargin = window.getComputedStyle(comment).getPropertyValue('margin-left')
@@ -47,7 +49,7 @@ let getThreads = (event) => {
             }
         }
     })
-    event.target.disabled = true
+    event.target.remove()
 }
 
 let manageLikeBtn = (comment) => {
@@ -94,17 +96,15 @@ let handleDislike = (event) => {
 
 function handleSubmit(event) {
     let comment = event.target.closest('.comment')
-    console.log(comment)
-    let parentId = comment.dataset.post
-    if (!parentId) {
-        parentId = comment.dataset.thread
-    }
+    let post_id = comment.dataset.post
     let subject = comment.children[0].value
     let content = comment.children[1].value
+    let parent = comment.dataset.thread || null
     data = {
-        parentId: parentId,
+        post_id: post_id,
         subject: subject,
-        content:content
+        content: content,
+        parent: parent,
     }
     roomSocket.send(JSON.stringify(data))
 
@@ -114,6 +114,19 @@ function handleSubmit(event) {
     // ajax.then(response => {
     //    console.log(response)
     //})
+}
+
+let handleDelete = (event) => {
+    comment = event.target.closest('.comment')
+    post_id = comment.dataset.post
+    url = `delete/${post_id}`
+    ajax = delete_fetch(url).then(res => res.json())
+    ajax.then(response => {
+        console.log(response)
+        if (response['is_valid'] === 'true') {
+            comment.remove()
+        }
+    })
 }
 
 let makeThread = (data) => {
@@ -188,7 +201,9 @@ let makeThread = (data) => {
 let respondBtns = document.querySelectorAll('.respondBtn')
 let likeBtns = document.querySelectorAll('.likeBtn')
 let dislikeBtns = document.querySelectorAll('.dislikeBtn')
+let deleteBtns = document.querySelectorAll('.deleteBtn')
 let moreThreads = document.querySelectorAll('.show-more')
+
 for (let i=0; i < respondBtns.length; i++) {
     respondBtns[i].addEventListener('click', handleRespond)
     likeBtns[i].addEventListener('click', handleLike)
@@ -196,6 +211,9 @@ for (let i=0; i < respondBtns.length; i++) {
 }
 for (let i=0; i < moreThreads.length; i++) {
     moreThreads[i].addEventListener('click', getThreads)
+}
+for (let i=0; i < deleteBtns.length; i++) {
+    deleteBtns[i].addEventListener('click', handleDelete)
 }
 
 // ---------------------WebSockets---------------------------

@@ -3,7 +3,9 @@ from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
-from django.db.models import Q, Count, F, Sum
+from django.db.models import (
+    Q, Count, F, Sum,
+)
 
 
 class VisibleManager(models.Manager):
@@ -121,7 +123,7 @@ class Room(models.Model):
         except KeyError as err:
             return {'message': 'Brak wszystkich danych'}
         date = data.get('date', None)
-        comment = data.get('comment', '')
+        comment = data.get('comment', amount)
         actual_amount = amount if amount < self.to_collect else self.to_collect
         full_collection = self.to_collect <= amount
         if full_collection:
@@ -162,6 +164,21 @@ class Room(models.Model):
 
     def collected(self):
         return self.price - self.to_collect
+
+    def all_likes(self):
+        posts = self.posts
+        likes_per_post = posts.data_with_likes()
+        all_likes = likes_per_post.aggregate(Sum('all_likes'))
+        return all_likes
+
+    def all_comments(self):
+        posts = self.posts
+        num_threads = (
+            posts
+                .annotate(num_threads=Count('threads'))
+                .aggregate(Sum(F'num_threads'))
+        )
+        return num_threads
 
 
 class Donation(models.Model):

@@ -144,7 +144,6 @@ def guests(request, pk):
             message = {
                 'guests': room.guest_remove(guest_name)
             }
-            print(message)
             return JsonResponse(message)
         if json_data.get('type') == 'add':
             form = VisibleForm(data, instance=room)
@@ -154,7 +153,6 @@ def guests(request, pk):
                 message = {
                     'guests': room.get_guests_dict()
                 }
-                print(message)
                 return JsonResponse(message)
             message = {
                 'error': 'Błędna nazwa użytkownika'

@@ -5,36 +5,8 @@
 	<link rel="stylesheet" href="{% static 'css/forum/post_list.css' %}">
 {% endblock cssscript %}
 {% block content %}
-<div class='row'>
-    <div class='col-10'>
-      <div class="room mt-2">
-        <div class="description">
-          <div class="d-flex justify-content-around">
-            <div class="receiver">
-              <div class="main-text">{{room.creator}}</div>
-              <div class="small-text">autor</div>
-            </div>
-            <div class="price">
-              <div class="main-text">{{room.price}}</div>
-              <div class="small-text">cena</div>
-            </div>
-          </div>
-          <div class="line"></div>
-          <div class="text-center">
-            <div class="mt-4">Cel zbiórki:</div>
-            <div class="important-text mb-4">{{room.gift}}</div>
-          </div>
-          <div class="line"></div>
-          <div>
-            <a href="{% url 'forum:create' pk=room.id %}">
-              <button class='greenBtn roomBtn'>Nowy Post</button>
-            </a>
-            <a href="{% url 'rooms:detail' pk=room.id %}">
-              <button class='blueBtn roomBtn'>Szczegóły</button>
-            </a>
-          </div>
-        </div>
-      </div>
+<div class="row">
+  <div class="col-10">
     {% for post in posts %}
       <div class='comment' data-post="{{post.id}}">
         <div class='head clearfix'>
@@ -69,9 +41,6 @@
         {% endif %}
       </div>
     {% endfor %}
-    </div>
+  </div>
 </div>
 {% endblock content %}
-{% block javascript %}
-  <script src="{% static 'js/forum/post_list.js' %}"></script>
-{% endblock javascript %}

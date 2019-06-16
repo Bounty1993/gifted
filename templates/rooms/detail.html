@@ -27,11 +27,11 @@
           <div class='important-text'> 100% </div>
         </div>
         <div id="progressBar">
-          <div id="progressRoom">{{room.percent_got}}</div>
+          <div id="progressRoom">{{room.percent_got| floatformat:2 }}%</div>
         </div>
         <div class='d-flex justify-content-between'>
           <div>
-            <div class="main-text">{{room.percent_got}}</div>
+            <div class="main-text">{{room.percent_got | floatformat:2}}%</div>
             <div class="small-text">Osiągnięto</div>
           </div>
           <div>
@@ -46,7 +46,7 @@
       </div>
       <div class="crispyBtn">
         <button class="btn-hover" id="supportBtn">Dołacz do zbiórki</button>
-     </div>
+      </div>
      <div class="form-group hidden col-8 offset-2" id='supportForm'>
        <input type="number" class="form-control" id="amount" placeholder='Wielkość doracji'>
        <input type="text" class="form-control mt-2" id="comment" placeholder='Komentarz'>
@@ -127,5 +127,8 @@
 </div>
 {% endblock content %}
 {% block javascript %}
+  <script>
+    var progress = parseFloat("{{room.percent_got | floatformat:2}}".split(",").join("."))
+  </script>
   <script src="{% static 'js/rooms/detail.js' %}"></script>
 {% endblock javascript %}

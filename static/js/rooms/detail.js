@@ -1,6 +1,9 @@
-function makeProgressBar(progress) {
-    progressBar = document.getElementById('progressBar')
-    progressBar.style.width = `${progress}%`
+let room_id = window.location.pathname.split('/')[2]
+
+function makeProgressRoom(progress) {
+    progressRoom = document.getElementById('progressRoom')
+    console.log(progress)
+    progressRoom.style.width = `${progress}%`
 }
 
 supportBtn = document.getElementById('supportBtn')
@@ -17,7 +20,8 @@ submitSupport.onclick = (event) => {
     amount: amount.value,
     comment: comment.value
   }
-  url = `/rooms/1/ajax/donate/`
+  console.log(room_id)
+  url = `/rooms/${room_id}/ajax/donate/`
   ajax = post_fetch(url, data).then(response => response.json())
   ajax.then(response => {
     message = response['message']
@@ -64,12 +68,14 @@ function makeGuestList(data) {
     }
 }
 
+makeProgressRoom(progress)
+
 let addGuest = document.getElementById('addGuest')
 addGuest.onclick = () => {
     let type = 'add'
     let guest = document.getElementById('guestInput').value
     let data = {type: type, guest: guest}
-    let url = '/rooms/1/ajax/guests/'
+    let url = `/rooms/${room_id}/ajax/guests/`
     let ajax = post_fetch(url, data).then(response => response.json())
     ajax.then(response => {
         guests = response['guests']
@@ -82,7 +88,7 @@ removeGuest.onclick = () => {
     let type = 'remove'
     let guest = document.getElementById('guestInput').value
     let data = {type: type, guest: guest}
-    let url = '/rooms/1/ajax/guests/'
+    let url = `/rooms/${room_id}/ajax/guests/`
     let ajax = post_fetch(url, data).then(response => response.json())
     ajax.then(response => {
         guests = response['guests']

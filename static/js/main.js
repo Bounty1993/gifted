@@ -39,7 +39,18 @@ function get_fetch(url) {
     },
   })
 }
-
+function delete_fetch(url) {
+    return fetch(url, {
+        method: "delete",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
+        },
+    })
+}
 function makeMessage(type, message) {
     msg = document.createElement('div')
     msg.classList.add('alert', `alert-${type}`, 'alert-dismissible')
