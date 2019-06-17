@@ -113,8 +113,8 @@ class Room(models.Model):
         try:
             self.observers.add(user_id)
         except ValueError:
-            return {'message': 'Błędne dane!'}
-        return {'message': 'Success'}
+            return {'is_valid': 'false'}
+        return {'is_valid': 'true'}
 
     def donate(self, data):
         try:

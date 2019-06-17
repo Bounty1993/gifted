@@ -69,7 +69,6 @@ class Post(models.Model):
         if not all_likes:
             all_likes = 0
         num_threads = self.threads.count()
-        print(all_likes, num_threads, self.id)
         return all_likes + num_threads
 
     def add_like(self):
@@ -93,7 +92,7 @@ class ThreadQuerySet(models.QuerySet):
         main_threads = self.filter(post_id=post_id, parent__isnull=True)
         threads_dict = {}
         for num, thread in enumerate(main_threads):
-            one_thread_dict = {num: thread.summarise()}
+            one_thread_dict = {str(num): thread.summarise()}
             threads_dict.update(one_thread_dict)
         return threads_dict
 

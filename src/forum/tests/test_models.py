@@ -44,6 +44,11 @@ class PostModelTest(TestCase):
         author_name = self.user.username
         found = Post.visible.search(author_name)
         self.assertTrue(found.exists())
+        found = Post.visible.search('nowy post')
+        self.assertEqual(found.count(), 1)
+
+    def test_summarise(self):
+        pass
 
     def test_add_like(self):
         self.post.add_like()

@@ -91,10 +91,7 @@ def observers(request, pk):
     room = get_object_or_404(Room, pk=pk)
     if request.method == 'POST' and request.is_ajax:
         user_id = request.user.id
-        if user_id:
-            message = room.add_observer(user_id=user_id)
-            return JsonResponse(message)
-        message = {'message': 'Użytkownik nie zalogowany. Proszę zaloguj się'}
+        message = room.add_observer(user_id=user_id)
         return JsonResponse(message)
 
 

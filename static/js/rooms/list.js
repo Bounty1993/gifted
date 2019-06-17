@@ -11,12 +11,11 @@ function observerSubmit(event) {
     console.log(url)
     ajax = post_fetch(url, {}).then(response => response.json())
     ajax.then(response => {
-        message = response['message']
-        if (message==='Success') {
+        if (response['is_valid']==='true') {
             event.target.textContent = 'Dodano do obserwowanych'
             event.target.removeEventListener('click', observerSubmit)
         } else {
-            alert(message)
+            alert('Źle')
         }
     })
 }

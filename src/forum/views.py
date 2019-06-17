@@ -101,14 +101,14 @@ class AddLikeView(View):
             thread = get_object_or_404(Thread, pk=pk)
             thread.add_like()
             num_likes = {
-                'num_likes': thread.likes
+                'num_likes': thread.likes,
             }
             msg.update(num_likes)
             return JsonResponse(msg)
         post = get_object_or_404(Post, pk=pk)
         post.add_like()
         num_likes = {
-            'num_likes': post.likes
+            'num_likes': post.likes,
         }
         msg.update(num_likes)
         return JsonResponse(msg)
@@ -149,7 +149,7 @@ class PostUpdateView(UpdateView):
 
     def get_success_url(self):
         room = self.object.room
-        return redirect(room)
+        return reverse('forum:list', kwargs={'pk': room.id})
 
 
 class PostDeleteView(View):
@@ -158,13 +158,11 @@ class PostDeleteView(View):
             post = get_object_or_404(Post, pk=post_pk)
             user = request.user
             author = post.author
-            print(author, )
             if not user == author:
                 msg = {
-                    'is_valid': 'false',
-                    'error': 'Użytkownik nie jest autorem'
+                    'is_valid': 'false'
                 }
-                return JsonResponse(msg)
+                return JsonResponse(msg, status=401)
             # post.delete()
             msg = {'is_valid': 'true'}
             return JsonResponse(msg)
