@@ -4,7 +4,7 @@ from django.core.mail import EmailMessage
 
 # it will be shared task
 def send_email(data):
-    message = EmailMessage(data['subject'], data['message'], to=[data['email']])
+    message = EmailMessage(data['subject'], data['message'], to=[data['to']])
     message.send()
 
 
@@ -23,14 +23,17 @@ class ContactForm(forms.Form):
                 'Błedne dane. Zdefinuj formę kontaktu.'
                 'Zaloguj się lub podaj email'
             )
-
+    """
     def send_email(self):
-        email = self.email
-        if self.user:
-            email = self.user
+        cleaned_data = self.clean()
+        print(cleaned_data)
+        email = cleaned_data['email']
+        if cleaned_data['user']:
+            email = cleaned_data['user']
         data = {
-            'subject': self.subject,
-            'message': self.message,
+            'subject': cleaned_data['subject'],
+            'message': cleaned_data['message'],
             'to': email
         }
         send_email(data)  # will be delayed
+    """
