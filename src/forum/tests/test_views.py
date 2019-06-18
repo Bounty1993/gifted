@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from django.test import TestCase
 from django.urls import reverse
+from django.db.models import Sum, F, Q
 from ..models import Post, Thread
 from src.rooms.models import Room
 from django.contrib.auth import get_user_model
@@ -69,6 +70,7 @@ class AllPostListView(TestCase):
         queryset = response.context['posts']
         self.assertEqual(queryset.count(), 2)
         self.assertTrue(queryset.first().score)
+        self.assertEqual(response.context['num_posts'], Post.objects.count())
 
     def test_search_view(self):
         url = reverse('forum:all')
@@ -107,49 +109,49 @@ class AjaxViewsTest(TestCase):
         self.client.login(username='testuser', password='12345')
 
     def test_add_like_thread_view(self):
-        initial_likes = self.thread1.likes
+        initial_likes = self.thread1.get_likes()
         url = reverse('forum:add_like')
         data = {'id': '1', 'is_thread': 'true'}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes + 1
-        actual = Thread.objects.get(id=1).likes
+        actual = Thread.objects.get(id=1).get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)
 
     def test_add_like_post_view(self):
-        initial_likes = self.post1.likes
+        initial_likes = self.post1.get_likes()
         url = reverse('forum:add_like')
         data = {'id': '1'}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes + 1
-        actual = Post.objects.get(id=1).likes
+        actual = Post.objects.get(id=1).get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)
 
     def test_add_dislike_thread_view(self):
-        initial_likes = self.thread1.likes
+        initial_likes = self.thread1.get_likes()
         url = reverse('forum:add_dislike')
         data = {'id': '1', 'is_thread': 'true'}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes - 1
-        actual = Thread.objects.get(id=1).likes
+        actual = Thread.objects.get(id=1).get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)
 
     def test_add_dislike_post_view(self):
-        initial_likes = self.post1.likes
+        initial_likes = self.post1.opinions.aggregate(Sum('likes')).get('likes_sum', 0)
         url = reverse('forum:add_dislike')
         data = {'id': '1'}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes - 1
-        actual = Post.objects.get(id=1).likes
+        actual = Post.objects.get(id=1).get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)

@@ -14,6 +14,7 @@ from django.views.generic import (
     DetailView,
     UpdateView
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 from src.rooms.models import Room
 from .models import Post, Thread
 from .forms import (
@@ -27,6 +28,7 @@ class AllPostListView(ListView):
     model = Post
     template_name = 'forum/all_posts.html'
     context_object_name = 'posts'
+    paginate_by = 20
 
     def get_queryset(self):
         field = self.request.GET.get('search', None)
@@ -36,6 +38,7 @@ class AllPostListView(ListView):
                     .search(field=field)
                     .data_with_likes()
                     .select_related('author')
+                    .select_related('room')
                     .prefetch_related('threads')
             )
             return queryset
@@ -43,9 +46,15 @@ class AllPostListView(ListView):
             Post.visible
                 .data_with_likes()
                 .select_related('author')
+                .select_related('room')
                 .prefetch_related('threads')
         )
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['num_posts'] = Post.objects.count()
+        return context
 
 
 class PostCreateView(CreateView):
@@ -91,7 +100,7 @@ class PostListView(ListView):
         return context
 
 
-class AddLikeView(View):
+class AddLikeView(LoginRequiredMixin, View):
     def post(self, request):
         data = json.loads(request.body)
         pk = int(data['id'])
@@ -99,22 +108,22 @@ class AddLikeView(View):
         msg = {'success': 'true'}
         if is_thread is not None:
             thread = get_object_or_404(Thread, pk=pk)
-            thread.add_like()
+            thread.add_like(user=request.user)
             num_likes = {
-                'num_likes': thread.likes,
+                'num_likes': thread.get_likes(),
             }
             msg.update(num_likes)
             return JsonResponse(msg)
         post = get_object_or_404(Post, pk=pk)
-        post.add_like()
+        post.add_like(user=request.user)
         num_likes = {
-            'num_likes': post.likes,
+            'num_likes': post.get_likes(),
         }
         msg.update(num_likes)
         return JsonResponse(msg)
 
 
-class AddDisLikeView(View):
+class AddDisLikeView(LoginRequiredMixin, View):
     def post(self, request):
         data = json.loads(request.body)
         pk = int(data['id'])
@@ -122,16 +131,16 @@ class AddDisLikeView(View):
         msg = {'success': 'true'}
         if is_thread is not None:
             thread = get_object_or_404(Thread, pk=pk)
-            thread.add_dislike()
+            thread.add_dislike(user=request.user)
             num_likes = {
-                'num_likes': thread.likes
+                'num_likes': thread.get_likes()
             }
             msg.update(num_likes)
             return JsonResponse(msg)
         post = get_object_or_404(Post, pk=pk)
-        post.add_dislike()
+        post.add_dislike(request.user)
         num_likes = {
-            'num_likes': post.likes
+            'num_likes': post.get_likes()
         }
         msg.update(num_likes)
         return JsonResponse(msg)

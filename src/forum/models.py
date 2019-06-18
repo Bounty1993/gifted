@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import Sum, F, Q
+from django.db.models import Sum, F, Q, Count
 from django.forms.models import model_to_dict
+from django.db.models.functions import Coalesce
 from src.rooms.models import Room
 
 
@@ -28,16 +29,17 @@ class PostQuerySet(models.QuerySet):
                 'author': post.author,
                 'subject': post.subject,
                 'content': post.content,
-                'likes': post.likes,
+                'likes': post.get_likes(),
                 'date': post.date,
                 'threads': post.threads.count(),
             }
             all_comments.append(post_detail)
+        all_comments = self.annotate(likes=Coalesce(Sum('opinions__likes'), 0))
         return all_comments
 
     def data_with_likes(self):
         posts_with_likes = (
-            self.annotate(all_likes=Sum('threads__likes') + F('likes'))
+            self.annotate(all_likes=Coalesce(Sum(F('threads__opinions__likes') + F('opinions__likes')), 0))
         )
         ordered_posts = posts_with_likes.order_by('-all_likes')
         return ordered_posts
@@ -54,7 +56,6 @@ class Post(models.Model):
     )
     subject = models.CharField('Tytuł', max_length=100)
     content = models.CharField('Treść', max_length=500)
-    likes = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
 
     visible = PostQuerySet.as_manager()
@@ -71,13 +72,23 @@ class Post(models.Model):
         num_threads = self.threads.count()
         return all_likes + num_threads
 
-    def add_like(self):
-        self.likes += 1
-        self.save()
+    def get_likes(self):
+        likes = self.opinions.aggregate(likes__sum=Coalesce(Sum('likes'), 0))
+        return likes['likes__sum']
 
-    def add_dislike(self):
-        self.likes -= 1
-        self.save()
+    def add_like(self, user):
+        Opinion.objects.create(
+            post=self,
+            user=user,
+            likes=1
+        )
+
+    def add_dislike(self, user):
+        Opinion.objects.create(
+            post=self,
+            user=user,
+            likes=-1
+        )
 
 
 class ThreadQuerySet(models.QuerySet):
@@ -112,7 +123,6 @@ class Thread(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='threads')
     subject = models.CharField('Tytuł', max_length=100)
     content = models.CharField('Treść', max_length=500)
-    likes = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey(
         'self',
@@ -140,6 +150,10 @@ class Thread(models.Model):
         })
         return summary
 
+    def get_likes(self):
+        likes = self.opinions.aggregate(likes__sum=Coalesce(Sum('likes'), 0))
+        return likes['likes__sum']
+
     def show_children(self):
         all_threads = []
         if not self.children.all():
@@ -148,10 +162,43 @@ class Thread(models.Model):
             all_threads.append({thread: thread.show_children()})
         return all_threads
 
-    def add_like(self):
-        self.likes += 1
-        self.save()
+    def add_like(self, user):
+        Opinion.objects.create(
+            thread=self,
+            user=user,
+            likes=1
+        )
 
-    def add_dislike(self):
-        self.likes -= 1
-        self.save()
+    def add_dislike(self, user):
+        Opinion.objects.create(
+            thread=self,
+            user=user,
+            likes=-1
+        )
+
+
+class Opinion(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+    OPINION_CHOICES = [
+        (LIKE, 'like'),
+        (DISLIKE, 'dislike'),
+    ]
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING,
+    )
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name='opinions',
+    )
+    thread = models.ForeignKey(
+        Thread,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name='opinions'
+    )
+    likes = models.IntegerField(choices=OPINION_CHOICES)
+    date = models.DateField(auto_now_add=True)
