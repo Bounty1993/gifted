@@ -1,25 +1,10 @@
 from django.test import TestCase
-from django.forms import ValidationError
 from django.contrib.auth import get_user_model
 from django.urls import resolve, reverse
 
 import datetime
 
-from .models import Profile
-from .forms import ProfileForm
-
-
-class AccountsModelTest(TestCase):
-    def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(
-            username='Tester',
-            password='Tester123',
-        )
-        self.profile = Profile.objects.filter(user=self.user)
-
-    def test_profile_exists(self):
-        self.assertEqual(self.profile.count(), 1)
+from src.accounts.forms import ProfileForm
 
 
 class SignUpViewTest(TestCase):

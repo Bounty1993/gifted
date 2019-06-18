@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from src.home.forms import send_email
 
 
 class Profile(models.Model):
@@ -35,5 +36,16 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, created, **kwargs):
+    if created:
+        username = instance.username
+        email = instance.email
+        subject = f'Witaj {username} Założyłeś właśnie konto w Gifted'
+        message = 'Dziękujemy za zaufanie. Będziemy szcześliwi jeśli polecisz nas znajomym'
+        data = {'subject': subject, 'message': message, 'to': email}
+        send_email(data)
 
 # ----------------------------------------------------------
