@@ -20,6 +20,11 @@ class HomeViewsTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def test_contact_view_post(self):
+        url = reverse('home:contact')
+        data = {''}
+        response = self.client.post()
+
     def test_get_email_view(self):
         url = reverse('home:get_email', kwargs={'pk': self.user1.id})
         response = self.client.get(url)
@@ -30,3 +35,16 @@ class HomeViewsTests(TestCase):
         url = reverse('home:get_email', kwargs={'pk': 99})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+    def test_validate_email_view(self):
+        url = reverse('home:validate_email', kwargs={'email': self.user1.email})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        expected = {'is_taken': 'true'}
+        self.assertEqual(content, expected)
+        url = reverse('home:validate_email', kwargs={'email': 'Losowy'})
+        response = self.client.get(url)
+        content = json.loads(response.content)
+        expected = {'is_taken': 'false'}
+        self.assertEqual(content, expected)

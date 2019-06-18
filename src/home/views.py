@@ -37,8 +37,8 @@ class GetEmail(View):
 class ValidateEmailView(View):
     def get(self, request, email):
         users = User.objects.filter(email=email)
-        msg = {'is_taken': 'true'}
+        msg = {'is_taken': 'false'}
         if users.exists():
-            msg = {'is_taken': 'false'}
+            msg = {'is_taken': 'true'}
             return JsonResponse(msg)
         return JsonResponse(msg)
