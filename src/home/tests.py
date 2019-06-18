@@ -25,6 +25,7 @@ class HomeViewsTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_contact_view_post_with_email(self):
+        mail.outbox = []
         url = reverse('home:contact')
         data = {'subject': 'Tytuł', 'message': 'Treść', 'email': 'bartosz@wp.com'}
         response = self.client.post(url, data)

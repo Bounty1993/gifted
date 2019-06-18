@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'src.accounts',
     'src.rooms',
     'src.forum',
+    'src.notifications',
 
 ]
 

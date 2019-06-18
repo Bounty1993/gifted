@@ -181,12 +181,20 @@ class Room(models.Model):
         return num_threads
 
 
+class DonationQuerySet(models.QuerySet):
+
+    def resume(self): # will be change
+        return 'wiadomość'
+
+
 class Donation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='donations')
     date = models.DateField(auto_now=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     comment = models.CharField(max_length=250, blank=True)
+
+    objects = DonationQuerySet.as_manager()
 
     def __str__(self):
         return f'{self.room} - {self.amount}'
