@@ -108,3 +108,15 @@ a:hover {
     border-radius: 5px;
     margin-top: 5px;
 }
+.facebookBtn {
+    background-color: #4e69a2;
+    color: white;
+    width: 50%;
+    font-weight: bold;
+    margin-left: 25%;
+    margin-top: 5px;
+}
+.facebookBtn:hover {
+    background-color: #3c5a99;
+    color: white;
+}

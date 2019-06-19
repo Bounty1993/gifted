@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('rooms/', include('src.rooms.urls', namespace='rooms')),
     path('accounts/', include('src.accounts.urls', namespace='accounts')),
+    path('accounts/', include('allauth.urls')),
     path('forum/', include('src.forum.urls', namespace='forum')),
 ]
 
