@@ -9,26 +9,23 @@ from django.db.models import (
 )
 
 
-class VisibleManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(visible=True)
-
+class VisibleManager(models.QuerySet):
     def search(self, field):
-        return self.get_queryset().filter(
+        return self.filter(
             Q(receiver__icontains=field) |
             Q(gift__icontains=field) |
             Q(description__icontains=field)
         )
 
     def most_popular(self):
-        popular = (self.get_queryset()
+        popular = (self
                    .annotate(collected=F('price')-F('to_collect'))
                    .order_by('-collected')
                    )
         return popular
 
     def most_patrons(self):
-        num_patrons = (self.get_queryset()
+        num_patrons = (self
                        .annotate(patrons_number=Count('patrons'))
                        .exclude(patrons_number=0)
                        .order_by('-patrons_number')
@@ -36,7 +33,7 @@ class VisibleManager(models.Manager):
         return num_patrons
 
     def most_to_collect(self):
-        return self.get_queryset().order_by('-to_collect')
+        return self.order_by('-to_collect')
 
 
 class Room(models.Model):
@@ -73,7 +70,7 @@ class Room(models.Model):
     )
 
     objects = models.Manager()
-    get_visible = VisibleManager()
+    get_visible = VisibleManager.as_manager()
 
     @property
     def percent_left(self):

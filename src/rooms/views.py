@@ -31,16 +31,28 @@ class RoomRegisterView(CreateView):
         return redirect(reverse('rooms:list'))
 
 
-class RoomListView(ListView):
-    model = Room
+class FilterSearchMixin:
+    request = None
+    model = None
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        field = self.request.GET.get('search', None)
+        if field:
+            queryset = queryset.search(field)
+        order = self.request.GET.get('order', None)
+        if order:
+            queryset = queryset.order_by(order)
+        return queryset
+
+
+class RoomListView(FilterSearchMixin, ListView):
+    queryset = Room.get_visible.all()
     template_name = 'rooms/list.html'
     context_object_name = 'rooms'
 
     def get_queryset(self):
-        field = self.request.GET.get('search', None)
-        queryset = Room.get_visible.order_by('-to_collect')
-        if field:
-            return queryset.search(field)
+        queryset = super().get_queryset()
         return queryset.prefetch_related('observers').prefetch_related('patrons')
 
     def get_context_data(self, **kwargs):
