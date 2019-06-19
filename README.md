@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/Bounty1993/gifted.svg?branch=master)](https://travis-ci.org/Bounty1993/gifted)
+
+
 Celem My Blog jest stworzenie platformy gdzie użytkownicy mogą organizować zbiórki na prezenty dla znajomych i rodziny.
 
 Użyte technologie:
