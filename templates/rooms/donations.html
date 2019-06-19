@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block cssscript %}
+  <link rel="stylesheet" href="{% static 'css/rooms/detail.css' %}">
+{% endblock cssscript %}
+{% block content %}
+  <div class='row'>
+    <div class='col-9'>
+      <div id="chart" data-url="{% url 'rooms:donation_chart' room.id %}"></div>
+      <div class='header-tab'>
+        Wpłaty od użytkowników
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Użytkownik</th>
+            <th scope="col">Kwota</th>
+            <th scope="col">Data</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for donation in donations %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{donation.user.profile.full_name}}</td>
+            <td>{{donation.amount}}</td>
+            <td>{{donation.date}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script src="{% static 'js/rooms/donations.js' %}"></script>
+{% endblock javascript %}

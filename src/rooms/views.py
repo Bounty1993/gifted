@@ -86,6 +86,52 @@ class RoomDetailView(DetailView):
         return context
 
 
+class DonationListView(ListView):
+    model = Donation
+    template_name = 'rooms/donations.html'
+    paginate_by = 10
+    order_by = 'id'
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        queryset = Donation.objects.filter(room_id=pk)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['donations'] = self.object_list.select_related('user__profile')
+        context['room'] = Room.objects.get(pk=self.kwargs['pk'])
+        return context
+
+
+class DonationChartView(View):
+    def get(self, request, pk):
+        room = get_object_or_404(Room, pk=pk)
+        chart_data = room.donations.get_chart_data()
+        chart_data = {
+            'chart': {
+                'type': 'column'
+            },
+            'title': {
+                'text': 'Historia przekazywanych kwot'
+            },
+            'xAxis': {
+                'categories': chart_data['categories']
+            },
+            'yAxis': {
+                'min': 0,
+                'title': {
+                    'text': 'Kwota (PLN)'
+                }
+            },
+            'series': [{
+                'name': 'Donacje',
+                'data': chart_data['data']
+            }]
+        }
+        return JsonResponse(chart_data)
+
+
 @login_required
 def observers(request, pk):
     room = get_object_or_404(Room, pk=pk)
@@ -210,19 +256,3 @@ def make_donation(request, pk):
             message = {'message': form.errors}
             return JsonResponse(message)
 
-
-class DonationListView(View):
-    def get(self, request, pk):
-        room = get_object_or_404(Room, pk=pk)
-        if not room.is_visible():
-            raise Http404()
-        donations = list(room.objects.values_list(flat=True))
-        if donations:
-            message={
-                'donations': donations
-            }
-        else:
-            message = {
-                'error': 'Nie znaleziono żadnych donacji'
-            }
-        return JsonResponse(message)

@@ -92,6 +92,34 @@ class RoomDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class DonationListViewTest(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser1', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
+                                        to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.room1.donate({'user': self.user1, 'amount': 500})
+        self.room1.donate({'user': self.user2, 'amount': 100})
+
+    def test_status_code(self):
+        url = reverse('rooms:donation', kwargs={'pk': self.room1.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_chart_data(self):
+        Donation.objects.create(user=self.user1, room=self.room1, amount=200)
+        Donation.objects.filter(amount=200).update(date=datetime(2019, 6, 6).date())
+        url = reverse('rooms:donation_chart', kwargs={'pk': self.room1.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        expected = [200, 600]
+        self.assertEqual(content['series'][0]['data'], list(expected))
+        today = datetime.now().date()
+        expected = ['2019-06-06', today.strftime('%Y-%m-%d')]
+        self.assertEqual(content['xAxis']['categories'], expected)
+
+
 class DonateViewTest(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='testuser', password='12345')

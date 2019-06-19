@@ -186,6 +186,15 @@ class DonationQuerySet(models.QuerySet):
     def resume(self): # will be change
         return 'wiadomość'
 
+    def get_chart_data(self):
+        categories = [1,2,3,4,5]
+        data = self.values('date').annotate(amount__sum=Sum('amount'))
+        chart_data = {
+            'categories': [x['date'] for x in data],
+            'data': [int(x['amount__sum']) for x in data]
+        }
+        return chart_data
+
 
 class Donation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -198,6 +207,9 @@ class Donation(models.Model):
 
     def __str__(self):
         return f'{self.room} - {self.amount}'
+
+    class Meta:
+        ordering = ['date', ]
 
 
 class Message(models.Model):
