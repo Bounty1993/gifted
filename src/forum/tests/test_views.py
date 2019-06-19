@@ -1,11 +1,14 @@
-from datetime import datetime
 import json
+from datetime import datetime
+
+from django.contrib.auth import get_user_model
+from django.db.models import F, Q, Sum
 from django.test import TestCase
 from django.urls import reverse
-from django.db.models import Sum, F, Q
-from ..models import Post, Thread
+
 from src.rooms.models import Room
-from django.contrib.auth import get_user_model
+
+from ..models import Post, Thread
 
 User = get_user_model()
 

@@ -1,14 +1,8 @@
-from django.urls import path, include
-from django.contrib.auth.views import (
-    LoginView,
-    LogoutView
-)
-from .views import (
-    ProfileDetailView,
-    signup,
-    update_profile,
-    MyPasswordChangeView,
-)
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import include, path
+
+from .views import (MyPasswordChangeView, ProfileDetailView, signup,
+                    update_profile)
 
 app_name = 'accounts'
 urlpatterns = [

@@ -1,9 +1,12 @@
 from datetime import datetime
-from django.test import TestCase
 from unittest import skip
-from ..models import Post, Opinion
-from src.rooms.models import Room
+
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
+from src.rooms.models import Room
+
+from ..models import Opinion, Post
 
 User = get_user_model()
 

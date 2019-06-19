@@ -1,14 +1,12 @@
-from django.test import TestCase
-from django.core import mail
-from src.rooms.models import Room
-from django.contrib.auth import get_user_model
-from django.core.mail import EmailMessage
 from datetime import datetime
-from src.notifications.tasks import (
-    send_email,
-    send_mass_email,
-    notify_creator,
-)
+
+from django.contrib.auth import get_user_model
+from django.core import mail
+from django.core.mail import EmailMessage
+from django.test import TestCase
+
+from src.notifications.tasks import notify_creator, send_email, send_mass_email
+from src.rooms.models import Room
 
 User = get_user_model()
 

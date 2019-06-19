@@ -1,11 +1,11 @@
-from django.shortcuts import render
-from django.views import View
-from django.views.generic import TemplateView, FormView
-from django.urls import reverse
-from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import View
+from django.views.generic import FormView, TemplateView
+
 from .forms import ContactForm, send_email
 
 User = get_user_model()

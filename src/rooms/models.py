@@ -1,11 +1,9 @@
 from django.conf import settings
-from django.urls import reverse
+from django.db import models
+from django.db.models import Count, F, Q, Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.db import models
-from django.db.models import (
-    Q, Count, F, Sum,
-)
+from django.urls import reverse
 
 
 class VisibleManager(models.Manager):

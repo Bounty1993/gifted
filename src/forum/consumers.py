@@ -1,6 +1,8 @@
-from channels.generic.websocket import WebsocketConsumer
 import json
+
+from channels.generic.websocket import WebsocketConsumer
 from django.forms.models import model_to_dict
+
 from .forms import ThreadCreateForm
 from .models import Thread
 

@@ -1,5 +1,6 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
+
 from src.forum import routing
 
 application = ProtocolTypeRouter({

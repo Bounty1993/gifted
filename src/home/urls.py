@@ -1,10 +1,6 @@
-from django.urls import path, include
-from .views import (
-    MainView,
-    ContactView,
-    GetEmail,
-    ValidateEmailView
-)
+from django.urls import include, path
+
+from .views import ContactView, GetEmail, MainView, ValidateEmailView
 
 app_name = 'home'
 urlpatterns = [

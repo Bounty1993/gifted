@@ -1,8 +1,8 @@
-from django.test import TestCase
-from django.contrib.auth import get_user_model
-from django.urls import resolve, reverse
-
 import datetime
+
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import resolve, reverse
 
 from src.accounts.forms import ProfileForm
 
@@ -57,6 +57,3 @@ class ProfileFormTest(TestCase):
         self.assertFalse(form.is_valid())
         adult_error = 'You are not adult so you cannot sign up'
         self.assertEqual(form.errors['date_birth'], [adult_error])
-
-
-

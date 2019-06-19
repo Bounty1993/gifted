@@ -1,12 +1,13 @@
-from django.test import TestCase
-from django.urls import reverse
-from django.urls import resolve
-from datetime import datetime
-from django.contrib.auth import get_user_model
-from src.rooms.models import Room, Donation, Message
-from src.rooms.forms import DonateForm
-from src.rooms.views import make_donation
 import json
+from datetime import datetime
+
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import resolve, reverse
+
+from src.rooms.forms import DonateForm
+from src.rooms.models import Donation, Message, Room
+from src.rooms.views import make_donation
 
 User = get_user_model()
 
@@ -251,5 +252,3 @@ class DeleteMessageViewTest(TestCase):
         response_data = json.loads(response.content)
         expected = {'is_valid': 'true'}
         self.assertEqual(response_data, expected)
-
-

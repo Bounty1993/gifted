@@ -1,17 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
-from .views import (
-    AllPostListView,
-    PostCreateView,
-    PostListView,
-    PostUpdateView,
-    PostDeleteView,
-    ThreadCreateView,
-    GetThreadsView,
-    AddLikeView,
-    AddDisLikeView,
+from django.urls import include, path
 
-)
+from .views import (AddDisLikeView, AddLikeView, AllPostListView,
+                    GetThreadsView, PostCreateView, PostDeleteView,
+                    PostListView, PostUpdateView, ThreadCreateView)
 
 app_name = 'forum'
 urlpatterns = [

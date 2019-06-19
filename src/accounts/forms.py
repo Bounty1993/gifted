@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User
 import datetime
+
 from django import forms
+from django.contrib.auth.models import User
 from django.forms import ValidationError
 
 from .models import Profile
@@ -43,4 +44,3 @@ class UserForm(forms.ModelForm):
             'first_name',
             'last_name'
         ]
-

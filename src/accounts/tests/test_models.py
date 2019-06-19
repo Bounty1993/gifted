@@ -1,7 +1,8 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
-from ..models import Profile
 from django.core import mail
+from django.test import TestCase
+
+from ..models import Profile
 
 User = get_user_model()
 

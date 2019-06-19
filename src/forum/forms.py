@@ -1,6 +1,6 @@
-from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Reset
+from crispy_forms.layout import Reset, Submit
+from django import forms
 
 from .models import Post, Thread
 

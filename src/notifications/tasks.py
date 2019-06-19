@@ -1,7 +1,9 @@
 from datetime import datetime
-from django.core.mail import EmailMessage
-from src.rooms.models import Donation, Room
+
 from django.core import mail
+from django.core.mail import EmailMessage
+
+from src.rooms.models import Donation, Room
 
 
 def send_email(data):
