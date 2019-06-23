@@ -69,7 +69,7 @@ class Room(models.Model):
         related_name='observed_rooms'
     )
 
-    objects = models.Manager()
+    objects = VisibleManager.as_manager()
     get_visible = VisibleManager.as_manager()
 
     @property

@@ -104,10 +104,18 @@ a:hover {
 }
 .searchHdr {
     padding: 5px;
-    border: 2px solid #eee;
+    border: 2px solid #ddd;
     border-radius: 5px;
-    margin-top: 5px;
+    background-color: #eee;
 }
+.search-tags {
+    display: inline-block;
+    padding: 5px;
+}
+.one-tag {
+    padding: 0 5px;
+}
+
 .facebookBtn {
     background-color: #4e69a2;
     color: white;

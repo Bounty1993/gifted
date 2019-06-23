@@ -32,8 +32,25 @@
   </div>
 </div>
 <div class='row'>
-  <div class='col-8'>
-    {% for room in observed_rooms %}
+  <div class='col-md-8'>
+    <div class="searchHdr d-flex justify-content-between mb-2">
+      {% if observed %}
+      <div class="search-tags">
+        <a class="one-tag">
+          Obserwujesz: {{ observed }}
+        </a>
+        <a class="one-tag" href="{% url 'accounts:home' %}?all=true">
+          Wszystkie
+        </a>
+      </div>
+      {% endif %}
+      <div class="search-tags">
+        <a class="one-tag" href="{% url 'accounts:home' %}?order=most_popular">Najpopularniejsze</a>
+        <a class="one-tag" href="{% url 'accounts:home' %}?order=most_patrons">Często wspierane</a>
+        <a class="one-tag" href="{% url 'accounts:home' %}?order=most_to_collect">Największe</a>
+      </div>
+    </div>
+    {% for room in rooms %}
     <div class="room">
       <div class="description">
         <div class="d-flex justify-content-around">
@@ -63,8 +80,9 @@
       </div>
     </div>
     {% endfor %}
+    {% include 'pagination.html' with obj_list=rooms %}
   </div>
-  <div class='col-4'>
+  <div class='col-md-4'>
     <div class='messageBox'>
       <ul class='messageList'>
         {% for message in message_list %}
@@ -86,7 +104,7 @@
           </div>
         </li>
         {% empty %}
-        <li class="messageElement">Brak wiadomości</li>
+        <li class="messageElement pt-2">Brak wiadomości</li>
         {% endfor %}
       </ul>
     </div>

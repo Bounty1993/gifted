@@ -117,3 +117,10 @@
 .hidden {
   display: none;
 }
+.search-tags {
+    display: inline-block;
+    padding: 5px;
+}
+.one-tag {
+    
+}

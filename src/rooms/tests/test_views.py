@@ -4,10 +4,11 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import resolve, reverse
+from django.views.generic import ListView
 
 from src.rooms.forms import DonateForm
 from src.rooms.models import Donation, Message, Room
-from src.rooms.views import make_donation
+from src.rooms.views import make_donation, FilterSearchMixin
 
 User = get_user_model()
 
@@ -73,6 +74,14 @@ class RoomListViewTest(TestCase):
 
     def test_response_code(self):
         self.assertEqual(self.response.status_code, 200)
+
+
+class FilterSearchMixinTest(TestCase):
+    def setUp(self):
+        pass
+
+    class ExampleView(FilterSearchMixin, ListView):
+        pass
 
 
 class RoomDetailViewTest(TestCase):

@@ -1,0 +1,34 @@
+{% if obj_list.has_other_pages %}
+{% load pagination_tags %}
+{% load pagination_tags %}
+<nav>
+<ul class="pagination justify-content-center">
+  <li class="page-item">
+    <a class="page-link" href="?{% url_replace request 'page' 1 %}" tabindex="-1">
+      Początek
+    </a>
+  </li>
+  {% if obj_list.has_previous %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_replace request 'page' obj_list.previous_page_number %}">
+      {{obj_list.previous_page_number}}
+    </a></li>
+  {% endif %}
+  <li class="page-item active">
+    <a class="page-link">{{obj_list.number}}</a>
+  </li>
+  {% if obj_list.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_replace request 'page' obj_list.next_page_number %}">
+      {{obj_list.next_page_number}}
+    </a>
+  </li>
+  {% endif %}
+  <li class="page-item">
+    <a class="page-link" href="?{% url_replace request 'page' obj_list.paginator.num_pages %}">
+      Koniec
+    </a>
+  </li>
+</ul>
+</nav>
+{% endif %}

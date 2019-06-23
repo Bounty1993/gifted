@@ -16,76 +16,60 @@
 <div id="trendy-panel" class="toggle-panel">
   Najważniejsze zbiórki
 </div>
-<div id="most-trendy" class="hidden">
+<div id="most-trendy" class="hidden mb-2">
   <div class="room-panel">
     <div class="room-list-title">
-      Najwięcej darczyńców
+      Najpopularniejsze
     </div>
     <ul class="room-list">
+      {% for room in most_popular %}
       <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">135 USD </span>
+        <span class="founder">{{room.gift}}</span>
+        <span class="amount">{{room.price}}</span>
       </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">135 USD </span>
-      </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">135 USD </span>
-      </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">135 USD </span>
-      </li>
+      {% endfor %}
     </ul>
   </div>
   <div class="room-panel">
     <div class="room-list-title">
-      Najwięcej zebrano
+      Najwięcej wspierających
     </div>
     <ul class="room-list">
+      {% for room in most_patrons %}
       <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">1000 USD </span>
+        <span class="founder">{{room.gift}}</span>
+        <span class="amount">{{room.patrons.count}}</span>
       </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">855 USD </span>
-      </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">698 USD </span>
-      </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">789 USD </span>
-      </li>
+      {% endfor %}
     </ul>
   </div>
   <div class="room-panel">
     <div class="room-list-title">
-      Najwięcej zebrano
+      Najwięcej do zebrania
     </div>
     <ul class="room-list">
+      {% for room in most_to_collect %}
       <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">1000 USD </span>
+        <span class="founder">{{room.gift}}</span>
+        <span class="amount">{{room.price}}</span>
       </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">855 USD </span>
-      </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">698 USD </span>
-      </li>
-      <li class="list-item">
-        <span class="founder">Prezent</span>
-        <span class="amount">789 USD </span>
-      </li>
+      {% endfor %}
     </ul>
   </div>
+</div>
+<div class="searchHdr d-flex justify-content-between">
+      <div>
+        <form action="" method="get">
+          <input class="search form-control" type="text" name="search" placeholder="Fraza..." />
+          <input type="submit" value="Szukaj"/>
+        </form>
+      </div>
+      <div class="search-tags">
+        <a class="one-tag" href="{% url 'rooms:list' %}?order=score">Popularne</a>
+        <a class="one-tag" href="{% url 'rooms:list' %}?order=-date_expires">Najnowsze</a>
+        <a class="one-tag" href="{% url 'rooms:list' %}?order=date_expires">Kończące się</a>
+        <a class="one-tag" href="{% url 'rooms:list' %}?order=to_collect">Największe</a>
+      </div>
 </div>
 {% for room in rooms %}
 <div class="room">
