@@ -67,6 +67,7 @@ class PostCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         room_id = self.kwargs['pk']
         context['room'] = get_object_or_404(Room, id=room_id)
+        Thread.objects.get_secondary(thread_id=1)
         return context
 
 

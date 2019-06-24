@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Count, F, Q, Sum
 from django.db.models.functions import Coalesce
 from django.forms.models import model_to_dict
+from django.db.models import Prefetch
 
 from src.rooms.models import Room
 
@@ -24,18 +25,29 @@ class PostQuerySet(models.QuerySet):
 
     def summarise(self):
         all_comments = []
-        for post in self.prefetch_related('threads').prefetch_related('author'):
+        posts = (self.prefetch_related(
+                    Prefetch(
+                        'threads',
+                        queryset=Thread.objects.filter(parent__isnull=True),
+                    )
+                )
+                .prefetch_related('author'))
+        for post in posts:
             post_detail = {
                 'id': post.id,
                 'author': post.author,
                 'subject': post.subject,
                 'content': post.content,
-                'likes': post.get_likes(),
                 'date': post.date,
                 'threads': post.threads.count(),
             }
             all_comments.append(post_detail)
-        all_comments = self.annotate(likes=Coalesce(Sum('opinions__likes'), 0))
+        likes = self.annotate(likes__sum=Sum('opinions__likes')).values('pk', 'likes__sum')
+        for post in likes:
+            post_id = post['pk']
+            for comment in all_comments:
+                if comment['id'] == post_id:
+                    comment['likes'] = post['likes__sum']
         return all_comments
 
     def data_with_likes(self):
@@ -101,7 +113,10 @@ class ThreadQuerySet(models.QuerySet):
         return node
 
     def get_main(self, post_id):
-        main_threads = self.filter(post_id=post_id, parent__isnull=True)
+        main_threads = (self.filter(post_id=post_id, parent__isnull=True)
+                        .prefetch_related('author')
+                        .prefetch_related('children')
+                        .prefetch_related('opinions'))
         threads_dict = {}
         for num, thread in enumerate(main_threads):
             one_thread_dict = {str(num): thread.summarise()}
@@ -109,7 +124,11 @@ class ThreadQuerySet(models.QuerySet):
         return threads_dict
 
     def get_secondary(self, thread_id):
-        threads = self.filter(parent_id=thread_id)
+        threads = (self.filter(parent_id=thread_id)
+                   .prefetch_related('author')
+                   .prefetch_related('children')
+                   .select_related('parent')
+                   .prefetch_related('opinions'))
         threads_dict = {}
         for num, thread in enumerate(threads):
             one_thread_dict = {num: thread.summarise()}
@@ -144,6 +163,7 @@ class Thread(models.Model):
         summary = model_to_dict(self)
         summary['author'] = self.author.username
         summary['date'] = self.date.strftime('%d.%m.%y %H:%M')
+        summary['likes'] = self.get_likes()
         thread_parent = self.parent.id if self.parent else None
         summary.update({
             'children_count': self.children.count(),
@@ -152,8 +172,10 @@ class Thread(models.Model):
         return summary
 
     def get_likes(self):
-        likes = self.opinions.aggregate(likes__sum=Coalesce(Sum('likes'), 0))
-        return likes['likes__sum']
+        likes = 0
+        for opinion in self.opinions.all():
+            likes += opinion.likes
+        return likes
 
     def show_children(self):
         all_threads = []
