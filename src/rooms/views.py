@@ -63,14 +63,17 @@ class RoomListView(FilterSearchMixin, ListView):
         return context
 
 
-class OwnerRedirectMixin:
-    def dispatch(self, request, *args, **kwargs):
-        pk = self.kwargs['pk']
+class OwnershipMixin:
+   def dispatch(self, *args, **kwargs):
         user = self.request.user
+        pk = self.kwargs['pk']
         room = get_object_or_404(Room, pk=pk)
-        if room.user == user:
-            return redirect('rooms:list')
-        super().dispath(request, *args, **kwargs)
+        can_see = (
+          room.visible or room.observers.filter(id=user.id).exists()
+        )
+        if can_see:
+          return super().dispatch(*args, **kwargs)
+        raise Http404
 
 
 class RoomDetailView(DetailView):
@@ -80,8 +83,10 @@ class RoomDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        donations = self.object.donations.select_related('user__profile')
-        context['donations'] = donations
+        donations = self.object.donations.all()
+        context['donations'] = (
+            donations.order_by('-date').select_related('user__profile')[:5])
+        context['many_donations'] = donations.count() > 3
         context['users_list'] = User.objects.all()
         return context
 

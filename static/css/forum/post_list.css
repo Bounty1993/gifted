@@ -2,6 +2,7 @@
   background-color: #eee;
   padding: 20px;
   margin-top: 10px;
+  border: 2px solid #ddd;
   border-radius: 6px;
 }
 .comment .head {
@@ -32,7 +33,9 @@
   transform: scale(1.01);
 }
 /*-------like buttons -----------------*/
-.dislikeBtn {;
+.dislikeBtn {
+  margin-right: 2px;
+  padding: 10px 20px;
   background-color: #ff3333;
   color: white;
 }

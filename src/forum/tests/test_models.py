@@ -38,9 +38,8 @@ class PostModelTest(TestCase):
         self.assertEqual(self.post.subject, 'Test')
         self.assertEqual(self.post.content, 'Test content')
 
-    @skip('Not testing now')
-    def test_no_likes(self):
-        self.assertEqual(self.post.likes, 0)
+    def test_get_likes_empty(self):
+        self.assertEqual(self.post.get_likes(), 0)
 
     def test_date_creation(self):
         self.assertTrue(self.post.date)

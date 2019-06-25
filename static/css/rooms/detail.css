@@ -115,3 +115,12 @@
   margin-top: 10px;
   margin-left: 10%;
 }
+.shadowTable{
+    background: -webkit-linear-gradient(#000, #fff);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
+.tableBtn {
+    margin-top: -100px;
+    margin-left: 37%;
+}

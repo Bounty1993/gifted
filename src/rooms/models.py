@@ -10,6 +10,12 @@ from django.db.models import (
 
 
 class VisibleManager(models.QuerySet):
+    def get_visible(self, user):
+        visible_query = self.filter(visible=True)
+        room_created = user.rooms.all()
+        room_guests = user.guest_rooms.all()
+        return (visible_query | room_created | room_guests).distinct()
+
     def search(self, field):
         return self.filter(
             Q(receiver__icontains=field) |
@@ -208,6 +214,7 @@ class Donation(models.Model):
 
     class Meta:
         ordering = ['date', ]
+        get_latest_by = ['date', ]
 
 
 class Message(models.Model):

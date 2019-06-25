@@ -84,46 +84,53 @@
         <button class='btn btn-success' id="addGuest">Dodaj</button>
         <button class='btn btn-danger' id="removeGuest">Usuń</button>
       </div>
-      <form id="messageForm">
+      <form id="messageForm" class="mt-5">
         <div class="secondary">Poproś użytkownika o wsparcie</div>
         <select class="form-control w-100" name="receiver">
           {% for user in users_list %}
             <option value="{{user.id}}">{{user.username}}</option>
           {% endfor %}
         </select>
-        <input type="text" class="form-control mt-2" name="subject">
-        <input type="text" class="form-control mt-2" name="content">
+        <input type="text" class="form-control mt-2" name="subject" placeholder="Tytuł">
+        <textarea class="form-control mt-2" name="content">Treść</textarea>
         <button class="btn btn-success w-100 mt-1" id="messageBtn">Wyślij</button>
       </form>
     </div>
   </div>
-  <div class='row'>
-    <div class='col-9'>
-      <div class='header-tab'>
-        Wpłaty od użytkowników
+  {% if many_donations %}
+    <div class='row'>
+      <div class='col-9'>
+        <div class='header-tab'>
+          Wpłaty od użytkowników
+        </div>
+        <table class="table shadowTable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Użytkownik</th>
+              <th scope="col">Kwota</th>
+              <th scope="col">Data</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for donation in donations %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{donation.user.profile.full_name}}</td>
+              <td>{{donation.amount}}</td>
+              <td>{{donation.date}}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <div class="tableBtn">
+        <a href="{% url 'rooms:donation' pk=room.pk %}">
+            <button class='blueBtn roomBtn'>Szczegóły</button>
+        </a>
+        </div>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Użytkownik</th>
-            <th scope="col">Kwota</th>
-            <th scope="col">Data</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for donation in donations %}
-          <tr>
-            <th scope="row">{{forloop.counter}}</th>
-            <td>{{donation.user.profile.full_name}}</td>
-            <td>{{donation.amount}}</td>
-            <td>{{donation.date}}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
     </div>
-  </div>
+  {% endif %}
 </div>
 {% endblock content %}
 {% block javascript %}

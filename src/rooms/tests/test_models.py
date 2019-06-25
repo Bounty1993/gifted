@@ -36,6 +36,8 @@ class RoomTransactionModelTest(TestCase):
         self.room2 = Room.objects.get(pk=room2.id)
 
         self.user1 = User.objects.get(id=1)
+        self.user2 = User.objects.get(id=2)
+        self.user3 = User.objects.get(id=3)
 
     def test_creation(self):
         room = Room.objects.get(receiver='receiver1')
@@ -109,6 +111,16 @@ class RoomTransactionModelTest(TestCase):
         room.donate({'user': user, 'amount': rest})
         self.assertFalse(room.is_active)
         self.assertEqual(room.to_collect, 0)
+
+    def test_get_visible(self):
+        room3 = Room.objects.create(
+            receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
+            to_collect=800, visible=False, date_expires=datetime(2019, 6, 6))
+        query = Room.objects.get_visible(self.user3)
+        self.assertFalse(room3 in query)
+        room3.guests.add(self.user2)
+        query = Room.objects.get_visible(self.user2)
+        self.assertTrue(room3 in query)
 
     def test_get_patrons(self):
         room3 = Room.objects.get(receiver='receiver2')

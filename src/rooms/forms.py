@@ -29,7 +29,6 @@ class RoomRegisterForm(forms.ModelForm):
 
     def clean_date_expires(self):
         date_expires = self.cleaned_data['date_expires']
-        print(date_expires, 'clean_date')
         today = datetime.now().date()
         half_year_later = today + timedelta(days=183)
         if date_expires > half_year_later:
