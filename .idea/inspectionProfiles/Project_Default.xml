@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="18">
+          <list size="20">
             <item index="0" class="java.lang.String" itemvalue="coverage" />
             <item index="1" class="java.lang.String" itemvalue="pyflakes" />
             <item index="2" class="java.lang.String" itemvalue="django-crispy-forms" />
@@ -23,6 +23,8 @@
             <item index="15" class="java.lang.String" itemvalue="factory-boy-2.12.0" />
             <item index="16" class="java.lang.String" itemvalue="factory-boy" />
             <item index="17" class="java.lang.String" itemvalue="Werkzeug" />
+            <item index="18" class="java.lang.String" itemvalue="python-decouple" />
+            <item index="19" class="java.lang.String" itemvalue="dj-database-url" />
           </list>
         </value>
       </option>
