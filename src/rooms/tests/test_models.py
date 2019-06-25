@@ -58,6 +58,15 @@ class RoomTransactionModelTest(TestCase):
         self.assertTrue(after_score > before_score)
     """
 
+    def test_can_see(self):
+        room4 = Room.objects.create(
+            receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
+            to_collect=800, visible=False, date_expires=datetime(2019, 6, 6))
+        room4.guests.add(self.user2)
+        self.assertTrue(room4.can_see(self.user1))
+        self.assertTrue(room4.can_see(self.user2))
+        self.assertFalse(room4.can_see(self.user3))
+
     def test_percent_left(self):
         all_donations = (Donation.objects
             .filter(room=self.room)

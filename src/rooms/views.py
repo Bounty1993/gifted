@@ -64,19 +64,18 @@ class RoomListView(FilterSearchMixin, ListView):
 
 
 class OwnershipMixin:
-   def dispatch(self, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         user = self.request.user
         pk = self.kwargs['pk']
         room = get_object_or_404(Room, pk=pk)
-        can_see = (
-          room.visible or room.observers.filter(id=user.id).exists()
-        )
-        if can_see:
-          return super().dispatch(*args, **kwargs)
+        if room.creator == user:
+            return reverse('room:edit', kwargs={'pk': pk})
+        if room.can_see(user):
+            return super().dispatch(*args, **kwargs)
         raise Http404
 
 
-class RoomDetailView(DetailView):
+class RoomDetailView(OwnershipMixin, DetailView):
     model = Room
     template_name = 'rooms/detail.html'
     context_object_name = 'room'

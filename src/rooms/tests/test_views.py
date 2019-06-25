@@ -133,8 +133,14 @@ class DonationListViewTest(TestCase):
 class DonateViewTest(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='testuser', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.user3 = User.objects.create_user(username='testuser3', password='12345')
         self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
                                          to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.room2 = Room.objects.create(receiver='receiver1', creator=self.user1, gift='gift1', price=1000,
+                                         description='test', to_collect=1000, visible=False,
+                                         date_expires=datetime(2019, 6, 6))
+        self.room2.guests.add(self.user2)
         self.user = User.objects.create_user(
             username='Tom',
             password='Test'
@@ -145,6 +151,12 @@ class DonateViewTest(TestCase):
         url = reverse('rooms:detail', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_forbid_to_see_user(self):
+        self.client.login(username='testuser3', password='12345')
+        url = reverse('rooms:detail', kwargs={'pk': 2})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     """
     def test_url_resolves_donate(self):

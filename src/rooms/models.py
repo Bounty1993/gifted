@@ -101,6 +101,15 @@ class Room(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+    def can_see(self, user):
+        if self.visible:
+            return True
+        can_see = list(self.guests.all()) if self.guests.exists() else []
+        can_see.append(self.creator)
+        if user in can_see:
+            return True
+        return False
+
     def update_score(self):
         # It needs more development - unfortunately...
         # Problem is a recursion when signals
