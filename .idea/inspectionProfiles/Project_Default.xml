@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="21">
+          <list size="22">
             <item index="0" class="java.lang.String" itemvalue="coverage" />
             <item index="1" class="java.lang.String" itemvalue="dj-database-url" />
             <item index="2" class="java.lang.String" itemvalue="pyflakes" />
@@ -26,6 +26,7 @@
             <item index="18" class="java.lang.String" itemvalue="django-allauth" />
             <item index="19" class="java.lang.String" itemvalue="pytz" />
             <item index="20" class="java.lang.String" itemvalue="g" />
+            <item index="21" class="java.lang.String" itemvalue="celery" />
           </list>
         </value>
       </option>

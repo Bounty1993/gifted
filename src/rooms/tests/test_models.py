@@ -33,7 +33,7 @@ class RoomTransactionModelTest(TestCase):
         room3.donate({'user': user3, 'amount': 200})
 
         self.room = Room.objects.get(receiver='receiver1')
-        self.room2 = Room.objects.get(pk=2)
+        self.room2 = Room.objects.get(pk=room2.id)
 
         self.user1 = User.objects.get(id=1)
 
