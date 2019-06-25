@@ -4,29 +4,27 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="22">
+          <list size="20">
             <item index="0" class="java.lang.String" itemvalue="coverage" />
-            <item index="1" class="java.lang.String" itemvalue="pyflakes" />
-            <item index="2" class="java.lang.String" itemvalue="django-crispy-forms" />
-            <item index="3" class="java.lang.String" itemvalue="pycodestyle" />
-            <item index="4" class="java.lang.String" itemvalue="django-debug-toolbar" />
-            <item index="5" class="java.lang.String" itemvalue="django-extensions" />
-            <item index="6" class="java.lang.String" itemvalue="flake8" />
-            <item index="7" class="java.lang.String" itemvalue="sqlparse" />
-            <item index="8" class="java.lang.String" itemvalue="Django" />
-            <item index="9" class="java.lang.String" itemvalue="entrypoints" />
-            <item index="10" class="java.lang.String" itemvalue="isort" />
-            <item index="11" class="java.lang.String" itemvalue="pytz" />
-            <item index="12" class="java.lang.String" itemvalue="channels" />
-            <item index="13" class="java.lang.String" itemvalue="django" />
-            <item index="14" class="java.lang.String" itemvalue="django-allauth" />
-            <item index="15" class="java.lang.String" itemvalue="factory-boy-2.12.0" />
-            <item index="16" class="java.lang.String" itemvalue="factory-boy" />
-            <item index="17" class="java.lang.String" itemvalue="Werkzeug" />
-            <item index="18" class="java.lang.String" itemvalue="python-decouple" />
-            <item index="19" class="java.lang.String" itemvalue="dj-database-url" />
-            <item index="20" class="java.lang.String" itemvalue="gunicorn" />
-            <item index="21" class="java.lang.String" itemvalue="django-heroku" />
+            <item index="1" class="java.lang.String" itemvalue="dj-database-url" />
+            <item index="2" class="java.lang.String" itemvalue="pyflakes" />
+            <item index="3" class="java.lang.String" itemvalue="factory-boy" />
+            <item index="4" class="java.lang.String" itemvalue="Werkzeug" />
+            <item index="5" class="java.lang.String" itemvalue="django-crispy-forms" />
+            <item index="6" class="java.lang.String" itemvalue="django-heroku" />
+            <item index="7" class="java.lang.String" itemvalue="pycodestyle" />
+            <item index="8" class="java.lang.String" itemvalue="django-debug-toolbar" />
+            <item index="9" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="10" class="java.lang.String" itemvalue="django-extensions" />
+            <item index="11" class="java.lang.String" itemvalue="flake8" />
+            <item index="12" class="java.lang.String" itemvalue="sqlparse" />
+            <item index="13" class="java.lang.String" itemvalue="channels" />
+            <item index="14" class="java.lang.String" itemvalue="Django" />
+            <item index="15" class="java.lang.String" itemvalue="python-decouple" />
+            <item index="16" class="java.lang.String" itemvalue="entrypoints" />
+            <item index="17" class="java.lang.String" itemvalue="isort" />
+            <item index="18" class="java.lang.String" itemvalue="django-allauth" />
+            <item index="19" class="java.lang.String" itemvalue="pytz" />
           </list>
         </value>
       </option>
