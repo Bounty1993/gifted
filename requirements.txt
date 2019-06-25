@@ -21,5 +21,5 @@ django-allauth==0.39.1
 factory-boy==2.12.0
 Werkzeug==0.15.4
 psycopg2
-gunicorn
-django-heroku
+# gunicorn
+# django-heroku
