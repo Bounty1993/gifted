@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.db import transaction
@@ -14,14 +13,14 @@ from django.core.paginator import PageNotAnInteger
 
 from src.rooms.models import Room
 
-from .forms import ProfileForm, UserForm, CustomPasswordChangeForm
+from .forms import ProfileForm, UserForm, CustomPasswordChangeForm, CustomUserCreationForm
 from .models import Profile
 
 
 @transaction.atomic
 def signup(request):
     if request.method == 'POST':
-        user_form = UserCreationForm(request.POST)
+        user_form = CustomUserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user_instance = user_form.save()
@@ -33,7 +32,7 @@ def signup(request):
             messages.success(request, 'The profile was created successfully')
             return redirect(reverse_lazy('accounts:home'))
     else:
-        user_form = UserCreationForm()
+        user_form = CustomUserCreationForm()
         profile_form = ProfileForm()
     context = {
         'user_form': user_form,

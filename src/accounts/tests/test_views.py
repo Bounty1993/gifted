@@ -55,5 +55,5 @@ class ProfileFormTest(TestCase):
             instance=self.user
         )
         self.assertFalse(form.is_valid())
-        adult_error = 'You are not adult so you cannot sign up'
+        adult_error = 'Podana data wskazuje, że nie jesteś dorosły.'
         self.assertEqual(form.errors['date_birth'], [adult_error])

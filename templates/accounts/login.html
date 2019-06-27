@@ -1,34 +1,30 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% load
-
 {% block content %}
-<div class="login-panel">
-    <div class="row mt-5">
-        <div class="col-6 offset-3" style="text-align:center">
-            <h3>Zaloguj się do Gifted</h3>
-        </div>
-    </div>
-    <div class="col-6 offset-3">
-    <div class="my-panel">
-        <form method="post">
-            {% csrf_token %}
-            {{ form | crispy }}
-            <button class="detailBtn mainBtn" type="submit" style="width: 49%;">
-                Zaloguj się
-            </button>
-            <a href="{% url 'accounts:signup' %}">
-                <button class="forumBtn mainBtn" style="width: 49%;">Zarejestruj się</button>
-            </a>
-        </form>
-        {% load socialaccount %}
-        <a href="{% provider_login_url "facebook" method="oauth2" %}">
-            <button class="facebookBtn btn btn-lg btn-block">
-			        Facebook
-		        </button>
-        </a>
-        <div class="mt-4" style="text-align: center">Zapomniałeś hasła? Naciśnij <a href="">tutaj</a></div>
-    </div>
-    </div>
+<div class="row mt-5">
+  <div class="col-6 offset-3" style="text-align:center">
+    <h3>Zaloguj się do Gifted</h3>
+  </div>
+</div>
+<div class="col-6 offset-3">
+  <div class="my-panel">
+    <form method="post">
+      {% csrf_token %}
+      {{ form | crispy }}
+      <button class="greenBtn mainBtn" type="submit" style="width: 49%;">
+        Zaloguj się
+      </button>
+      <a href="{% url 'accounts:signup' %}">
+        <button class="blueBtn mainBtn" style="width: 49%;">Zarejestruj się</button>
+      </a>
+    </form>
+    {% load socialaccount %}
+    <a href="{% provider_login_url "facebook" method="oauth2" %}">
+    <button class="facebookBtn btn btn-lg btn-block">
+      Facebook
+    </button>
+    </a>
+    <div class="mt-4" style="text-align: center">Zapomniałeś hasła? Naciśnij <a href="#">tutaj</a></div>
+  </div>
 </div>
 {% endblock content %}

@@ -140,3 +140,6 @@ a:hover {
     background-color: #3c5a99;
     color: white;
 }
+.halfBtn {
+    width: 49%;
+}

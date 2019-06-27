@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 
 from .models import Profile
@@ -11,11 +12,12 @@ from .models import Profile
 
 class ProfileForm(forms.ModelForm):
     bio = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'rows': 6}),
         help_text='Tell everybody something about yourself',
         required=False)
     date_birth = forms.DateField(
-        input_formats=('%d/%m/%Y',), label='Data urodzenia')
+        input_formats=('%d/%m/%Y',),
+        label='Data urodzenia', required=False)
 
     class Meta:
         model = Profile
@@ -25,9 +27,11 @@ class ProfileForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
+        # method to improve - it doesnt work--------------------
         super().__init__(*args, **kwargs)
-        email = self.fields['date_birth']
-        print(email.initial)
+        date_birth = self.fields['date_birth']
+        if date_birth.initial:
+            date_birth.disabled = True
 
     def clean_date_birth(self):
         date_birth = self.cleaned_data['date_birth']
@@ -60,6 +64,35 @@ class UserForm(forms.ModelForm):
         same_email = (
             User.objects.exclude(id=user_id)
                 .filter(email=email)
+                .exclude(Q(email__isnull=True) | Q(email=''))
+        )
+        if same_email.exists():
+            msg = "Podany email jest niepoprawny"
+            raise forms.ValidationError(msg)
+        return email
+
+
+class CustomUserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].help_text = 'maksymalnie 150 znaków'
+        self.fields['password1'].help_text = 'Ustanów odpowienio silne hasło'
+        self.fields['password2'].help_text = 'Powtórz dokładnie to samo hasło!'
+
+    class Meta(UserCreationForm.Meta):
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+        ]
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not email:   # No email in form so nothing to check
+            return email
+        same_email = (
+            User.objects.filter(email=email)
                 .exclude(Q(email__isnull=True) | Q(email=''))
         )
         if same_email.exists():
