@@ -32,8 +32,6 @@ def signup(request):
             )
             messages.success(request, 'The profile was created successfully')
             return redirect(reverse_lazy('accounts:home'))
-        else:
-            messages.error(request, 'The profile was not created')
     else:
         user_form = UserCreationForm()
         profile_form = ProfileForm()
@@ -47,11 +45,11 @@ def signup(request):
 
 class SearchOrderProfileMixin:
     object = None
-    paginate_by = 2
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        rooms = self.object.user.observed_rooms.all()
+        rooms = self.object.user.observed_rooms.all().prefetch_related('creator')
         context['observed'] = rooms.count()
         is_all = self.request.GET.get('all', None)
         if not rooms.exists() or is_all == 'true':
@@ -102,7 +100,7 @@ def update_profile(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Profil został utworzony pomyślnie')
+            messages.success(request, 'Profil został pomyślnie zaaktualizowany')
             return redirect(reverse_lazy('accounts:home'))
         else:
             messages.error(request, 'Profil nie został utworzony')

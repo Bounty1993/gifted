@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.contrib.auth.forms import SetPasswordForm
+from django.db.models import Q
 
 from .models import Profile
 
@@ -12,8 +13,9 @@ class ProfileForm(forms.ModelForm):
     bio = forms.CharField(
         widget=forms.Textarea,
         help_text='Tell everybody something about yourself',
-        required=False
-    )
+        required=False)
+    date_birth = forms.DateField(
+        input_formats=('%d/%m/%Y',), label='Data urodzenia')
 
     class Meta:
         model = Profile
@@ -21,6 +23,11 @@ class ProfileForm(forms.ModelForm):
             'bio',
             'date_birth',
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        email = self.fields['date_birth']
+        print(email.initial)
 
     def clean_date_birth(self):
         date_birth = self.cleaned_data['date_birth']
@@ -33,7 +40,7 @@ class ProfileForm(forms.ModelForm):
             )
             is_adult = self.cleaned_data['date_birth'] < eighteen_year_age
             if not is_adult:
-                raise ValidationError('You are not adult so you cannot sign up')
+                raise ValidationError('Podana data wskazuje, że nie jesteś dorosły.')
 
         return date_birth
 
@@ -52,7 +59,8 @@ class UserForm(forms.ModelForm):
         user_id = self.instance.id
         same_email = (
             User.objects.exclude(id=user_id)
-                .filter(email=email, email__isnull=False)
+                .filter(email=email)
+                .exclude(Q(email__isnull=True) | Q(email=''))
         )
         if same_email.exists():
             msg = "Podany email jest niepoprawny"
@@ -67,5 +75,3 @@ class CustomPasswordChangeForm(SetPasswordForm):
         self.fields['new_password1'].label = 'Nowe hasło'
         self.fields['new_password2'].help_text = 'Powtórz dokładnie to samo hasło!'
         self.fields['new_password2'].label = 'Potwierdz hasło'
-
-
