@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ValidationError
+from django.contrib.auth.forms import SetPasswordForm
 
 from .models import Profile
 
@@ -18,7 +19,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = [
             'bio',
-            'date_birth'
+            'date_birth',
         ]
 
     def clean_date_birth(self):
@@ -42,5 +43,29 @@ class UserForm(forms.ModelForm):
         model = User
         fields = [
             'first_name',
-            'last_name'
+            'last_name',
+            'email',
         ]
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        user_id = self.instance.id
+        same_email = (
+            User.objects.exclude(id=user_id)
+                .filter(email=email, email__isnull=False)
+        )
+        if same_email.exists():
+            msg = "Podany email jest niepoprawny"
+            raise forms.ValidationError(msg)
+        return email
+
+
+class CustomPasswordChangeForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password1'].help_text = 'Pamiętaj o bezpieczeństwie'
+        self.fields['new_password1'].label = 'Nowe hasło'
+        self.fields['new_password2'].help_text = 'Powtórz dokładnie to samo hasło!'
+        self.fields['new_password2'].label = 'Potwierdz hasło'
+
+

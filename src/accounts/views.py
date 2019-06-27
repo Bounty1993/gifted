@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.db import transaction
@@ -14,7 +14,7 @@ from django.core.paginator import PageNotAnInteger
 
 from src.rooms.models import Room
 
-from .forms import ProfileForm, UserForm
+from .forms import ProfileForm, UserForm, CustomPasswordChangeForm
 from .models import Profile
 
 
@@ -119,7 +119,7 @@ def update_profile(request):
 
 class MyPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = 'accounts/change_password.html'
-    form_class = PasswordChangeForm
+    form_class = CustomPasswordChangeForm
 
     def form_valid(self, form):
         form.save()

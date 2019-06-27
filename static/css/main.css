@@ -4,11 +4,24 @@ a {
 a:hover {
   text-decoration: none; /* no underline */
 }
+.formTitle {
+  text-align: center;
+  font-size: 30px;
+}
+.center {
+  width: 30%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 
 .my-panel {
-    border: 1px #cccccc solid;
-    padding: 30px;
-    border-radius: 20px;
+  border: 1px #cccccc solid;
+  padding: 30px;
+  border-radius: 20px;
 }
 .mainBtn {
   padding: 10px;
@@ -61,7 +74,6 @@ a:hover {
   transform: scale(1.01);
 }
 .greenBtn {
-  margin-left: 10%;
   background-color: #00cc00;
   color: white;
 }

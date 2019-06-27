@@ -14,13 +14,10 @@
 <form class="offset-2 col-8" action="" method="post">
   {% csrf_token %}
   {{ form | crispy }}
-  <button type="submit" class="btn btn-success btn-lg">
+  <button type="submit" class="greenBtn mainBtn">
     Sign in
   </button>
-  <button class="btn btn-danger btn-lg">
-    Zrezygnuj
-  </button>
-  <button type="reset" class="btn btn-warning btn-lg btn-block mt-1">
+  <button type="reset" class="blueBtn mainBtn">
     Wyczyść
   </button>
 </form>
