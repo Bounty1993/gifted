@@ -4,20 +4,6 @@ a {
 a:hover {
   text-decoration: none; /* no underline */
 }
-.formTitle {
-  text-align: center;
-  font-size: 30px;
-}
-.center {
-  width: 30%;
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 .my-panel {
   border: 1px #cccccc solid;
   padding: 30px;
@@ -114,7 +100,7 @@ a:hover {
     width: 70%;
     display: inline-block
 }
-.searchHdr {
+.search-hdr {
     padding: 5px;
     border: 2px solid #ddd;
     border-radius: 5px;

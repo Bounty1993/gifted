@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 from .views import (DonationChartView, DonationListView, RoomDetailView,
-                    RoomListView, RoomRegisterView, RoomUpdateView,
+                    RoomListView, RoomRegisterView, RoomUpdateView, RoomOwnerView,
                     delete_message, delete_observers, guests, make_donation,
                     make_message, observers)
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path('<pk>/', RoomDetailView.as_view(), name='detail'),
     path('<pk>/donations/', DonationListView.as_view(), name='donation'),
     path('<pk>/edit/', RoomUpdateView.as_view(), name='edit'),
+    path('<pk>/edit1/', RoomOwnerView.as_view(), name='edit'),
 
     path('<pk>/ajax/guests/', guests, name='edit'),
     path('ajax/message/', make_message, name='message'),

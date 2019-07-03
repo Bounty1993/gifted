@@ -12,8 +12,9 @@ from .models import Profile
 
 class ProfileForm(forms.ModelForm):
     bio = forms.CharField(
+        label='Informacje o Tobie',
         widget=forms.Textarea(attrs={'rows': 6}),
-        help_text='Tell everybody something about yourself',
+        help_text='Pozwól nam się poznać. Napisz coś o sobie',
         required=False)
     date_birth = forms.DateField(
         input_formats=('%d/%m/%Y',),
@@ -34,6 +35,9 @@ class ProfileForm(forms.ModelForm):
             date_birth.disabled = True
 
     def clean_date_birth(self):
+        """
+        Verification if the age is above 18. If not ValidationError.
+        """
         date_birth = self.cleaned_data['date_birth']
         if date_birth:
             today = datetime.datetime.now().date()
@@ -49,7 +53,7 @@ class ProfileForm(forms.ModelForm):
         return date_birth
 
 
-class UserForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
@@ -59,6 +63,9 @@ class UserForm(forms.ModelForm):
         ]
 
     def clean_email(self):
+        """
+        Email has to be unique. Works for creation and update.
+        """
         email = self.cleaned_data['email']
         user_id = self.instance.id
         same_email = (
@@ -102,6 +109,10 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomPasswordChangeForm(SetPasswordForm):
+    """
+    Class change default PasswordChangeView. Old password is not required.
+    That is why i use SetPasswordForm and not PasswordChangeForm.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['new_password1'].help_text = 'Pamiętaj o bezpieczeństwie'

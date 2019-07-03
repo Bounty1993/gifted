@@ -10,19 +10,19 @@
 .hidden {
   display: none;
 }
-.messageBox {
+.message-box {
   border: 2px solid grey;
   border-radius: 20px;
 }
-.messageList {
+.message-list {
   list-style-type: none;
   text-align: justify;
 }
-.messageList > li {
+.message-list > li {
   margin-left: -30px;
   margin-right: 10px;
 }
-.messageList .header {
+.message-list .header {
   padding: 10px;
   border-bottom: 1px solid grey;
 }
@@ -96,7 +96,7 @@
   margin-top: 10px;
   margin-left: 10%;
 }
-.myBtn {
+.account-btn {
   margin-top: 20px;
   width: 20%;
   padding: 10px;
@@ -105,6 +105,6 @@
   border: none;
   transition: 0.3s;
 }
-.myBtn:hover {
+.account-btn:hover {
   transform: scale(1.01);
 }

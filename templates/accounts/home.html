@@ -15,35 +15,35 @@
 {% endfor %}
 <div class='new jumbotron'>
   <div class='title'>
-    <div class='main'>Witaj! {{profile.full_name}}</div>
+    <div class='main'>Witaj! {{full_name}}</div>
     <div>
       Poniżej znajdziesz wszystkie pokoje,
       które wspomogłeś lub obserwujesz
     </div>
     <a href="{% url 'accounts:update' %}">
-      <button class='forumBtn myBtn'>Aktualizuj dane</button>
+      <button class='blueBtn account-btn'>Aktualizuj dane</button>
     </a>
     <a href="{% url 'accounts:change_password' %}">
-      <button class='forumBtn myBtn'>Zmiana hasła</button>
+      <button class='blueBtn account-btn'>Zmiana hasła</button>
     </a>
     <a href="{% url 'rooms:list' %}">
-      <button class='forumBtn myBtn'>Zbiórki</button>
+      <button class='blueBtn account-btn'>Zbiórki</button>
     </a>
   </div>
 </div>
 <div class='row'>
   <div class='col-md-8'>
-    <div class="searchHdr d-flex justify-content-between mb-2">
-      {% if observed %}
+    <div class="search-hdr d-flex justify-content-between mb-2">
       <div class="search-tags">
+        {% if observed %}
         <a class="one-tag">
           Obserwujesz: {{ observed }}
         </a>
+       {% endif %}
         <a class="one-tag" href="{% url 'accounts:home' %}?all=true">
           Wszystkie
         </a>
       </div>
-      {% endif %}
       <div class="search-tags">
         <a class="one-tag" href="{% url 'accounts:home' %}?order=most_popular">Najpopularniejsze</a>
         <a class="one-tag" href="{% url 'accounts:home' %}?order=most_patrons">Często wspierane</a>
@@ -83,10 +83,15 @@
     {% include 'pagination.html' with obj_list=rooms %}
   </div>
   <div class='col-md-4'>
-    <div class='messageBox'>
-      <ul class='messageList'>
+    <a href="{% url 'rooms:register' %}">
+      <button class="blueBtn mainBtn w-100 mb-2">
+        Utwórz nową zbiórkę
+      </button>
+    </a>
+    <div class='message-box'>
+      <ul class='message-list'>
         {% for message in message_list %}
-        <li class='messageElement'>
+        <li class='message-element'>
           <div class='header d-flex justify-content-between'>
             <div>{{message.sender}}</div>
             <div>{{message.subject}}</div>
@@ -104,11 +109,11 @@
           </div>
         </li>
         {% empty %}
-        <li class="messageElement pt-2">Brak wiadomości</li>
+        <li class="messageElement pt-2 text-center">Brak wiadomości</li>
         {% endfor %}
       </ul>
     </div>
-  </div>
+  </button>
 </div>
 </div>
 {% endblock content %}

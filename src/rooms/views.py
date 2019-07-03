@@ -75,6 +75,12 @@ class OwnershipMixin:
         raise Http404
 
 
+class RoomOwnerView(UpdateView):
+    model = Room
+    template_name = 'rooms/edit.html'
+    form_class = RoomUpdateForm
+
+
 class RoomDetailView(OwnershipMixin, DetailView):
     model = Room
     template_name = 'rooms/detail.html'

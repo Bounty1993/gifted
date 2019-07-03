@@ -35,11 +35,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
-
-
-@receiver(post_save, sender=User)
 def save_profile(sender, instance, created, **kwargs):
     if created:
         username = instance.username
@@ -47,6 +42,6 @@ def save_profile(sender, instance, created, **kwargs):
         subject = f'Witaj {username} Założyłeś właśnie konto w Gifted'
         message = 'Dziękujemy za zaufanie. Będziemy szcześliwi jeśli polecisz nas znajomym'
         data = {'subject': subject, 'message': message, 'to': email}
-        send_email(data)
+        # send_email(data)
 
 # ----------------------------------------------------------

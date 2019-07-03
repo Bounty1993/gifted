@@ -3,7 +3,12 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="row">
-  <div class="col-8 offset-2">
+  <div class="col-md-8 offset-md-2">
+    <div class="main-text text-center mt-4">
+      <i class="fas fa-address-book" style="font-size: 50px;"></i>
+      <div>Załóż konto!</div>
+      <div>Dołącz do społeczności GetGifted.</div>
+    </div>
     <div class="my-panel mt-3">
     <form method="post" novalidate>
       {% csrf_token %}
