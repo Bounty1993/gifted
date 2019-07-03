@@ -139,5 +139,5 @@ class CustomPasswordResetView(PasswordResetView):
 
 
 class CustomPasswordResetFromKeyView(PasswordResetFromKeyView):
-    template_name = 'accounts/password_reset_from_key.html'
+    template_name = 'accounts/change_password.html'
     success_url = reverse_lazy('accounts:home')

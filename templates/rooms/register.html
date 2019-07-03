@@ -5,22 +5,28 @@
 <link rel="stylesheet" href="{% static 'css/rooms/register.css'%}">
 {% endblock cssscript %}
 {% block content %}
-<div class="title new jumbotron mt-2">
-  <div class="main">Stwórz nowy cel zbiórki! Razem zrealizujcie marzenia</div>
-  <small>
-    Podaj cel oraz wielkość kwoty. Pozwól innym wspomóc zbieranie środków
-  </small>
+<div class="new jumbotron">
+  <div class="title">
+    <div class="main">
+      Stwórz nowy cel zbiórki! Razem zrealizujcie marzenia
+    </div>
+    <small>
+      Podaj cel oraz wielkość kwoty. Pozwól innym wspomóc zbieranie środków
+    </small>
+  </div>
 </div>
-<form class="offset-2 col-8" action="" method="post">
-  {% csrf_token %}
-  {{ form | crispy }}
-  <button type="submit" class="greenBtn mainBtn">
-    Sign in
-  </button>
-  <button type="reset" class="blueBtn mainBtn">
-    Wyczyść
-  </button>
-</form>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="my-panel">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="halfBtn greenBtn mainBtn">Utwórz zbiórkę</button>
+        <button type="reset" class="halfBtn blueBtn mainBtn">Wyczyść</button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}
 {% block javascript %}
 <script src="{% static 'js/rooms/register.js'%}"></script>

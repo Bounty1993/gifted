@@ -64,21 +64,30 @@ class RoomListView(FilterSearchMixin, ListView):
 
 
 class OwnershipMixin:
+    """
+    Mixin check if user can see the room. Next it redirect to edit
+    or read-only mode.
+    """
     def dispatch(self, *args, **kwargs):
         user = self.request.user
         pk = self.kwargs['pk']
         room = get_object_or_404(Room, pk=pk)
         if room.creator == user:
-            return reverse('room:edit', kwargs={'pk': pk})
+            return redirect(reverse('rooms:edit', kwargs={'pk': pk}))
         if room.can_see(user):
             return super().dispatch(*args, **kwargs)
         raise Http404
 
 
-class RoomOwnerView(UpdateView):
+class RoomOwnerView(UserPassesTestMixin, UpdateView):
     model = Room
     template_name = 'rooms/edit.html'
     form_class = RoomUpdateForm
+
+    def test_func(self):
+        pk = self.kwargs['pk']
+        room = get_object_or_404(Room, pk=pk)
+        return room.creator == self.request.user
 
 
 class RoomDetailView(OwnershipMixin, DetailView):
@@ -166,17 +175,6 @@ def delete_observers(request):
         room.first().delete()
         msg = {'is_valid': 'true'}
         return JsonResponse(msg)
-
-
-class RoomUpdateView(UserPassesTestMixin, UpdateView):
-    model = Room
-    template_name = 'rooms/edit.html'
-    form_class = RoomUpdateForm
-
-    def test_func(self):
-        pk = self.kwargs['pk']
-        room = get_object_or_404(Room, pk=pk)
-        return room.creator == self.request.user
 
 
 @login_required

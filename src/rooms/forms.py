@@ -7,7 +7,9 @@ from .models import Donation, Message, Room
 
 class RoomRegisterForm(forms.ModelForm):
 
-    date_expires = forms.DateField(input_formats=('%d/%m/%Y',), label='Data wygaśnięcia')
+    date_expires = forms.DateField(
+        input_formats=('%d/%m/%Y',), label='Data wygaśnięcia',
+        help_text='Zbiórka nie może trwać więcej niż 183 dni')
     description = forms.CharField(widget=forms.Textarea, label='Opis')
 
     class Meta:
@@ -15,12 +17,16 @@ class RoomRegisterForm(forms.ModelForm):
         fields = [
             'receiver',
             'gift',
+            'gift_url',
             'price',
             'description',
             'to_collect',
             'visible',
             'date_expires'
         ]
+        help_texts = {
+            'receiver': 'Osoba która otrzyma zebrane środki.',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,26 +38,39 @@ class RoomRegisterForm(forms.ModelForm):
         today = datetime.now().date()
         half_year_later = today + timedelta(days=183)
         if date_expires > half_year_later:
-            raise forms.ValidationError('Date expires must not be more than 183 days from now')
+            raise forms.ValidationError('Data wygaśnięcia nie może byc późniejsza niż 183 dni')
         if date_expires <= today:
-            raise forms.ValidationError('Date expires must be in the future')
+            raise forms.ValidationError('Data wygraśnięcia musi być w przyszłości')
         return date_expires
 
     def clean(self):
         cleaned_data = super().clean()
         to_collect = cleaned_data['to_collect']
         if to_collect:
-            raise forms.ValidationError('to_collect field should be empty by now')
+            raise forms.ValidationError('Kwota do zebrania powinna być pusta')
 
 
 class RoomUpdateForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = [
+            'receiver',
+            'price',
+            'gift_url',
             'description',
             'visible',
             'date_expires',
         ]
+        labels = {
+            'price': '',
+            'receiver': '',
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5})
+        }
+
+    def clean_price(self):
+        pass
 
 
 class VisibleForm(forms.ModelForm):

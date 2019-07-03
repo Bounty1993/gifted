@@ -52,8 +52,9 @@ class Room(models.Model):
         blank=True,
     )
     gift = models.CharField('Cel', max_length=50)
+    gift_url = models.URLField('Adres internetowy celu', blank=True)
     price = models.DecimalField('Cena', max_digits=11, decimal_places=2)
-    description = models.CharField('Opis', max_length=250)
+    description = models.CharField('Opis', max_length=250, blank=True)
     to_collect = models.DecimalField('Do zebrania', max_digits=11, decimal_places=2)
     visible = models.BooleanField('Widoczny dla wszystkich?')
     date_expires = models.DateField('Data wygaśnięcia')

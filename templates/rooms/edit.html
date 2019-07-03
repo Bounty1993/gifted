@@ -1,74 +1,133 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
+{% load staticfiles %}
+{% block cssscript %}
+  <link rel="stylesheet" href="{% static 'css/rooms/detail.css' %}">
+{% endblock cssscript %}
 {% block content %}
-<div class="row mt-4">
-  <div class="col-8">
-    <form method="post">
+  <div class='row'>
+    <div class='col-md-9'>
+      <form method="post">
         {% csrf_token %}
-        {{ form | crispy }}
-        <button class="btn btn-success">Donate</button>
-    </form>
-  </div>
-  <div class="col-4">
-    <ul id="guest_list" class="list-group">
-      {% for guest in room.guests.all %}
-      <li class="list-group-item">{{ guest }}</li>
-      {% endfor %}
-    </ul>
-    <form id="guest_form" method="post">
-        {% csrf_token %}
-        <input name="guest" id="guest_input" class="w-100"/>
-        <div>
-        <button class="btn btn-success" id="add">Dodaj</button>
-        <button class="btn btn-danger" id="remove">Usuń</button>
+        <div class='room-header d-flex justify-content-around'>
+          <div>
+              <div class="main-text">{{room.receiver}}</div>
+              <div class="small-text">Nazwa</div>
+          </div>
+          <div>
+              {{ form.price | as_crispy_field }}
+              <div class="small-text">Cena</div>
+          </div>
         </div>
-    </form>
+        <div class='gift-container'>
+          <div class='gift'>
+            {{room.gift}}
+          </div>
+        </div>
+        <div class="d-flex justify-content-around">
+          {{ form.gift_url | as_crispy_field }}
+          {{ form.date_expires | as_crispy_field }}
+        </div>
+        <div>
+          <div class='d-flex justify-content-between'>
+            <div class='important-text'> 0% </div>
+            <div class='important-text'> 100% </div>
+          </div>
+          <div id="progressBar">
+            <div id="progressRoom">{{room.percent_got| floatformat:2 }}%</div>
+          </div>
+          <div class='d-flex justify-content-between'>
+            <div>
+              <div class="main-text">{{room.percent_got | floatformat:2}}%</div>
+              <div class="small-text">Osiągnięto</div>
+            </div>
+            <div>
+              <div class="main-text">{{room.collected}}</div>
+              <div class="small-text">Uzbierano</div>
+            </div>
+            <div>
+              <div class="main-text">{{room.to_collect}}</div>
+              <div class="small-text">Pozostało</div>
+            </div>
+          </div>
+        </div>
+        {{form.description | as_crispy_field}}
+        <button type="submit" class="halfBtn blueBtn mainBtn">Aktualizuj</button>
+        <button class="halfBtn blueBtn mainBtn">Usuń</button>
+      </form>
+    </div>
+    <div class='col-md-3'>
+      <div>
+        <div class='secondary'>Członkowie grupy</div>
+        <ul class="list-group" id="guestList">
+          {% for guest in room.guests.all %}
+          <li class="list-group-item list-group-item-action">
+            {{ guest }}
+          </li>
+          {% endfor %}
+        </ul>
+        <select class="form-control w-100" name="user" id="guestInput">
+          {% for user in users_list %}
+            <option value="{{user.username}}">{{user.username}}</option>
+          {% endfor %}
+        </select>
+        <button class='btn btn-success' id="addGuest">Dodaj</button>
+        <button class='btn btn-danger' id="removeGuest">Usuń</button>
+      </div>
+      <form id="messageForm" class="mt-5">
+        <div class="secondary">
+          Poproś użytkownika o wsparcie
+        </div>
+        <select class="form-control w-100" name="receiver">
+          {% for user in users_list %}
+            <option value="{{user.id}}">{{user.username}}</option>
+          {% endfor %}
+        </select>
+        <input type="text" class="form-control mt-2" name="subject" placeholder="Tytuł">
+        <textarea class="form-control mt-2" name="content">Treść</textarea>
+        <button class="blueBtn mainBtn w-100 mt-1" id="messageBtn">Wyślij</button>
+      </form>
+    </div>
   </div>
+  {% if many_donations %}
+    <div class='row'>
+      <div class='col-md-9'>
+        <div class='header-tab'>
+          Wpłaty od użytkowników
+        </div>
+        <table class="table shadowTable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Użytkownik</th>
+              <th scope="col">Kwota</th>
+              <th scope="col">Data</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for donation in donations %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{donation.user.profile.full_name}}</td>
+              <td>{{donation.amount}}</td>
+              <td>{{donation.date}}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <div class="tableBtn">
+        <a href="{% url 'rooms:donation' pk=room.pk %}">
+            <button class='blueBtn roomBtn'>Szczegóły</button>
+        </a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>
 {% endblock content %}
 {% block javascript %}
-
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-addBtn = document.getElementById('add')
-addBtn.onclick = updateGuests
-
-removeBtn = document.getElementById('remove')
-removeBtn.onclick = updateGuests
-
-
-
-function updateGuests() {
-  event.preventDefault()
-  type = event.target.id
-  let guest = document.getElementById("guest_input")
-  let data = {guest: guest.value, type: type}
-  let url = '/rooms/1/guests/'
-  fetch(url, {
-    method: "post",
-    credentials: "include",
-    headers: {
-        "X-CSRFToken": getCookie("csrftoken"),
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(res => res.json())
-    .then(res => console.log(res))
-};
-{% endblock %}
+  <script>
+    var progress = parseFloat("{{room.percent_got | floatformat:2}}".split(",").join("."))
+  </script>
+  <script src="{% static 'js/rooms/detail.js' %}"></script>
+{% endblock javascript %}

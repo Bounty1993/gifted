@@ -108,6 +108,10 @@ DATABASES = {
     'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 """
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
