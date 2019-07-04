@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import (
     Q, Count, F, Sum,
 )
+import datetime
 
 
 class VisibleManager(models.QuerySet):
@@ -15,6 +16,9 @@ class VisibleManager(models.QuerySet):
         room_created = user.rooms.all()
         room_guests = user.guest_rooms.all()
         return (visible_query | room_created | room_guests).distinct()
+
+    def summarise_for_list(self):
+        return self.prefetch_related('observers')
 
     def search(self, field):
         return self.filter(
@@ -57,6 +61,7 @@ class Room(models.Model):
     description = models.CharField('Opis', max_length=250, blank=True)
     to_collect = models.DecimalField('Do zebrania', max_digits=11, decimal_places=2)
     visible = models.BooleanField('Widoczny dla wszystkich?')
+    created = models.DateField(auto_now_add=True)
     date_expires = models.DateField('Data wygaśnięcia')
     is_active = models.BooleanField(default=True)
     score = models.FloatField(default=0)

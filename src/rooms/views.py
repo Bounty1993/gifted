@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -9,7 +10,8 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import (
+    CreateView, DetailView, ListView, UpdateView, DeleteView)
 
 from .forms import (DonateForm, MessageForm, RoomRegisterForm, RoomUpdateForm,
                     VisibleForm)
@@ -53,7 +55,7 @@ class RoomListView(FilterSearchMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.prefetch_related('observers').prefetch_related('patrons')
+        return queryset.summarise_for_list()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,15 +81,28 @@ class OwnershipMixin:
         raise Http404
 
 
-class RoomOwnerView(UserPassesTestMixin, UpdateView):
-    model = Room
-    template_name = 'rooms/edit.html'
-    form_class = RoomUpdateForm
-
+class IsOwnerMixin(UserPassesTestMixin):
     def test_func(self):
         pk = self.kwargs['pk']
         room = get_object_or_404(Room, pk=pk)
         return room.creator == self.request.user
+
+
+class RoomEditView(IsOwnerMixin, UpdateView):
+    model = Room
+    template_name = 'rooms/edit.html'
+    form_class = RoomUpdateForm
+
+
+class RoomDeleteView(IsOwnerMixin, View):
+    msg = "Zbiórka została anulowana!"
+
+    def delete(self, request, pk):
+        room = get_object_or_404(Room, pk=pk)
+        room.is_active = False
+        room.save()
+        messages.success(request, self.msg)
+        return redirect('accounts:home')
 
 
 class RoomDetailView(OwnershipMixin, DetailView):

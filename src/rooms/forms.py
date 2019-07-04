@@ -70,7 +70,20 @@ class RoomUpdateForm(forms.ModelForm):
         }
 
     def clean_price(self):
-        pass
+        price = self.cleanded_data['price']
+        if price < self.instance.collected:
+            msg = "Cena nie może być niższa niż kwota do tej pory zebrana"
+            raise forms.ValidationError(msg)
+        return price
+
+    def clean_date_expires(self):
+        created = self.instance.created
+        date_expires = self.cleaned_data['date_expires']
+        max_length = created + timedelta(days=183)
+        if date_expires > max_length:
+            msg = 'Zbiórka nie może trwać dłużej niż 183 dni od utworzenia'
+            raise forms.ValidationError(msg)
+        return date_expires
 
 
 class VisibleForm(forms.ModelForm):

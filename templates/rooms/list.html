@@ -40,7 +40,7 @@
       {% for room in most_patrons %}
       <li class="list-item">
         <span class="founder">{{room.gift}}</span>
-        <span class="amount">{{room.patrons.count}}</span>
+        <span class="amount">{{room.patrons_number}}</span>
       </li>
       {% endfor %}
     </ul>
@@ -59,7 +59,7 @@
     </ul>
   </div>
 </div>
-<div class="searchHdr d-flex justify-content-between">
+<div class="search-hdr d-flex justify-content-between">
       <div>
         <form action="" method="get">
           <input class="search form-control" type="text" name="search" placeholder="Fraza..." />
@@ -100,7 +100,7 @@
             <div class="small-text">do zebrania</div>
           </div>
           <div class="price">
-            <div class="main-text">{{room.num_patrons}}</div>
+
             <div class="small-text">liczba patronów</div>
           </div>
         </div>

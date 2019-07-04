@@ -23,6 +23,10 @@ class Profile(models.Model):
         return full_name
 
     def get_observed_rooms(self):
+        """
+        returns all room that user observe. Useful for
+        filtering rooms and for profile website.
+        """
         observed_rooms = self.user.observed_rooms
         ordered_rooms = observed_rooms.order_by_score()
         return ordered_rooms
