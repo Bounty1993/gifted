@@ -29,7 +29,10 @@
           <a class="nav-link" href="{% url 'forum:all' %}">Forum</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'rooms:list' %}">Wspomóż</a>
+          <a class="nav-link" href="{% url 'rooms:register' %}">Utwórz zbiórkę</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home:contact' %}">Kontakt</a>
         </li>
       </ul>
       <div class="form-inline my-2 my-lg-0">
@@ -52,7 +55,15 @@
     </div>
 </nav>
 </div>
-<div class="bg-dark" style="width:100vw; height: 91vh">
+<div class="bg-dark" style="width:100vw; height: 100vh">
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+  {% endfor %}
   <div class="home-text">
     <div>Znajduj <span class="main">Cele</span></div>
     <div>Zbieraj <span class="main">Pienądze</span></div>
@@ -70,6 +81,17 @@
     </a>
   </div>
 </div>
+
+<!-- Footer -->
+<footer class="page-footer font-small blue">
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2019 Autor:
+    <a href="https://github.com/bounty1993"> Bartosz Niczyporuk</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 

@@ -9,20 +9,11 @@ def send_email(data):
 
 
 class ContactForm(forms.Form):
-    user = forms.IntegerField(required=False)
-    subject = forms.CharField(label='tytuł', max_length=100)
-    message = forms.CharField(label='treść', max_length=250)
-    email = forms.EmailField(label='email', required=False)
+    subject = forms.CharField(label='Tytuł', max_length=100)
+    message = forms.CharField(label='Treść', max_length=250,
+                              widget=forms.Textarea({'rows': 5}))
+    email = forms.EmailField(label='Email')
 
-    def clean(self):
-        cleaned_data = super().clean()
-        user = cleaned_data['user']
-        email = cleaned_data['email']
-        if not (user or email):
-            raise forms.ValidationError(
-                'Błedne dane. Zdefinuj formę kontaktu.'
-                'Zaloguj się lub podaj email'
-            )
     """
     def send_email(self):
         cleaned_data = self.clean()

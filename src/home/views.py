@@ -18,16 +18,22 @@ class MainView(TemplateView):
 class ContactView(FormView):
     form_class = ContactForm
     template_name = 'home/contact.html'
-    success_url = '/'
+    success_url = 'home:main'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        user = self.request.user
+        if user.is_authenticated:
+            initial.update({
+                'email': user.email
+            })
+        return initial
 
     def form_valid(self, form):
         # form.send_email()
-        user = form.cleaned_data['user']
         email = form.cleaned_data['email']
         subject = form.cleaned_data['subject']
         message = form.cleaned_data['message']
-        if user:
-            email = user.email
         data = {
             'subject': subject,
             'message': message,
@@ -54,5 +60,4 @@ class ValidateEmailView(View):
         msg = {'is_taken': 'false'}
         if users.exists():
             msg = {'is_taken': 'true'}
-            return JsonResponse(msg)
         return JsonResponse(msg)

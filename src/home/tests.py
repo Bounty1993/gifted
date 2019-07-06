@@ -74,7 +74,8 @@ class ContactFormTest(TestCase):
         self.user1 = User.objects.create_user(username='testuser1', password='12345', email='TEST')
 
     def test_valid_form_no_email(self):
-        data = {'user': self.user1.id, 'subject': 'Tytuł', 'message': 'Treść'}
+        self.client.login(username=self.user1.username, password='12345')
+        data = {'subject': 'Tytuł', 'message': 'Treść'}
         form = ContactForm(data)
         self.assertTrue(form.is_valid())
 

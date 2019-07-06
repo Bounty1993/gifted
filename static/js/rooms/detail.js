@@ -1,16 +1,32 @@
 let room_id = window.location.pathname.split('/')[2]
 
+let socketUrl = 'ws://' + window.location.host + '/' + 'ws/room/' + room_id + '/donate/'
+console.log(socketUrl)
+let roomSocket = new WebSocket(socketUrl)
+
+roomSocket.onmessage = (e) => {
+    let data = JSON.parse(e.data)
+    console.log(data)
+}
+
+roomSocket.onclose = (e) => {
+    console.error('Socket is closed')
+}
+
+// function draws a nice progress bar showing how much money has been already collected
 function makeProgressRoom(progress) {
     progressRoom = document.getElementById('progressRoom')
     console.log(progress)
     progressRoom.style.width = `${progress}%`
 }
 
+// function makes a support form toggling
 supportBtn = document.getElementById('supportBtn')
 supportBtn.onclick = () => {
   supportForm = document.getElementById('supportForm')
   supportForm.classList.toggle('hidden')
 }
+
 
 submitSupport = document.getElementById('submitSupport')
 submitSupport.onclick = (event) => {
@@ -21,6 +37,7 @@ submitSupport.onclick = (event) => {
     comment: comment.value
   }
   console.log(room_id)
+  /*
   url = `/rooms/${room_id}/ajax/donate/`
   ajax = post_fetch(url, data).then(response => response.json())
   ajax.then(response => {
@@ -35,7 +52,10 @@ submitSupport.onclick = (event) => {
         }
     }
   })
+  */
+  roomSocket.send(JSON.stringify(data))
 }
+
 
 let messageForm = document.getElementById('messageForm')
 messageForm.onsubmit = (event) => {
@@ -57,6 +77,7 @@ messageForm.onsubmit = (event) => {
     })
 }
 
+
 function makeGuestList(data) {
     questList = document.getElementById('guestList')
     guestList.innerHTML = ''
@@ -70,6 +91,8 @@ function makeGuestList(data) {
 
 makeProgressRoom(progress)
 
+// function responsible for adding guest watching the room.
+// only the creator can do that in 'rooms:edit'
 let addGuest = document.getElementById('addGuest')
 addGuest.onclick = () => {
     let type = 'add'
@@ -83,6 +106,8 @@ addGuest.onclick = () => {
     })
 }
 
+// function responsible for removing guest watching the room.
+// only the creator can do that in 'rooms:edit'
 let removeGuest = document.getElementById('removeGuest')
 removeGuest.onclick = () => {
     let type = 'remove'

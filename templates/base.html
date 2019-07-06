@@ -22,7 +22,7 @@
   <div class="container">
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'rooms:list' %}">Pokoje</span></a>
         </li>
         <li class="nav-item">
@@ -30,6 +30,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'rooms:register' %}">Utwórz zbiórkę</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home:contact' %}">Kontakt</a>
         </li>
       </ul>
       <div class="form-inline my-2 my-lg-0">
@@ -57,6 +60,17 @@
 
   {% endblock content %}
 </div>
+
+<!-- Footer -->
+<footer class="bg-dark mt-4 text-white page-footer font-small blue">
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2019 Autor:
+    <a class="text-info" href="https://github.com/bounty1993"> Bartosz Niczyporuk</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
