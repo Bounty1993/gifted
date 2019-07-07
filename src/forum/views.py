@@ -186,24 +186,3 @@ class GetThreadsView(View):
             'threads': threads,
         }
         return JsonResponse(message)
-
-
-class ThreadCreateView(View):
-    def post(self, request):
-        if request.is_ajax():
-            data = json.loads(request.body)
-            post = get_object_or_404(Post, pk=int(data['post_id']))
-            author = request.user.id
-            data.update({
-                'post': post,
-                'author': author
-            })
-            form = ThreadCreateForm(data)
-            if form.is_valid():
-                msg = {'is_valid': 'true'}
-                return JsonResponse(msg)
-            msg = {
-                'is_valid': 'false',
-                'error': form.errors,
-            }
-            return JsonResponse(msg)

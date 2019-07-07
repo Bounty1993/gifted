@@ -132,7 +132,6 @@ let handleDelete = (event) => {
 }
 
 let makeThread = (data) => {
-    console.log(data)
     if (data['thread_parent']) {
         let thread_id = data['thread_parent']
         var comments = document.querySelector(`[data-thread="${thread_id}"]`)
@@ -198,7 +197,7 @@ let makeThread = (data) => {
     // creating button for showing more threads
     let showMoreBtn = document.createElement('button')
     showMoreBtn.classList.add('show-more')
-    showMoreBtn.textContent = data['children_count'] + ' odpowiedzi. Naciśnij by zobaczyć więcej.'
+    showMoreBtn.textContent = (data['children_count'] | 0) + ' odpowiedzi. Naciśnij by zobaczyć więcej.'
     showMoreBtn.addEventListener('click', getThreads)
     thread.append(showMoreBtn)
 
@@ -225,12 +224,13 @@ for (let i=0; i < deleteBtns.length; i++) {
 
 // ---------------------WebSockets---------------------------
 let window_url = window.location.href.split('/')
-let room_name = window_url[window_url.length -2]
-let socket_url = 'ws://' + window.location.host + '/' + 'ws/room/' + room_name + '/post/'
+let room_id = window_url[window_url.length -2]
+let socket_url = 'ws://' + window.location.host + '/' + 'ws/room/' + room_id + '/post/'
 let roomSocket = new WebSocket(socket_url)
 
 roomSocket.onmessage = (e) => {
     let data = JSON.parse(e.data)
+    console.log(data)
     makeThread(data)
 }
 roomSocket.onclose = (e) => {
