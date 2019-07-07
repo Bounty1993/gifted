@@ -6,9 +6,8 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 from django.views.generic import ListView
 
-from src.rooms.forms import DonateForm
 from src.rooms.models import Donation, Message, Room
-from src.rooms.views import make_donation, FilterSearchMixin
+from src.rooms.views import FilterSearchMixin
 
 User = get_user_model()
 
@@ -157,26 +156,6 @@ class DonateViewTest(TestCase):
         url = reverse('rooms:detail', kwargs={'pk': 2})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
-
-    """
-    def test_url_resolves_donate(self):
-        view = resolve('/1/donate/')
-        self.assertEqual(view.func, donate)
-
-    def test_form_contains(self):
-        url = reverse('rooms:detail', kwargs={'pk': 1})
-        response = self.client.get(url)
-        form = response.context.get('form')
-        self.assertIsInstance(form, DonateForm)
-        
-    def test_donation_status_code(self):
-        data = {
-            'amount': 5000
-        }
-        url = reverse('rooms:detail', kwargs={'pk': 1})
-        self.client.post(url, data)
-        self.assertTrue(Donation.objects.exists())
-    """
 
 
 def make_ajax(client, url, data=None):

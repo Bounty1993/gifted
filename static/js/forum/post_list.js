@@ -19,7 +19,7 @@ function handleRespond(event) {
     let contentInput = document.createElement('input')
     contentInput.classList.add('form-control','mt-2')
     contentInput.placeholder = 'Treść'
-    content.name = 'content'
+    contentInput.name = 'content'
 
     let sendBtn = document.createElement('button')
     sendBtn.classList.add('forumBtn', 'mainBtn', 'mt-2')
@@ -60,6 +60,8 @@ let manageLikeBtn = (comment) => {
     let dislikeBtn = comment.querySelector('.dislikeBtn')
     dislikeBtn.remove()
 }
+
+// method responsible for adding likes. It works both for threads and posts
 
 let handleLike = (event) => {
     let comment = event.target.closest('.comment')
@@ -130,6 +132,7 @@ let handleDelete = (event) => {
 }
 
 let makeThread = (data) => {
+    console.log(data)
     if (data['thread_parent']) {
         let thread_id = data['thread_parent']
         var comments = document.querySelector(`[data-thread="${thread_id}"]`)
@@ -168,26 +171,31 @@ let makeThread = (data) => {
     let commentBtns = document.createElement('div')
     commentBtns.classList.add('commentBtns', 'clearfix')
 
+    // creating button for responding to the comment
     let respondBtn = document.createElement('button')
     respondBtn.classList.add('respondBtn', 'myBtn')
     respondBtn.textContent = 'Odpowiedź'
     respondBtn.addEventListener('click', handleRespond)
 
+    // creating button for disliking the comment
     let dislikeBtn = document.createElement('button')
     dislikeBtn.classList.add('right', 'dislikeBtn', 'myBtn')
     dislikeBtn.textContent = 'Nie lubię'
     dislikeBtn.addEventListener('click', handleDislike)
 
+    // creating button for liking the comment
     let likeBtn = document.createElement('button')
     likeBtn.classList.add('right', 'likeBtn', 'myBtn')
     likeBtn.textContent = 'Lubię'
     likeBtn.addEventListener('click', handleLike)
 
+    // adding all above buttons together
     commentBtns.append(respondBtn)
     commentBtns.append(dislikeBtn)
     commentBtns.append(likeBtn)
     thread.append(commentBtns)
 
+    // creating button for showing more threads
     let showMoreBtn = document.createElement('button')
     showMoreBtn.classList.add('show-more')
     showMoreBtn.textContent = data['children_count'] + ' odpowiedzi. Naciśnij by zobaczyć więcej.'
@@ -195,7 +203,6 @@ let makeThread = (data) => {
     thread.append(showMoreBtn)
 
     comments.after(thread)
-
 }
 
 let respondBtns = document.querySelectorAll('.respondBtn')

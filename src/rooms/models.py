@@ -18,7 +18,7 @@ class VisibleManager(models.QuerySet):
         return (visible_query | room_created | room_guests).distinct()
 
     def summarise_for_list(self):
-        return self.prefetch_related('observers')
+        return self.prefetch_related('observers').prefetch_related('patrons')
 
     def search(self, field):
         return self.filter(
@@ -140,7 +140,7 @@ class Room(models.Model):
             user = data['user']
             amount = data['amount']
         except KeyError as err:
-            return {'message': 'Brak wszystkich danych'}
+            return {'error': 'Brak wszystkich danych'}
         date = data.get('date', None)
         comment = data.get('comment', amount)
         actual_amount = amount if amount < self.to_collect else self.to_collect
@@ -159,7 +159,7 @@ class Room(models.Model):
         )
         donation.save()
         self.save()
-        return {'message': 'Success'}
+        return self
 
     def get_patrons(self):
         patrons = (

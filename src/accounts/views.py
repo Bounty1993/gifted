@@ -80,6 +80,7 @@ class ProfileDetailView(LoginRequiredMixin, SearchOrderProfileMixin, DetailView)
     model = get_user_model()
     template_name = 'accounts/home.html'
     context_object_name = 'profile'
+    paginate_by = 3
 
     def get_object(self):
         return self.request.user

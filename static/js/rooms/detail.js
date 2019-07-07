@@ -7,6 +7,40 @@ let roomSocket = new WebSocket(socketUrl)
 roomSocket.onmessage = (e) => {
     let data = JSON.parse(e.data)
     console.log(data)
+
+    if (data['is_valid'] === 'false') {
+        console.log(data['errors'])
+        for (let field in data['errors']) {
+            inputForm = document.getElementById(field)
+            htmlString = `<div class="invalid-feedback">${data['errors'][field]}</div>`
+            inputForm.classList.add('is-invalid')
+            console.log(htmlString)
+            inputForm.insertAdjacentHTML('afterend', htmlString);
+        }
+    }
+    else if (data['is_valid'] === 'true'){
+        supportForm = document.getElementById('supportForm')
+        supportForm.classList.toggle('hidden')
+    }
+    else {
+        console.log(data['percent_got'])
+
+        progress = data['percent_got']
+
+        percent_got = document.getElementById('percent_got')
+        percent_got.textContent = progress.replace('.', ',') + '%'
+
+        collected = document.getElementById('collected')
+        collected.textContent = data['collected']
+
+        to_collect = document.getElementById('to_collect')
+        to_collect.textContent = data['to_collect']
+
+        progressRoom = document.getElementById('progressRoom')
+        progressRoom.textContent = progress.replace('.', ',') + '%'
+
+        makeProgressRoom(parseFloat(progress))
+    }
 }
 
 roomSocket.onclose = (e) => {

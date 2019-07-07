@@ -1,4 +1,4 @@
-{% if obj_list.has_other_pages %}
+{% if page_obj.has_other_pages %}
 {% load pagination_tags %}
 {% load pagination_tags %}
 <nav>
@@ -8,24 +8,24 @@
       Początek
     </a>
   </li>
-  {% if obj_list.has_previous %}
+  {% if page_obj.has_previous %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_replace request 'page' obj_list.previous_page_number %}">
-      {{obj_list.previous_page_number}}
+    <a class="page-link" href="?{% url_replace request 'page' page_obj.previous_page_number %}">
+      {{page_obj.previous_page_number}}
     </a></li>
   {% endif %}
   <li class="page-item active">
-    <a class="page-link">{{obj_list.number}}</a>
+    <a class="page-link">{{page_obj.number}}</a>
   </li>
-  {% if obj_list.has_next %}
+  {% if page_obj.has_next %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_replace request 'page' obj_list.next_page_number %}">
-      {{obj_list.next_page_number}}
+    <a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}">
+      {{page_obj.next_page_number}}
     </a>
   </li>
   {% endif %}
   <li class="page-item">
-    <a class="page-link" href="?{% url_replace request 'page' obj_list.paginator.num_pages %}">
+    <a class="page-link" href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">
       Koniec
     </a>
   </li>

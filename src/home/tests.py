@@ -13,7 +13,7 @@ User = get_user_model()
 
 class HomeViewsTests(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='Bartosz', password='12345', email='TEST')
+        self.user1 = User.objects.create_user(username='Bartosz', password='12345', email='TEST@gmail.com')
 
     def test_home_view(self):
         url = reverse('home:main')
@@ -25,6 +25,12 @@ class HomeViewsTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def test_contact_view_post_with_user(self):
+        url = reverse('home:contact')
+        self.client.login(username='Bartosz', password='12345')
+        response = self.client.get(url)
+        self.assertEqual(response.context['form'].initial['email'], self.user1.email)
+
     def test_contact_view_post_with_email(self):
         mail.outbox = []
         url = reverse('home:contact')
@@ -33,16 +39,6 @@ class HomeViewsTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(*mail.outbox[0].to, data['email'])
-
-    @skip
-    def test_contact_view_post_with_user(self):
-        url = reverse('home:contact')
-        data = {'subject': 'Tytuł', 'message': 'Treść'}
-        self.client.login(username='Bartosz', password='12345')
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(*mail.outbox[0].to, self.user.email)
 
     def test_get_email_view(self):
         url = reverse('home:get_email', kwargs={'pk': self.user1.id})
@@ -77,7 +73,7 @@ class ContactFormTest(TestCase):
         self.client.login(username=self.user1.username, password='12345')
         data = {'subject': 'Tytuł', 'message': 'Treść'}
         form = ContactForm(data)
-        self.assertTrue(form.is_valid())
+        self.assertFalse(form.is_valid())
 
     def test_valid_form_with_email(self):
         data = {'subject': 'Tytuł', 'message': 'Treść', 'email':'bartosz@wp.com'}

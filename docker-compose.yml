@@ -12,6 +12,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - redis
   db:
     image: postgres
     environment:
@@ -22,7 +23,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - 5433:5432
-
   redis:
     image: redis:alpine
     ports:

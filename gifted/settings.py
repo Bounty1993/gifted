@@ -173,4 +173,13 @@ INTERNAL_IPS = ('127.0.0.1',)
 # required for channels
 ASGI_APPLICATION = 'gifted.routing.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
+
 # django_heroku.settings(locals())

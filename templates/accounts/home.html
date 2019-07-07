@@ -80,7 +80,7 @@
       </div>
     </div>
     {% endfor %}
-    {% include 'pagination.html' with obj_list=rooms %}
+    {% include 'pagination.html' with page_obj=rooms %}
   </div>
   <div class='col-md-4'>
     <a href="{% url 'rooms:register' %}">

@@ -17,7 +17,7 @@ from .forms import (DonateForm, MessageForm, RoomRegisterForm, RoomUpdateForm,
                     VisibleForm)
 from .models import Donation, Message, Room
 
-User = get_user_model()
+User = get_user_model()     # it is used wherever user model is used
 
 
 class RoomRegisterView(CreateView):
@@ -52,10 +52,11 @@ class RoomListView(FilterSearchMixin, ListView):
     queryset = Room.get_visible.all()
     template_name = 'rooms/list.html'
     context_object_name = 'rooms'
+    paginate_by = 3
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.summarise_for_list()
+        return queryset.summarise_for_list().prefetch_related('patrons')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -255,26 +256,3 @@ def delete_message(request):
         message.delete()
         msg = {'is_valid': 'true'}
         return JsonResponse(msg)
-
-
-@login_required
-@transaction.atomic
-def make_donation(request, pk):
-    room = get_object_or_404(Room, pk=pk)
-    if request.method == 'POST' and request.is_ajax:
-        data = json.loads(request.body)
-        form = DonateForm(data)
-        if form.is_valid():
-            amount = form.cleaned_data.get('amount')
-            comment = form.cleaned_data.get('comment')
-            data = {
-                'user': request.user,
-                'amount': amount,
-                'comment': comment
-            }
-            message = room.donate(data)
-            messages.success(request, "Dziękujemy za twoje wsparcie")
-            return JsonResponse(message)
-        else:
-            message = {'message': form.errors}
-            return JsonResponse(message)

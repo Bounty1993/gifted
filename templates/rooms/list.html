@@ -100,7 +100,7 @@
             <div class="small-text">do zebrania</div>
           </div>
           <div class="price">
-
+            <div class="main-text">{{room.patrons.count}}</div>
             <div class="small-text">liczba patronów</div>
           </div>
         </div>
@@ -133,6 +133,7 @@
   </div>
 </div>
 {% endfor %}
+{% include "pagination.html" %}
 {% endblock content%}
 {% block javascript %}
   <script src="{% static 'js/rooms/list.js' %}"></script>

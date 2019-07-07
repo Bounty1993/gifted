@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
@@ -18,7 +18,7 @@ class MainView(TemplateView):
 class ContactView(FormView):
     form_class = ContactForm
     template_name = 'home/contact.html'
-    success_url = 'home:main'
+    success_url = reverse_lazy('home:main')
 
     def get_initial(self):
         initial = super().get_initial()
