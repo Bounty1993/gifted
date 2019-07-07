@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -13,8 +12,8 @@ from django.views import View
 from django.views.generic import (
     CreateView, DetailView, ListView, UpdateView, DeleteView)
 
-from .forms import (DonateForm, MessageForm, RoomRegisterForm, RoomUpdateForm,
-                    VisibleForm)
+from .forms import (MessageForm, RoomRegisterForm,
+                    RoomUpdateForm, VisibleForm)
 from .models import Donation, Message, Room
 
 User = get_user_model()     # it is used wherever user model is used

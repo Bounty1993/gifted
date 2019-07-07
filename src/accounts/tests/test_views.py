@@ -114,6 +114,8 @@ class PasswordViewsTest(TestCase):
             'accounts:account_reset_password_from_key',
             kwargs={'uidb36': uidb36, 'key': key}
         )
-        response = self.client.post(key_url)
+        response = self.client.post(key_url, follow=True)
         self.assertEqual(response.status_code, 200)
+        expected = '/accounts/password/reset/key/1-set-password/'
+        self.assertEqual(response.redirect_chain[0][0], expected)
 
