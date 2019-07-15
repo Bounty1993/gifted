@@ -86,12 +86,12 @@ class FilterSearchMixinTest(TestCase):
 class RoomDetailViewTest(TestCase):
     def setUp(self):
         user1 = User.objects.create_user(username='testuser', password='12345')
-        room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
+        self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
                                     to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        room1.donate({'user': user1, 'amount': 500})
+        self.room1.donate({'user': user1, 'amount': 500})
 
     def test_status_code_correct(self):
-        url = reverse('rooms:detail', kwargs={'pk': 1})
+        url = reverse('rooms:detail', kwargs={'pk': self.room1.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -147,13 +147,13 @@ class DonateViewTest(TestCase):
         self.client.login(username='Tom', password='Test')
 
     def test_status_code(self):
-        url = reverse('rooms:detail', kwargs={'pk': 1})
+        url = reverse('rooms:detail', kwargs={'pk': self.room1.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_forbid_to_see_user(self):
         self.client.login(username='testuser3', password='12345')
-        url = reverse('rooms:detail', kwargs={'pk': 2})
+        url = reverse('rooms:detail', kwargs={'pk': self.room2.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -178,12 +178,12 @@ class ObserverViewTest(TestCase):
         self.client.login(username='testuser', password='12345')
 
     def test_status_code(self):
-        url = reverse('rooms:observers', kwargs={'pk': 1})
+        url = reverse('rooms:observers', kwargs={'pk': self.room.id})
         response = make_ajax(self.client, url)
         self.assertEqual(response.status_code, 200)
 
     def test_observer_added(self):
-        url = reverse('rooms:observers', kwargs={'pk': 1})
+        url = reverse('rooms:observers', kwargs={'pk': self.room.id})
         response = make_ajax(self.client, url)
         self.assertTrue(self.room.observers.exists())
         self.assertEqual(self.room.observers.first().id, self.user1.id)
@@ -202,7 +202,7 @@ class MakeMessageViewTest(TestCase):
         self.client.login(username='testuser', password='12345')
 
         self.data = {
-            'receiver': 2,
+            'receiver': self.user2.id,
             'subject': 'Tytuł',
             'content': 'Treść',
         }
@@ -240,7 +240,7 @@ class DeleteMessageViewTest(TestCase):
         self.message = Message.objects.create(
             receiver=self.user1, sender=self.user2, subject='Tytuł', content='Treść')
         self.client.login(username='testuser', password='12345')
-        self.data = {'id': 1}
+        self.data = {'id': self.message.id}
 
     def test_status_code(self):
         response = make_ajax(self.client, reverse('rooms:message_delete'), self.data)

@@ -114,11 +114,11 @@ class AjaxViewsTest(TestCase):
     def test_add_like_thread_view(self):
         initial_likes = self.thread1.get_likes()
         url = reverse('forum:add_like')
-        data = {'id': '1', 'is_thread': 'true'}
+        data = {'id': self.thread1.id, 'is_thread': 'true'}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes + 1
-        actual = Thread.objects.get(id=1).get_likes()
+        actual = self.thread1.get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)
@@ -126,11 +126,11 @@ class AjaxViewsTest(TestCase):
     def test_add_like_post_view(self):
         initial_likes = self.post1.get_likes()
         url = reverse('forum:add_like')
-        data = {'id': '1'}
+        data = {'id': self.post1.id}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes + 1
-        actual = Post.objects.get(id=1).get_likes()
+        actual = self.post1.get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)
@@ -138,11 +138,11 @@ class AjaxViewsTest(TestCase):
     def test_add_dislike_thread_view(self):
         initial_likes = self.thread1.get_likes()
         url = reverse('forum:add_dislike')
-        data = {'id': '1', 'is_thread': 'true'}
+        data = {'id': self.thread1.id, 'is_thread': 'true'}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes - 1
-        actual = Thread.objects.get(id=1).get_likes()
+        actual = self.thread1.get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)
@@ -150,11 +150,11 @@ class AjaxViewsTest(TestCase):
     def test_add_dislike_post_view(self):
         initial_likes = self.post1.opinions.aggregate(Sum('likes')).get('likes_sum', 0)
         url = reverse('forum:add_dislike')
-        data = {'id': '1'}
+        data = {'id': self.post1.id}
         response = make_ajax(self.client, url, data)
         self.assertEqual(response.status_code, 200)
         expected_likes = initial_likes - 1
-        actual = Post.objects.get(id=1).get_likes()
+        actual = self.post1.get_likes()
         self.assertEqual(actual, expected_likes)
         expected_response = {'success': 'true', 'num_likes': actual}
         self.assertEqual(json.loads(response.content), expected_response)

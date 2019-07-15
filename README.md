@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Bounty1993/gifted.svg?branch=master)](https://travis-ci.org/Bounty1993/gifted)
-
+[![Coverage Status](https://coveralls.io/repos/github/Bounty1993/gifted/badge.svg?branch=master)](https://coveralls.io/github/Bounty1993/gifted?branch=master)
 
 Celem My Blog jest stworzenie platformy gdzie użytkownicy mogą organizować zbiórki na prezenty dla znajomych i rodziny.
 

@@ -116,6 +116,6 @@ class PasswordViewsTest(TestCase):
         )
         response = self.client.post(key_url, follow=True)
         self.assertEqual(response.status_code, 200)
-        expected = '/accounts/password/reset/key/1-set-password/'
+        expected = f'/accounts/password/reset/key/{self.user.id}-set-password/'
         self.assertEqual(response.redirect_chain[0][0], expected)
 

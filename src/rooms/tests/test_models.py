@@ -11,33 +11,29 @@ User = get_user_model()
 
 class RoomTransactionModelTest(TestCase):
     def setUp(self):
-        user1 = User.objects.create_user(username='testuser', password='12345')
-        user2 = User.objects.create_user(username='testuser2', password='12345')
-        user3 = User.objects.create_user(username='testuser3', password='12345')
+        self.user1 = User.objects.create_user(username='testuser', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.user3 = User.objects.create_user(username='testuser3', password='12345')
 
         room1 = Room.objects.create(
-            receiver='receiver1', creator=user1, gift='gift1', price=1000, description='test',
+            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
             to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
         room2 = Room.objects.create(
-            receiver='receiver2', creator=user1, gift='gift2', price=900, description='test',
+            receiver='receiver2', creator=self.user1, gift='gift2', price=900, description='test',
             to_collect=900, visible=True, date_expires=datetime(2019, 6, 6))
         room3 = Room.objects.create(
-            receiver='receiver3', creator=user1, gift='gift3', price=800, description='test',
+            receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
             to_collect=800, visible=True, date_expires=datetime(2019, 6, 6))
 
-        room1.donate({'user': user1, 'amount': 500})
-        room2.donate({'user': user1, 'amount': 300})
-        room2.donate({'user': user2, 'amount': 200})
-        room3.donate({'user': user1, 'amount': 200})
-        room3.donate({'user': user2, 'amount': 200})
-        room3.donate({'user': user3, 'amount': 200})
+        room1.donate({'user': self.user1, 'amount': 500})
+        room2.donate({'user': self.user1, 'amount': 300})
+        room2.donate({'user': self.user2, 'amount': 200})
+        room3.donate({'user': self.user1, 'amount': 200})
+        room3.donate({'user': self.user2, 'amount': 200})
+        room3.donate({'user': self.user3, 'amount': 200})
 
         self.room = Room.objects.get(receiver='receiver1')
-        self.room2 = Room.objects.get(pk=room2.id)
-
-        self.user1 = User.objects.get(id=1)
-        self.user2 = User.objects.get(id=2)
-        self.user3 = User.objects.get(id=3)
+        self.room2 = room2
 
     def test_creation(self):
         room = Room.objects.get(receiver='receiver1')
@@ -101,23 +97,21 @@ class RoomTransactionModelTest(TestCase):
 
     def test_add_observer(self):
         num_observers = self.room.observers.count()
-        self.room.add_observer(1)
+        self.room.add_observer(self.user1.id)
         num_observers += 1
         self.assertEqual(self.room.observers.count(), num_observers)
-        user = User.objects.get(id=1)
-        self.assertTrue(user in self.room.observers.all())
+        self.assertTrue(self.user1 in self.room.observers.all())
 
     def test_donate(self):
         room = Room.objects.get(receiver='receiver1')
-        user = User.objects.get(id=1)
         beginning = room.to_collect
         donate_amount = 200
 
-        room.donate({'user': user, 'amount': donate_amount})
+        room.donate({'user': self.user1, 'amount': donate_amount})
         rest = beginning - donate_amount
         self.assertEqual(room.to_collect, rest)
 
-        room.donate({'user': user, 'amount': rest})
+        room.donate({'user': self.user1, 'amount': rest})
         self.assertFalse(room.is_active)
         self.assertEqual(room.to_collect, 0)
 
@@ -145,10 +139,8 @@ class RoomTransactionModelTest(TestCase):
         self.assertFalse(self.room.guests.filter(id=user.id))
 
     def test_get_guests_dict(self):
-        user1 = User.objects.get(id=1)
-        user2 = User.objects.get(id=2)
-        self.room.guests.add(user1, user2)
-        expected = [user1.username, user2.username]
+        self.room.guests.add(self.user1, self.user2)
+        expected = [self.user1.username, self.user2.username]
         guest_list = self.room.get_guests_dict()
 
         self.assertEqual(guest_list, expected)
