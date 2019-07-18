@@ -6,6 +6,8 @@ services:
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DATABASE_URL: postgres://postgres:example123@db:5432/postgres
     volumes:
       - .:/code
     ports:

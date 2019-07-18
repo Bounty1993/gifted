@@ -1,36 +1,41 @@
 [![Build Status](https://travis-ci.org/Bounty1993/gifted.svg?branch=master)](https://travis-ci.org/Bounty1993/gifted)
 [![Coverage Status](https://coveralls.io/repos/github/Bounty1993/gifted/badge.svg?branch=master)](https://coveralls.io/github/Bounty1993/gifted?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Celem My Blog jest stworzenie platformy gdzie użytkownicy mogą organizować zbiórki na prezenty dla znajomych i rodziny.
+Gifted is a website where people can organize money collections for friends or strangers. 
+Users can declare that they want to support the idea. 
+If all money is collected, the collection is closed. 
+Additionally users can use forum to comment different ideas
 
-Użyte technologie:
+###Technology Stack:
 * Python: 3.7x
 * Django Web Framework: 2.2
+* Redis
+* Postgresql
+* Channels
+* Celery
 * Twitter Bootstrap 4
-* jQuery 3
 
-###Virtaul environment
+
+###Installation
+
+Gifted uses Redis and Postgresql so the best way to get it running is to use Docker.
+Below you can find instruction.
 ```
 $ mkdir gifted
+$ cd gifted
 $ git clone https://github.com/Bounty1993/gifted.git
 $ cd gifted
 ```
-Instalacja virtual environment:
+Use Docker to build image and run containers:
 ```
-$ pip intall virtualenv
-$ virtualenv venv
-$ source venv/bin/activate
+$ docker-compose build
+$ docker-compose run web python manage.py migrate --noinput
+$ docker-compose up
 ```
-Następnie należy zainstalować biblioteki Django oraz Pythona:
+Now it should work. Check it out:
 ```
-$ pip install -r requirements.txt
+http://localhost:8000/
 ```
-Uruchomienie strony:
-
-```
-$ python manage.py runserver
-```
-Adres strony:
-```
-https://localhost:8000/rooms/
-```
+###OAuth
+Gifted can use OAuth. If you want to use it you have to provide API token for Facebook. Everything is done. Just add token in admin site. Need to know more? Check it out [django-allauth Facebook](https://django-allauth.readthedocs.io/en/latest/providers.html#facebook)
