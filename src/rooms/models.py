@@ -84,6 +84,9 @@ class Room(models.Model):
     objects = VisibleManager.as_manager()
     get_visible = VisibleManager.as_manager()
 
+    class Meta:
+        ordering = ['-date_expires']
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
