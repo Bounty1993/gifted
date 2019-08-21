@@ -3,6 +3,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db import transaction
 from django.http import Http404, JsonResponse
@@ -19,7 +20,7 @@ from .models import Donation, Message, Room
 User = get_user_model()     # it is used wherever user model is used
 
 
-class RoomRegisterView(CreateView):
+class RoomRegisterView(LoginRequiredMixin, CreateView):
     model = Room
     template_name = 'rooms/register.html'
     form_class = RoomRegisterForm
