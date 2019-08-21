@@ -70,7 +70,7 @@
         <a class="one-tag" href="{% url 'rooms:list' %}?order=score">Popularne</a>
         <a class="one-tag" href="{% url 'rooms:list' %}?order=-date_expires">Najnowsze</a>
         <a class="one-tag" href="{% url 'rooms:list' %}?order=date_expires">Kończące się</a>
-        <a class="one-tag" href="{% url 'rooms:list' %}?order=to_collect">Największe</a>
+        <a class="one-tag" href="{% url 'rooms:list' %}?order=-to_collect">Największe</a>
       </div>
 </div>
 {% for room in rooms %}

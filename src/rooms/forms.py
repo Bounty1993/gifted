@@ -70,8 +70,8 @@ class RoomUpdateForm(forms.ModelForm):
         }
 
     def clean_price(self):
-        price = self.cleanded_data['price']
-        if price < self.instance.collected:
+        price = self.cleaned_data['price']
+        if price < self.instance.collected():
             msg = "Cena nie może być niższa niż kwota do tej pory zebrana"
             raise forms.ValidationError(msg)
         return price
