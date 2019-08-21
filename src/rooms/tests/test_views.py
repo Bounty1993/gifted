@@ -32,7 +32,7 @@ class RoomRegistrationViewTest(TestCase):
             'price': 1000,
             'description': 'Hello test',
             'visible': True,
-            'date_expires': '29/07/2019',
+            'date_expires': '29/10/2019',
         }
         url = reverse('rooms:register')
         response = self.client.post(url, data)
@@ -45,7 +45,7 @@ class RoomRegistrationViewTest(TestCase):
             'price': 1000,
             'description': 'Hello test',
             'visible': True,
-            'date_expires': '29/07/2019',
+            'date_expires': '29/10/2019',
         }
         url = reverse('rooms:register')
         self.client.post(url, data)

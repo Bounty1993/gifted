@@ -84,6 +84,9 @@ class Room(models.Model):
     objects = VisibleManager.as_manager()
     get_visible = VisibleManager.as_manager()
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
     @property
     def percent_left(self):
         return (self.to_collect / self.price) * 100
@@ -103,9 +106,6 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse('rooms:detail', kwargs={'pk': self.id})
     """
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
 
     def can_see(self, user):
         if self.visible:
@@ -224,12 +224,12 @@ class Donation(models.Model):
 
     objects = DonationQuerySet.as_manager()
 
-    def __str__(self):
-        return f'{self.room} - {self.amount}'
-
     class Meta:
         ordering = ['date', ]
         get_latest_by = ['date', ]
+
+    def __str__(self):
+        return f'{self.room} - {self.amount}'
 
 
 class Message(models.Model):
