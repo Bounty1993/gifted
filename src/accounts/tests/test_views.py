@@ -2,9 +2,9 @@ import datetime
 import re
 
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.test import TestCase
 from django.urls import resolve, reverse
-from django.core import mail
 
 from src.accounts.forms import ProfileForm
 
@@ -118,4 +118,3 @@ class PasswordViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         expected = f'/accounts/password/reset/key/{self.user.id}-set-password/'
         self.assertEqual(response.redirect_chain[0][0], expected)
-

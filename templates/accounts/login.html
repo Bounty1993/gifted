@@ -28,9 +28,8 @@
           </button>
         </a>
       </form>
-
       {% load socialaccount %}
-      <a href="{% provider_login_url "facebook" method="oauth2" %}">
+      <a href="{% provider_login_url 'facebook' method='oauth2' %}">
       <button class="facebookBtn btn btn-lg btn-block">
         Facebook
       </button>

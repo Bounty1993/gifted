@@ -3,18 +3,16 @@ import json
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db import transaction
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
-from django.views.generic import (
-    CreateView, DetailView, ListView, UpdateView, DeleteView)
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
-from .forms import (MessageForm, RoomRegisterForm,
-                    RoomUpdateForm, VisibleForm)
+from .forms import MessageForm, RoomRegisterForm, RoomUpdateForm, VisibleForm
 from .models import Donation, Message, Room
 
 User = get_user_model()     # it is used wherever user model is used

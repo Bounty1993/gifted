@@ -1,30 +1,39 @@
+from allauth.account.views import PasswordResetFromKeyView, PasswordResetView
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash, login, get_user_model
+from django.contrib.auth import (
+    get_user_model, login, update_session_auth_hash
+)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
-from django.core.paginator import Paginator
-from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
-
-from allauth.account.views import PasswordResetView, PasswordResetFromKeyView
 
 from src.rooms.models import Room
-from .forms import ProfileForm, UserUpdateForm, CustomPasswordChangeForm, CustomUserCreationForm
+
+from .forms import (
+    CustomPasswordChangeForm, CustomUserCreationForm,
+    ProfileForm, UserUpdateForm
+)
 from .models import Profile
 
 
 @transaction.atomic
 def signup(request):
+    """
+    View use two different forms. One for User model and another
+    for Profile Model. Registration is successful only if
+    both forms are correct.
+    """
     if request.method == 'POST':
         user_form = CustomUserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            # Profile is created using signals
             profile = Profile.objects.filter(user=user)
             profile.update(
                 bio=profile_form.cleaned_data['bio'],

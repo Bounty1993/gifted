@@ -1,9 +1,8 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import Count, F, Q, Sum
+from django.db.models import Count, F, Prefetch, Q, Sum
 from django.db.models.functions import Coalesce
 from django.forms.models import model_to_dict
-from django.db.models import Prefetch
 
 from src.rooms.models import Room
 

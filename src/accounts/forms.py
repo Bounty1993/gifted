@@ -1,13 +1,14 @@
 import datetime
 
 from django import forms
-from django.contrib.auth.models import User
-from django.forms import ValidationError
-from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import SetPasswordForm, UserCreationForm
+from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.forms import ValidationError
 
 from .models import Profile
+
+User = get_user_model()
 
 
 class ProfileForm(forms.ModelForm):
@@ -63,9 +64,6 @@ class UserUpdateForm(forms.ModelForm):
         ]
 
     def clean_email(self):
-        """
-        Email has to be unique. Works for creation and update.
-        """
         email = self.cleaned_data['email']
         user_id = self.instance.id
         same_email = (
@@ -73,7 +71,7 @@ class UserUpdateForm(forms.ModelForm):
                 .filter(email=email)
                 .exclude(Q(email__isnull=True) | Q(email=''))
         )
-        if same_email.exists():
+        if same_email.exists():     # email has to be unique
             msg = "Podany email jest niepoprawny"
             raise forms.ValidationError(msg)
         return email
@@ -102,7 +100,7 @@ class CustomUserCreationForm(UserCreationForm):
             User.objects.filter(email=email)
                 .exclude(Q(email__isnull=True) | Q(email=''))
         )
-        if same_email.exists():
+        if same_email.exists():     # email different than None must be unique
             msg = "Podany email jest niepoprawny"
             raise forms.ValidationError(msg)
         return email

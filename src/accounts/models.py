@@ -4,8 +4,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from src.home.forms import send_email
-
 
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -31,7 +29,7 @@ class Profile(models.Model):
         ordered_rooms = observed_rooms.order_by_score()
         return ordered_rooms
 
-# receiver by zapisać i utworzyć Profile po zmianach w User
+# signal for creating Profile after User creation
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -40,12 +38,16 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, created, **kwargs):
+    """
+    You can send invitation email. Just uncomment :send_email:
+    """
     if created:
         username = instance.username
         email = instance.email
         subject = f'Witaj {username} Założyłeś właśnie konto w Gifted'
         message = 'Dziękujemy za zaufanie. Będziemy szcześliwi jeśli polecisz nas znajomym'
         data = {'subject': subject, 'message': message, 'to': email}
+
         # send_email(data)
 
 # ----------------------------------------------------------

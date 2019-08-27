@@ -1,7 +1,8 @@
+from unittest import skip
+
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase
-from unittest import skip
 
 from ..models import Profile
 

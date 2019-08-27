@@ -1,9 +1,9 @@
 from django.urls import include, path
 
 from .views import (DonationChartView, DonationListView, RoomDetailView,
-                    RoomListView, RoomRegisterView, RoomEditView,
-                    delete_message, delete_observers, guests,
-                    make_message, observers)
+                    RoomEditView, RoomListView, RoomRegisterView,
+                    delete_message, delete_observers, guests, make_message,
+                    observers)
 
 app_name = 'rooms'
 urlpatterns = [

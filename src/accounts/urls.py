@@ -1,9 +1,9 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path, re_path
 
-from .views import (MyPasswordChangeView, CustomPasswordResetView,
-                    CustomPasswordResetFromKeyView, ProfileDetailView,
-                    signup, update_profile)
+from .views import (CustomPasswordResetFromKeyView, CustomPasswordResetView,
+                    MyPasswordChangeView, ProfileDetailView, signup,
+                    update_profile)
 
 app_name = 'accounts'
 urlpatterns = [

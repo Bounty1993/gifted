@@ -1,7 +1,10 @@
-import factory, factory.django
-from django.contrib.auth import get_user_model
-from src.rooms.models import Room
 from datetime import datetime
+
+import factory
+import factory.django
+from django.contrib.auth import get_user_model
+
+from src.rooms.models import Room
 
 User = get_user_model()
 
