@@ -36,23 +36,36 @@
         </li>
       </ul>
       <div class="form-inline my-2 my-lg-0">
+        <ul class="nav navbar-nav navbar-right mr-auto mt-2 mt-lg-0">
         {% if request.user.is_authenticated %}
-          <a href="{% url 'accounts:logout'%}" class="btn btn-outline-success my-2 my-sm-0 mr-1">
-            Wyloguj
-          </a>
-          <a href="{% url 'accounts:home' %}" class="btn btn-outline-primary my-2 my-sm-0">
-            Profil
-          </a>
+          <li class="nav-item">
+            <a href="{% url 'accounts:logout'%}" class="btn btn-outline-success my-2 my-sm-0 mr-1">
+              Wyloguj
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'accounts:home' %}" class="btn btn-outline-primary my-2 my-sm-0">
+              Profil
+            </a>
+          </li>
         {% else %}
-          <a href="{% url 'accounts:login'%}" class="btn btn-outline-success my-2 my-sm-0 mr-1">
-            Zaloguj
-          </a>
-          <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary my-2 my-sm-0">
-            Zarejestruje
-          </a>
+          <li class="nav-item">
+            <a href="{% url 'accounts:login'%}" class="btn btn-outline-success my-2 my-sm-0 mr-1">
+              Zaloguj
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary my-2 my-sm-0">
+              Zarejestruje
+            </a>
+          </li>
         {% endif %}
+        </ul>
       </div>
     </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 </nav>
 </div>
 <div class="container mb-3">
