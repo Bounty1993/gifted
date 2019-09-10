@@ -118,3 +118,16 @@ class PasswordViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         expected = f'/accounts/password/reset/key/{self.user.id}-set-password/'
         self.assertEqual(response.redirect_chain[0][0], expected)
+
+
+class ProfileViewTest(TestCase):
+    def setUp(self):
+        self.user = (
+            User.objects.create_user(username='Testuser1', password='Tester123', email='test@gmail.com')
+        )
+        self.client.force_login(self.user)
+
+    def test_update_view(self):
+        url = reverse('accounts:update')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
