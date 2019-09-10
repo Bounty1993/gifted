@@ -131,3 +131,6 @@ class ProfileViewTest(TestCase):
         url = reverse('accounts:update')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
