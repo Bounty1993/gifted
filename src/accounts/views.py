@@ -55,6 +55,10 @@ def signup(request):
 
 
 class SearchOrderProfileMixin:
+    """
+    Mixin is responsible for search and order. Additionaly
+    it makes pagination
+    """
     object = None
     paginate_by = 5
 
@@ -70,7 +74,6 @@ class SearchOrderProfileMixin:
             rooms = getattr(rooms, order)()
 
         rooms = rooms.prefetch_related('creator')
-
         paginator = Paginator(rooms, self.paginate_by)
 
         page = self.request.GET.get('page')
