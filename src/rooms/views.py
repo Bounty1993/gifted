@@ -19,6 +19,10 @@ User = get_user_model()     # it is used wherever user model is used
 
 
 class RoomRegisterView(LoginRequiredMixin, CreateView):
+    """
+    View is responsible for creation a new room.
+    Only logged in user can create a new room
+    """
     model = Room
     template_name = 'rooms/register.html'
     form_class = RoomRegisterForm
@@ -32,6 +36,12 @@ class RoomRegisterView(LoginRequiredMixin, CreateView):
 
 
 class FilterSearchMixin:
+    """
+    Mixin used to add search or order. Subclass has to define
+    request and model. If you want to use it just add the class to
+    inheritance tree. Alternatively in :get_queryset: method use
+    super().get_queryset.
+    """
     request = None
     model = None
 
@@ -47,12 +57,19 @@ class FilterSearchMixin:
 
 
 class RoomListView(FilterSearchMixin, ListView):
+    """
+    View is responsible for showing all visible rooms. User can filter or
+    search rooms providing 'search' or 'order' params.
+    Additionally most popular, rooms with most patrons and rooms
+    with most collected money are added to context
+    """
     queryset = Room.get_visible.all()
     template_name = 'rooms/list.html'
     context_object_name = 'rooms'
     paginate_by = 3
 
     def get_queryset(self):
+        """prefetch_related is required to improve performance"""
         queryset = super().get_queryset()
         return queryset.summarise_for_list().prefetch_related('patrons')
 
@@ -227,6 +244,7 @@ def guests(request, pk):
 
 @login_required
 def make_message(request):
+    """ajax view responsible for adding new message to user profile"""
     if request.method == 'POST' and request.is_ajax:
         data = json.loads(request.body)
         sender = request.user.id
@@ -242,6 +260,7 @@ def make_message(request):
 
 @login_required
 def delete_message(request):
+    """ajax view responsible for deleting message in user profile"""
     if request.method == 'POST' and request.is_ajax:
         data = json.loads(request.body)
         message = get_object_or_404(Message, id=data['id'])
