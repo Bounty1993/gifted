@@ -12,6 +12,7 @@ User = get_user_model()
 
 
 class SignUpViewTest(TestCase):
+    """Test of sign Up view"""
     def setUp(self):
         self.user_model = get_user_model()
         self.user = self.user_model.objects.create_user(
@@ -33,6 +34,7 @@ class SignUpViewTest(TestCase):
 
 
 class ProfileFormTest(TestCase):
+    """Test Profile Form"""
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_user(
@@ -53,6 +55,9 @@ class ProfileFormTest(TestCase):
         self.assertEqual(new_profile.bio, 'Hello World')
 
     def test_not_adult(self):
+        """
+        Test if not adult (less than 18 years old) cannot open an account
+        """
         today = datetime.datetime.now().date()
         form = ProfileForm(
             {'date_birth': today},
@@ -64,6 +69,7 @@ class ProfileFormTest(TestCase):
 
 
 class PasswordViewsTest(TestCase):
+    """Test of password change and reset view"""
     def setUp(self):
         self.user = (
             User.objects.create_user(username='Testuser1', password='Tester123', email='test@gmail.com')
@@ -103,6 +109,7 @@ class PasswordViewsTest(TestCase):
         self.assertEqual(reset_mail.recipients()[0], self.user.email)
 
     def test_reset_key_password(self):
+        """Test if password token works"""
         url = reverse('accounts:reset_password')
         data = {'email': self.user.email}
         self.client.post(url, data)
@@ -121,6 +128,7 @@ class PasswordViewsTest(TestCase):
 
 
 class ProfileViewTest(TestCase):
+    """Test main profile (home page after login)"""
     def setUp(self):
         self.user = (
             User.objects.create_user(username='Testuser1', password='Tester123', email='test@gmail.com')
