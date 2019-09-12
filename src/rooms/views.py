@@ -155,6 +155,7 @@ class DonationListView(ListView):
 
 
 class DonationChartView(View):
+    """ajax returns data of donations for displaying chart"""
     def get(self, request, pk):
         room = get_object_or_404(Room, pk=pk)
         chart_data = room.donations.get_chart_data()
@@ -184,6 +185,7 @@ class DonationChartView(View):
 
 @login_required
 def observers(request, pk):
+    """view is responsible for adding the room to observed"""
     room = get_object_or_404(Room, pk=pk)
     if request.method == 'POST' and request.is_ajax:
         user_id = request.user.id
@@ -193,6 +195,7 @@ def observers(request, pk):
 
 @login_required
 def delete_observers(request):
+    """view is responsible for removing the room from observed"""
     if request.method == 'POST' and request.is_ajax:
         data = json.loads(request.body)
         user = request.user
@@ -210,6 +213,11 @@ def delete_observers(request):
 
 @login_required
 def guests(request, pk):
+    """
+    ajax is responsible for adding and removing gests in rooms.
+    it works only for rooms which are not visible and are active
+    :type = add/remove - decide if view should add or remove guest.
+    """
     room = get_object_or_404(Room, pk=pk)
     if request.method == 'POST' and request.is_ajax:
         json_data = json.loads(request.body)
