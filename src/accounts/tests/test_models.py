@@ -10,6 +10,9 @@ User = get_user_model()
 
 
 class TestProfileModel(TestCase):
+    """
+    Test methods in Profile Model. Profile model is one to one to User model
+    """
     def setUp(self):
         self.user1 = User.objects.create_user(username='Bartosz', password='12345', email='TEST')
 
