@@ -9,15 +9,24 @@ from django.dispatch import receiver
 
 class VisibleManager(models.QuerySet):
     def get_visible(self, user):
+        """
+        Method should be used to get all visible rooms for the user.
+        Room is visible if (one of is true):
+            room's attribute is_visible == True,
+            the creator of room is the user,
+            the user is in room's guests
+        """
         visible_query = self.filter(visible=True)
         room_created = user.rooms.all()
         room_guests = user.guest_rooms.all()
         return (visible_query | room_created | room_guests).distinct()
 
     def summarise_for_list(self):
+        """method used for optimalisation"""
         return self.prefetch_related('observers').prefetch_related('patrons')
 
     def search(self, field):
+        """General method used for searching in views"""
         return self.filter(
             Q(receiver__icontains=field) |
             Q(gift__icontains=field) |
@@ -108,6 +117,11 @@ class Room(models.Model):
     """
 
     def can_see(self, user):
+        """
+        Verify is user can see the room.
+        Is room is not visible and user is not in guests and is
+        not a creator then us used cannot see
+        """
         if self.visible:
             return True
         can_see = list(self.guests.all()) if self.guests.exists() else []
@@ -126,9 +140,11 @@ class Room(models.Model):
         self.score = total_rank
 
     def is_visible(self):
+        """True if room is visible for everyone else false"""
         return self.visible
 
     def add_observer(self, user_id):
+        """used to add observer"""
         try:
             self.observers.add(user_id)
         except ValueError:
@@ -136,6 +152,18 @@ class Room(models.Model):
         return {'is_valid': 'true'}
 
     def donate(self, data):
+        """
+        method is responsible for making donation. If donation is
+        bigger than amount to collect the room's attribute is_visible will
+        be change to not active. It is not a problem if amount is bigger than
+        to collect attribute.
+        :param data: dictionary for making donations
+            {'user': int - required - user who makes the donation,
+             'amount': decimal - required - amount of the donation,
+             'date': date - optional - when donation will be made
+             'comment': string - optional - comment for donation}
+        :return: self or dict({'error': reason of error})
+        """
         try:
             user = data['user']
             amount = data['amount']
@@ -162,6 +190,9 @@ class Room(models.Model):
         return self
 
     def get_patrons(self):
+        """
+        :return: list of patrons in format [username1, username2, ...]
+        """
         patrons = (
             self.donations.values_list('user__username', flat=True)
             .annotate(total_amount=Sum('amount'))
@@ -182,6 +213,7 @@ class Room(models.Model):
         return guests_list
 
     def collected(self):
+        """money which has been already collected"""
         return self.price - self.to_collect
 
     def all_likes(self):
@@ -191,22 +223,28 @@ class Room(models.Model):
         return all_likes
 
     def all_comments(self):
+        """
+        method should not be used for all rooms because it
+        will cause a lot of duplicated queries. Use only number
+        for single room is needed.
+        :return: number of all comments and threads for the room
+        """
         posts = self.posts
         num_threads = (
             posts
-                .annotate(num_threads=Count('threads'))
-                .aggregate(Sum(F'num_threads'))
+            .annotate(num_threads=Count('threads'))
+            .aggregate(Sum(F'num_threads'))
         )
         return num_threads
 
 
 class DonationQuerySet(models.QuerySet):
 
-    def resume(self): # will be change
+    def resume(self):   # will be change
         return 'wiadomość'
 
     def get_chart_data(self):
-        categories = [1,2,3,4,5]
+        categories = [1, 2, 3, 4, 5]
         data = self.values('date').annotate(amount__sum=Sum('amount'))
         chart_data = {
             'categories': [x['date'] for x in data],
