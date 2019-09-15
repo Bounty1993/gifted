@@ -208,6 +208,7 @@ class Room(models.Model):
         return self.get_guests_dict()
 
     def get_guests_dict(self):
+        """guests as a list"""
         guests = self.guests.values_list('username', flat=True)
         guests_list = [guest for guest in guests]
         return guests_list

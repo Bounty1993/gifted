@@ -6,7 +6,6 @@ from .models import Donation, Message, Room
 
 
 class RoomRegisterForm(forms.ModelForm):
-
     date_expires = forms.DateField(
         input_formats=('%d/%m/%Y',), label='Data wygaśnięcia',
         help_text='Zbiórka nie może trwać więcej niż 183 dni')
@@ -34,6 +33,7 @@ class RoomRegisterForm(forms.ModelForm):
         self.fields['to_collect'].required = False
 
     def clean_date_expires(self):
+        """method check if today <= expires_date < today + 183 days"""
         date_expires = self.cleaned_data['date_expires']
         today = datetime.now().date()
         half_year_later = today + timedelta(days=183)
@@ -44,6 +44,9 @@ class RoomRegisterForm(forms.ModelForm):
         return date_expires
 
     def clean(self):
+        """
+        to_collect has to be empty because latter it will be filled
+        """
         cleaned_data = super().clean()
         to_collect = cleaned_data['to_collect']
         if to_collect:
@@ -70,6 +73,11 @@ class RoomUpdateForm(forms.ModelForm):
         }
 
     def clean_price(self):
+        """
+        When updating price has to be equal or higher
+        than money collected. Otherwise it would collected
+        field would be pointless
+        """
         price = self.cleaned_data['price']
         if price < self.instance.collected():
             msg = "Cena nie może być niższa niż kwota do tej pory zebrana"
@@ -132,6 +140,6 @@ class DonateForm(forms.ModelForm):
         amount = self.cleaned_data['amount']
         minimal_amount = 1
         if amount < minimal_amount:
-            err = f'You inserted amount {amount:.2f}. It is not enough. Minimal value is 1 PLN'
+            err = f'Wprowadzona kwota to {amount:.2f}. Minimalna kwota to 1 PLN'
             raise forms.ValidationError(err)
         return amount
