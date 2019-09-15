@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from django.urls import resolve, reverse
+from django.urls import reverse
 from django.views.generic import ListView
 
 from src.rooms.models import Donation, Message, Room
@@ -84,15 +84,11 @@ class FilterSearchMixinTest(TestCase):
 
 
 class RoomDetailViewTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
     def setUp(self):
-        user1 = User.objects.create_user(
-            username='testuser', password='12345'
-        )
-        self.room1 = Room.objects.create(
-            receiver='receiver1', gift='gift1', price=1000,
-            description='test', to_collect=1000, visible=True,
-            date_expires=datetime(2019, 6, 6)
-        )
+        user1 = User.objects.get(username='testuser')
+        self.room1 = Room.objects.get(gift='gift1')
         self.room1.donate({'user': user1, 'amount': 500})
 
     def test_status_code_correct(self):
@@ -107,18 +103,12 @@ class RoomDetailViewTest(TestCase):
 
 
 class DonationListViewTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
     def setUp(self):
-        self.user1 = User.objects.create_user(
-            username='testuser1', password='12345'
-        )
-        self.user2 = User.objects.create_user(
-            username='testuser2', password='12345'
-        )
-        self.room1 = Room.objects.create(
-            receiver='receiver1', gift='gift1', price=1000,
-            description='test', to_collect=1000, visible=True,
-            date_expires=datetime(2019, 6, 6)
-        )
+        self.user1 = User.objects.get(username='testuser')
+        self.user2 = User.objects.get(username='testuser2')
+        self.room1 = Room.objects.get(gift='gift1')
         self.room1.donate({'user': self.user1, 'amount': 500})
         self.room1.donate({'user': self.user2, 'amount': 100})
 
@@ -129,7 +119,9 @@ class DonationListViewTest(TestCase):
 
     def test_get_chart_data(self):
         Donation.objects.create(user=self.user1, room=self.room1, amount=200)
-        Donation.objects.filter(amount=200).update(date=datetime(2019, 6, 6).date())
+        Donation.objects.filter(amount=200).update(
+            date=datetime(2019, 6, 6).date()
+        )
         url = reverse('rooms:donation_chart', kwargs={'pk': self.room1.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -142,26 +134,14 @@ class DonationListViewTest(TestCase):
 
 
 class DonateViewTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
     def setUp(self):
-        self.user1 = User.objects.create_user(
-            username='testuser', password='12345'
-        )
-        self.user2 = User.objects.create_user(
-            username='testuser2', password='12345'
-        )
-        self.user3 = User.objects.create_user(
-            username='testuser3', password='12345'
-        )
-        self.room1 = Room.objects.create(
-            receiver='receiver1', gift='gift1', price=1000,
-            description='test', to_collect=1000, visible=True,
-            date_expires=datetime(2019, 6, 6)
-        )
-        self.room2 = Room.objects.create(
-            receiver='receiver1', creator=self.user1, gift='gift1', price=1000,
-            description='test', to_collect=1000, visible=False,
-            date_expires=datetime(2019, 6, 6)
-        )
+        self.user1 = User.objects.get(username='testuser')
+        self.user2 = User.objects.get(username='testuser2')
+        self.user3 = User.objects.get(username='testuser3')
+        self.room1 = Room.objects.get(gift='gift1')
+        self.room2 = Room.objects.get(gift='gift3')
         self.room2.guests.add(self.user2)
         self.user = User.objects.create_user(
             username='Tom',
@@ -192,18 +172,13 @@ def make_ajax(client, url, data=None):
 
 
 class ObserverViewTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
     def setUp(self):
-        self.user1 = User.objects.create_user(
-            username='testuser', password='12345'
-        )
-        self.user2 = User.objects.create_user(
-            username='testuser2', password='12345'
-        )
-        self.room = Room.objects.create(
-            receiver='receiver1', creator=self.user1,
-            gift='gift1', price=1000, description='test',
-            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        self.client.login(username='testuser', password='12345')
+        self.user1 = User.objects.get(username='testuser')
+        self.user2 = User.objects.get(username='testuser2')
+        self.room = Room.objects.get(gift='gift1')
+        self.client.force_login(self.user1)
 
     def test_status_code(self):
         url = reverse('rooms:observers', kwargs={'pk': self.room.id})
@@ -221,18 +196,13 @@ class ObserverViewTest(TestCase):
 
 
 class MakeMessageViewTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
     def setUp(self):
-        self.user1 = User.objects.create_user(
-            username='testuser', password='12345'
-        )
-        self.user2 = User.objects.create_user(
-            username='testuser2', password='12345'
-        )
-        self.room = Room.objects.create(
-            receiver='receiver1', creator=self.user1,
-            gift='gift1', price=1000, description='test',
-            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        self.client.login(username='testuser', password='12345')
+        self.user1 = User.objects.get(username='testuser')
+        self.user2 = User.objects.get(username='testuser2')
+        self.room = Room.objects.get(gift='gift1')
+        self.client.force_login(self.user1)
 
         self.data = {
             'receiver': self.user2.id,

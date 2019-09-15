@@ -165,7 +165,7 @@ class Room(models.Model):
         try:
             user = data['user']
             amount = data['amount']
-        except KeyError as err:
+        except KeyError:
             return {'error': 'Brak wszystkich danych'}
         date = data.get('date', None)
         comment = data.get('comment', amount)

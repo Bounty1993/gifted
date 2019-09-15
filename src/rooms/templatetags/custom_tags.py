@@ -4,6 +4,7 @@ from django import template
 
 register = template.Library()
 
+
 @register.filter
 def time_left(value):
     today = datetime.datetime.now().date()

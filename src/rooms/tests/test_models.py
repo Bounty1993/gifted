@@ -13,20 +13,6 @@ class RoomTransactionModelTest(TestCase):
     fixtures = ['src/rooms/tests/fixtures.json', ]
 
     def setUp(self):
-        # self.user1 = User.objects.create_user(username='testuser', password='12345')
-        # self.user2 = User.objects.create_user(username='testuser2', password='12345')
-        # self.user3 = User.objects.create_user(username='testuser3', password='12345')
-        """
-        room1 = Room.objects.create(
-            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
-            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        room2 = Room.objects.create(
-            receiver='receiver2', creator=self.user1, gift='gift2', price=900, description='test',
-            to_collect=900, visible=True, date_expires=datetime(2019, 6, 6))
-        room3 = Room.objects.create(
-            receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
-            to_collect=800, visible=True, date_expires=datetime(2019, 6, 6))
-        """
         self.user1 = User.objects.get(username='testuser')
         self.user2 = User.objects.get(username='testuser2')
         self.user3 = User.objects.get(username='testuser3')
@@ -66,17 +52,21 @@ class RoomTransactionModelTest(TestCase):
 
     def test_can_see(self):
         room4 = Room.objects.create(
-            receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
-            to_collect=800, visible=False, date_expires=datetime(2019, 6, 6))
+            receiver='receiver3', creator=self.user1, gift='gift3',
+            price=800, description='test', to_collect=800,
+            visible=False, date_expires=datetime(2019, 6, 6)
+        )
         room4.guests.add(self.user2)
         self.assertTrue(room4.can_see(self.user1))
         self.assertTrue(room4.can_see(self.user2))
         self.assertFalse(room4.can_see(self.user3))
 
     def test_percent_left(self):
-        all_donations = (Donation.objects
+        all_donations = (
+            Donation.objects
             .filter(room=self.room)
-            .aggregate(Sum('amount'))['amount__sum'])
+            .aggregate(Sum('amount'))['amount__sum']
+        )
         expected = (all_donations / self.room.price) * 100
         self.assertEqual(self.room.percent_left, expected)
 
@@ -127,8 +117,11 @@ class RoomTransactionModelTest(TestCase):
 
     def test_get_visible(self):
         room3 = Room.objects.create(
-            receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
-            to_collect=800, visible=False, date_expires=datetime(2019, 6, 6))
+            receiver='receiver3', creator=self.user1,
+            gift='gift3', price=800, description='test',
+            to_collect=800, visible=False,
+            date_expires=datetime(2019, 6, 6)
+        )
         query = Room.objects.get_visible(self.user3)
         self.assertFalse(room3 in query)
         room3.guests.add(self.user2)
@@ -160,12 +153,6 @@ class DonationModelTest(TestCase):
     fixtures = ['src/rooms/tests/fixtures.json']
 
     def setUp(self):
-        """
-        self.user1 = User.objects.create_user(username='testuser', password='12345')
-        self.room1 = Room.objects.create(
-            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
-            to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        """
         self.user1 = User.objects.get(username='testuser')
         self.room1 = Room.objects.get(gift='gift1')
         self.room1.donate({'user': self.user1, 'amount': 500})

@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import (
-    CreateView, DeleteView, DetailView, ListView, UpdateView
+    CreateView, DetailView, ListView, UpdateView
 )
 
 from .forms import MessageForm, RoomRegisterForm, RoomUpdateForm, VisibleForm

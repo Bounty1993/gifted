@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import path
 
 from .views import (DonationChartView, DonationListView, RoomDetailView,
                     RoomEditView, RoomListView, RoomRegisterView,
@@ -17,7 +17,10 @@ urlpatterns = [
     path('<int:pk>/ajax/guests/', guests, name='guests'),
     path('ajax/message/', make_message, name='message'),
     path('ajax/message/delete/', delete_message, name='message_delete'),
-    path('<int:pk>/ajax/donations/charts', DonationChartView.as_view(), name='donation_chart'),
+    path(
+        '<int:pk>/ajax/donations/charts', DonationChartView.as_view(),
+        name='donation_chart'
+    ),
     path('<int:pk>/ajax/observers/', observers, name='observers'),
     path('ajax/observers/delete', delete_observers, name='observers_delete')
 ]

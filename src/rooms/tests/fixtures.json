@@ -106,7 +106,7 @@
       "price": "800.00",
       "description": "test",
       "to_collect": "800.00",
-      "visible": true,
+      "visible": false,
       "created": "2019-08-21",
       "date_expires": "2019-10-31",
       "is_active": true,
