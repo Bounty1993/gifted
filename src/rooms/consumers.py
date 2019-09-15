@@ -2,13 +2,17 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from django.forms.models import model_to_dict
 
 from .forms import DonateForm
 from .models import Room
 
 
 class DonateConsumer(WebsocketConsumer):
+    """
+    Consumer is used for making donations. Consumer is
+    not asynchronous because it would not improve much
+    performance.
+    """
     def connect(self):
         self.room_id = self.scope['url_route']['kwargs']['room_id']
         self.room_group_name = f'room_{self.room_id}'
@@ -51,7 +55,6 @@ class DonateConsumer(WebsocketConsumer):
             return self.send(text_data=json.dumps({
                 'is_valid': 'true'
             }))
-        print(form.errors)
         return self.send(text_data=json.dumps({
             'is_valid': 'false',
             'errors': form.errors

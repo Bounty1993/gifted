@@ -85,9 +85,14 @@ class FilterSearchMixinTest(TestCase):
 
 class RoomDetailViewTest(TestCase):
     def setUp(self):
-        user1 = User.objects.create_user(username='testuser', password='12345')
-        self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
-                                    to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        user1 = User.objects.create_user(
+            username='testuser', password='12345'
+        )
+        self.room1 = Room.objects.create(
+            receiver='receiver1', gift='gift1', price=1000,
+            description='test', to_collect=1000, visible=True,
+            date_expires=datetime(2019, 6, 6)
+        )
         self.room1.donate({'user': user1, 'amount': 500})
 
     def test_status_code_correct(self):
@@ -103,10 +108,17 @@ class RoomDetailViewTest(TestCase):
 
 class DonationListViewTest(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser1', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
-        self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
-                                        to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
+        self.user1 = User.objects.create_user(
+            username='testuser1', password='12345'
+        )
+        self.user2 = User.objects.create_user(
+            username='testuser2', password='12345'
+        )
+        self.room1 = Room.objects.create(
+            receiver='receiver1', gift='gift1', price=1000,
+            description='test', to_collect=1000, visible=True,
+            date_expires=datetime(2019, 6, 6)
+        )
         self.room1.donate({'user': self.user1, 'amount': 500})
         self.room1.donate({'user': self.user2, 'amount': 100})
 
@@ -131,14 +143,25 @@ class DonationListViewTest(TestCase):
 
 class DonateViewTest(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
-        self.user3 = User.objects.create_user(username='testuser3', password='12345')
-        self.room1 = Room.objects.create(receiver='receiver1', gift='gift1', price=1000, description='test',
-                                         to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-        self.room2 = Room.objects.create(receiver='receiver1', creator=self.user1, gift='gift1', price=1000,
-                                         description='test', to_collect=1000, visible=False,
-                                         date_expires=datetime(2019, 6, 6))
+        self.user1 = User.objects.create_user(
+            username='testuser', password='12345'
+        )
+        self.user2 = User.objects.create_user(
+            username='testuser2', password='12345'
+        )
+        self.user3 = User.objects.create_user(
+            username='testuser3', password='12345'
+        )
+        self.room1 = Room.objects.create(
+            receiver='receiver1', gift='gift1', price=1000,
+            description='test', to_collect=1000, visible=True,
+            date_expires=datetime(2019, 6, 6)
+        )
+        self.room2 = Room.objects.create(
+            receiver='receiver1', creator=self.user1, gift='gift1', price=1000,
+            description='test', to_collect=1000, visible=False,
+            date_expires=datetime(2019, 6, 6)
+        )
         self.room2.guests.add(self.user2)
         self.user = User.objects.create_user(
             username='Tom',
@@ -170,10 +193,15 @@ def make_ajax(client, url, data=None):
 
 class ObserverViewTest(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.user1 = User.objects.create_user(
+            username='testuser', password='12345'
+        )
+        self.user2 = User.objects.create_user(
+            username='testuser2', password='12345'
+        )
         self.room = Room.objects.create(
-            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
+            receiver='receiver1', creator=self.user1,
+            gift='gift1', price=1000, description='test',
             to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
         self.client.login(username='testuser', password='12345')
 
@@ -194,10 +222,15 @@ class ObserverViewTest(TestCase):
 
 class MakeMessageViewTest(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.user1 = User.objects.create_user(
+            username='testuser', password='12345'
+        )
+        self.user2 = User.objects.create_user(
+            username='testuser2', password='12345'
+        )
         self.room = Room.objects.create(
-            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
+            receiver='receiver1', creator=self.user1,
+            gift='gift1', price=1000, description='test',
             to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
         self.client.login(username='testuser', password='12345')
 
@@ -232,22 +265,33 @@ class MakeMessageViewTest(TestCase):
 class DeleteMessageViewTest(TestCase):
 
     def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        self.user1 = User.objects.create_user(
+            username='testuser', password='12345'
+        )
+        self.user2 = User.objects.create_user(
+            username='testuser2', password='12345'
+        )
         self.room = Room.objects.create(
-            receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
+            receiver='receiver1', creator=self.user1,
+            gift='gift1', price=1000, description='test',
             to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
         self.message = Message.objects.create(
-            receiver=self.user1, sender=self.user2, subject='Tytuł', content='Treść')
+            receiver=self.user1, sender=self.user2,
+            subject='Tytuł', content='Treść'
+        )
         self.client.login(username='testuser', password='12345')
         self.data = {'id': self.message.id}
 
     def test_status_code(self):
-        response = make_ajax(self.client, reverse('rooms:message_delete'), self.data)
+        response = make_ajax(
+            self.client, reverse('rooms:message_delete'), self.data
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_message_delete(self):
-        response = make_ajax(self.client, reverse('rooms:message_delete'), self.data)
+        response = make_ajax(
+            self.client, reverse('rooms:message_delete'), self.data
+        )
         self.assertFalse(Message.objects.exists())
         response_data = json.loads(response.content)
         expected = {'is_valid': 'true'}

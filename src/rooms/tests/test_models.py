@@ -10,11 +10,13 @@ User = get_user_model()
 
 
 class RoomTransactionModelTest(TestCase):
-    def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser', password='12345')
-        self.user2 = User.objects.create_user(username='testuser2', password='12345')
-        self.user3 = User.objects.create_user(username='testuser3', password='12345')
+    fixtures = ['src/rooms/tests/fixtures.json', ]
 
+    def setUp(self):
+        # self.user1 = User.objects.create_user(username='testuser', password='12345')
+        # self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        # self.user3 = User.objects.create_user(username='testuser3', password='12345')
+        """
         room1 = Room.objects.create(
             receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
             to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
@@ -24,6 +26,14 @@ class RoomTransactionModelTest(TestCase):
         room3 = Room.objects.create(
             receiver='receiver3', creator=self.user1, gift='gift3', price=800, description='test',
             to_collect=800, visible=True, date_expires=datetime(2019, 6, 6))
+        """
+        self.user1 = User.objects.get(username='testuser')
+        self.user2 = User.objects.get(username='testuser2')
+        self.user3 = User.objects.get(username='testuser3')
+
+        room1 = Room.objects.get(gift='gift1')
+        room2 = Room.objects.get(gift='gift2')
+        room3 = Room.objects.get(gift='gift3')
 
         room1.donate({'user': self.user1, 'amount': 500})
         room2.donate({'user': self.user1, 'amount': 300})
@@ -147,12 +157,17 @@ class RoomTransactionModelTest(TestCase):
 
 
 class DonationModelTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
     def setUp(self):
+        """
         self.user1 = User.objects.create_user(username='testuser', password='12345')
         self.room1 = Room.objects.create(
             receiver='receiver1', creator=self.user1, gift='gift1', price=1000, description='test',
             to_collect=1000, visible=True, date_expires=datetime(2019, 6, 6))
-
+        """
+        self.user1 = User.objects.get(username='testuser')
+        self.room1 = Room.objects.get(gift='gift1')
         self.room1.donate({'user': self.user1, 'amount': 500})
 
     def test_donation_exists(self):

@@ -1,0 +1,119 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$150000$V6qLAHYeEqU3$kH/te2Nm1jVLzOjIsdb3ZUd6InvocMhaqPDZQUbLlGA=",
+      "last_login": "2019-07-21T17:13:17.350Z",
+      "is_superuser": false,
+      "username": "testuser",
+      "first_name": "Jan",
+      "last_name": "Kowalski",
+      "email": "testuser@onet.pl",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2019-07-21T17:13:17.206Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$150000$V6qLAHYeEqU3$kH/te2Nm1jVLzOjIsdb3ZUd6InvocMhaqPDZQUbLlGA=",
+      "last_login": "2019-07-21T17:13:17.350Z",
+      "is_superuser": false,
+      "username": "testuser2",
+      "first_name": "Jan",
+      "last_name": "Kowalski",
+      "email": "bartosz123@onet.pl",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2019-07-21T17:13:17.206Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$150000$SuOw5kDFIvNp$HePa0Von1pDxWv7byQPMQTqQCISKqRMCAYIvcJ6p5AM=",
+      "last_login": "2019-09-15T14:54:20.155Z",
+      "is_superuser": false,
+      "username": "testuser3",
+      "first_name": "Bartosz",
+      "last_name": "Niczyporuk",
+      "email": "bartosz@onet.pl",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2019-08-21T15:23:27.886Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 1,
+    "fields": {
+      "receiver": "receiver1",
+      "creator": 1,
+      "gift": "gift1",
+      "gift_url": "",
+      "price": "1000.00",
+      "description": "test",
+      "to_collect": "1000.00",
+      "visible": true,
+      "created": "2019-08-21",
+      "date_expires": "2019-10-31",
+      "is_active": true,
+      "score": 0.0,
+      "guests": [],
+      "observers": [
+      ]
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 2,
+    "fields": {
+      "receiver": "receiver2",
+      "creator": 1,
+      "gift": "gift2",
+      "gift_url": "",
+      "price": "900.00",
+      "description": "test",
+      "to_collect": "900.00",
+      "visible": true,
+      "created": "2019-08-21",
+      "date_expires": "2019-10-31",
+      "is_active": true,
+      "score": 0.0,
+      "guests": [],
+      "observers": [
+      ]
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 3,
+    "fields": {
+      "receiver": "receiver3",
+      "creator": 1,
+      "gift": "gift3",
+      "gift_url": "",
+      "price": "800.00",
+      "description": "test",
+      "to_collect": "800.00",
+      "visible": true,
+      "created": "2019-08-21",
+      "date_expires": "2019-10-31",
+      "is_active": true,
+      "score": 0.0,
+      "guests": [],
+      "observers": [
+      ]
+    }
+  }
+]

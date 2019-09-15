@@ -1,10 +1,6 @@
-import datetime
-
 from django.conf import settings
 from django.db import models
 from django.db.models import Count, F, Q, Sum
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class VisibleManager(models.QuerySet):
@@ -65,7 +61,9 @@ class Room(models.Model):
     gift_url = models.URLField('Adres internetowy celu', blank=True)
     price = models.DecimalField('Cena', max_digits=11, decimal_places=2)
     description = models.CharField('Opis', max_length=250, blank=True)
-    to_collect = models.DecimalField('Do zebrania', max_digits=11, decimal_places=2)
+    to_collect = models.DecimalField(
+        'Do zebrania', max_digits=11, decimal_places=2
+    )
     visible = models.BooleanField('Widoczny dla wszystkich?')
     created = models.DateField(auto_now_add=True)
     date_expires = models.DateField('Data wygaśnięcia')
@@ -154,9 +152,9 @@ class Room(models.Model):
     def donate(self, data):
         """
         method is responsible for making donation. If donation is
-        bigger than amount to collect the room's attribute is_visible will
-        be change to not active. It is not a problem if amount is bigger than
-        to collect attribute.
+        bigger than amount to collect the room's attribute is_visible
+        will be change to not active. It is not a problem if amount
+        is bigger than to collect attribute.
         :param data: dictionary for making donations
             {'user': int - required - user who makes the donation,
              'amount': decimal - required - amount of the donation,
@@ -255,8 +253,12 @@ class DonationQuerySet(models.QuerySet):
 
 
 class Donation(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='donations')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
+    room = models.ForeignKey(
+        Room, on_delete=models.CASCADE, related_name='donations'
+    )
     date = models.DateField(auto_now=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     comment = models.CharField(max_length=250, blank=True)

@@ -38,9 +38,13 @@ class RoomRegisterForm(forms.ModelForm):
         today = datetime.now().date()
         half_year_later = today + timedelta(days=183)
         if date_expires > half_year_later:
-            raise forms.ValidationError('Data wygaśnięcia nie może byc późniejsza niż 183 dni')
+            raise forms.ValidationError(
+                'Data wygaśnięcia nie może byc późniejsza niż 183 dni'
+            )
         if date_expires <= today:
-            raise forms.ValidationError('Data wygraśnięcia musi być w przyszłości')
+            raise forms.ValidationError(
+                'Data wygraśnięcia musi być w przyszłości'
+            )
         return date_expires
 
     def clean(self):
@@ -116,12 +120,14 @@ class MessageForm(forms.ModelForm):
         receiver = self.cleaned_data['receiver']
         sender = self.cleaned_data['sender']
         if receiver == sender:
-            raise forms.ValidationError('Odbiorca i nadawca nie mogą być tacy sami')
+            raise forms.ValidationError(
+                'Odbiorca i nadawca nie mogą być tacy sami'
+            )
 
 
 class DonateForm(forms.ModelForm):
     comment = forms.CharField(
-        widget=forms.Textarea({'rows':5}),
+        widget=forms.Textarea({'rows': 5}),
         help_text='Jeśli chcesz możesz przekazać informacje obdarowanemu',
         required=False,
     )
@@ -140,6 +146,6 @@ class DonateForm(forms.ModelForm):
         amount = self.cleaned_data['amount']
         minimal_amount = 1
         if amount < minimal_amount:
-            err = f'Wprowadzona kwota to {amount:.2f}. Minimalna kwota to 1 PLN'
+            err = f'Wprowadzona kwota: {amount:.2f}. Minimalna kwota to 1 PLN'
             raise forms.ValidationError(err)
         return amount
