@@ -63,6 +63,7 @@ class RoomUpdateForm(forms.ModelForm):
         fields = [
             'receiver',
             'price',
+            'gift',
             'gift_url',
             'description',
             'visible',
@@ -95,6 +96,11 @@ class RoomUpdateForm(forms.ModelForm):
         if date_expires > max_length:
             msg = 'Zbiórka nie może trwać dłużej niż 183 dni od utworzenia'
             raise forms.ValidationError(msg)
+        today = datetime.now().date()
+        if date_expires <= today:
+            raise forms.ValidationError(
+                'Data wygraśnięcia musi być w przyszłości'
+            )
         return date_expires
 
 
@@ -142,7 +148,7 @@ class DonateForm(forms.ModelForm):
             'amount': 'Minimalna wielkośc składki to 1 PLN',
         }
 
-    def clean_donation(self):
+    def clean_amount(self):
         amount = self.cleaned_data['amount']
         minimal_amount = 1
         if amount < minimal_amount:
