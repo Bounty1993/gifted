@@ -194,6 +194,48 @@ class ObserverViewTest(TestCase):
         expected = {'is_valid': 'true'}
         self.assertEqual(response_data, expected)
 
+    def test_observer_delete(self):
+        url = reverse('rooms:observers_delete')
+        self.user1.observed_rooms.add(self.room)
+        data = {'id': self.room.id}
+        response = make_ajax(self.client, url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.user1.observed_rooms.count(), 0)
+
+
+class GuestViewTest(TestCase):
+    fixtures = ['src/rooms/tests/fixtures.json']
+
+    def setUp(self):
+        self.user1 = User.objects.get(username='testuser')
+        self.user2 = User.objects.get(username='testuser2')
+        self.room = Room.objects.get(gift='gift1')
+        self.client.force_login(self.user1)
+        self.data = {'guest': self.user2.username}
+
+    def test_add_guest(self):
+        self.data['type'] = 'add'
+        response = make_ajax(
+            self.client,
+            reverse('rooms:guests', kwargs={'pk': self.room.id}),
+            self.data
+        )
+        self.assertEqual(response.status_code, 200)
+        updated_room = Room.objects.get(gift='gift1')
+        self.assertEqual(updated_room.guests.all().first(), self.user2)
+        
+    def test_remove_guests(self):
+        self.room.guests.add(self.user2)
+        self.data['type'] = 'remove'
+        response = make_ajax(
+            self.client,
+            reverse('rooms:guests', kwargs={'pk': self.room.id}),
+            self.data
+        )
+        self.assertEqual(response.status_code, 200)
+        updated_room = Room.objects.get(gift='gift1')
+        self.assertEqual(updated_room.guests.count(), 0)
+
 
 class MakeMessageViewTest(TestCase):
     fixtures = ['src/rooms/tests/fixtures.json']

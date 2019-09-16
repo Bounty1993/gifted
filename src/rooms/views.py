@@ -199,8 +199,8 @@ def delete_observers(request):
     if request.method == 'POST' and request.is_ajax:
         data = json.loads(request.body)
         user = request.user
-        room = user.observed_rooms.filter(id=data['id'])
-        if room.count != 1:
+        room = user.observed_rooms.filter(id=int(data['id']))
+        if room.count() != 1:
             msg = {
                 'is_valid': 'false',
                 'error': 'Nie obserwujesz podanej zbiórki'

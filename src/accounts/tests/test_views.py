@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase
 from django.urls import resolve, reverse
+from django.forms.models import model_to_dict
 
 from src.accounts.forms import ProfileForm
 
@@ -129,14 +130,32 @@ class PasswordViewsTest(TestCase):
 
 class ProfileViewTest(TestCase):
     """Test main profile (home page after login)"""
+
+    fixtures = ['src/accounts/tests/fixtures.json']
+
     def setUp(self):
-        self.user = (
-            User.objects.create_user(username='Testuser1', password='Tester123', email='test@gmail.com')
-        )
+        self.user = User.objects.first()
         self.client.force_login(self.user)
 
-    def test_update_view(self):
+    def test_update_view_status_code(self):
         url = reverse('accounts:update')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_update_view_post(self):
+        url = reverse('accounts:update')
+        data = model_to_dict(self.user)
+        data['first_name'] = 'New Name'
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        updated_user = User.objects.first()
+        self.assertEqual(updated_user.first_name, 'New Name')
+
+    def test_detail_view(self):
+        url = reverse('accounts:home')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.client.logout()
