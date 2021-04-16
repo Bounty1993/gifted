@@ -1,7 +1,7 @@
 coverage==4.5.3
 Django>=2.2
 django-crispy-forms==1.7.2
-django-debug-toolbar==1.11
+django-debug-toolbar==1.11.1
 django-extensions==2.1.6
 
 python-decouple==3.1
